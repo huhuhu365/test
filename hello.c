@@ -1,14 +1,14 @@
 #include <stdio.h>
 
-int main()
+int test()
 {
-  printf("on");
+  printf("ok");
   return 0;
 }
 
-int mainno()
+int mainok()
 {
-  printf("no");
+  printf("ok");
   return 0;
 }
 
