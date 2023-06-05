@@ -2,12 +2,12 @@
 
 int main()
 {
-  printf("onnnnn");
+  printf("on");
   return 0;
 }
 
 int mainno()
 {
-  printf("nooooo");
+  printf("no");
   return 0;
 }
