@@ -1,7 +1,7 @@
 #include <stdio.h>
 
-int main()
+int mainno()
 {
-  printf("okkkkk");
+  printf("nooooo");
   return 0;
 }
