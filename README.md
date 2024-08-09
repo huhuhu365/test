@@ -1,2 +1,5 @@
 # test
-wodetest
+wodetesy
+test2
+git config --global user.email "wang yonghuang"
+git config --global user.name "a07015424996@gmail.com"
