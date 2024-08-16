@@ -1,4 +1,4 @@
-// #144-#150 useState 是 React 的一个 Hook，它允许你在函数组件中添加状态
+// #144-#150 useState 是 React 的一个 Hook，它允许你在函数组件中添加状态变量，并在其变化时重新渲染组件。
 import { useState } from "react";
 // 语法
 // const [state, setState] = useState(initialState);
@@ -146,7 +146,8 @@ import classNames from 'classnames'
 // function App() {
 //   // 添加一个状态变量
 //   // count 状态变量
-//   // setCount 状态更新函数的方法
+//   // setCount 状态更新函数的方法，用来修改count状态变量
+//   // useState 返回一个数组，数组的第一个元素是count，第二个元素是setCount方法
 //   const [count, setCount] = useState(0)
 //   // 点击事件回调
 //   const handleClick = () => {
@@ -341,6 +342,7 @@ import classNames from 'classnames'
 
 
 // ###################################### Day2 8/16
+// 受控表单绑定
 function App() {
   return (
     <div className="App">
