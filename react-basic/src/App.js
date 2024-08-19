@@ -1,11 +1,11 @@
 // #144-#150 useState 是 React 的一个 Hook，它允许你在函数组件中添加状态变量，并在其变化时重新渲染组件。
-import { useState,useRef } from "react";
+import { useState, useRef } from "react";
 // 语法
 // const [state, setState] = useState(initialState);
 
 // #189-#337
 // 用lodash库实现评论列表的排序功能，并实现删除评论功能。
-import _ from "lodash"
+import _, { get } from "lodash"
 // likes是按点赞数降序排列的，最新评论排在最前面。
 // desc是按降序排序，asc是按升序排序。
 // const [comments, setComments] = useState(_.orderBy(initialComments, "likes", "desc"));
@@ -196,165 +196,167 @@ import classNames from 'classnames'
 */
 
 // 初始评论列表
-import {v4 as uuidv4} from 'uuid';
-import dayjs from 'dayjs';
-const initialComments = [
-  {
-    id: 1,
-    username: "jack",
-    content: "这是一条评论回复",
-    date: "2023-11-11",
-    likes: 100,
-    isOwner: true,
-  },
-  {
-    id: 2,
-    username: "mary",
-    content: "这是另一条评论回复",
-    date: "2023-11-12",
-    likes: 50,
-    isOwner: false,
-  },
-  {
-    id: 3,
-    username: "mary",
-    content: "这是另一条评论回复",
-    date: "2023-12-12",
-    likes: 50,
-    isOwner: false,
-  },
-];
+// import { v4 as uuidv4 } from 'uuid';
+// import dayjs from 'dayjs';
+// const initialComments = [
+//   {
+//     id: 1,
+//     username: "jack",
+//     content: "这是一条评论回复",
+//     date: "2023-11-11",
+//     likes: 100,
+//     isOwner: true,
+//   },
+//   {
+//     id: 2,
+//     username: "mary",
+//     content: "这是另一条评论回复",
+//     date: "2023-11-12",
+//     likes: 50,
+//     isOwner: false,
+//   },
+//   {
+//     id: 3,
+//     username: "mary",
+//     content: "这是另一条评论回复",
+//     date: "2023-12-12",
+//     likes: 50,
+//     isOwner: false,
+//   },
+// ];
 
-function App() {
-  // const [comments, setComments] = useState(_.orderBy(initialComments, "date", "desc"));
-  // 在242已经给他排序了所以不需要用到上面的lodash库了。
-  const [comments, setComments] = useState(initialComments);
-  const [newComment, setNewComment] = useState("");
-  const [sortType, setSortType] = useState("latest");
+// function App() {
+//   // const [comments, setComments] = useState(_.orderBy(initialComments, "date", "desc"));
+//   // 在242已经给他排序了所以不需要用到上面的lodash库了。
+//   const [comments, setComments] = useState(initialComments);
+//   const [newComment, setNewComment] = useState("");
+//   const [sortType, setSortType] = useState("latest");
 
-  // 处理删除评论
-  const handleDelete = (id) => {
-    setComments(comments.filter((comment) => comment.id !== id));
-  };
+//   // 处理删除评论
+//   const handleDelete = (id) => {
+//     setComments(comments.filter((comment) => comment.id !== id));
+//   };
+//   const inputRef = useRef(null);
+//   // 处理发布新评论
+//   const handleSubmit = () => {
+//     // if (newComment.trim() === "") return;
 
-  // 处理发布新评论
-  const handleSubmit = () => {
-    // if (newComment.trim() === "") return;
+//     // const newCommentObject = {
+//     //   id: comments.length + 1, // 简单生成新ID
+//     //   username: "你的用户名", // 假设当前用户是你
+//     //   content: newComment,
+//     //   date: new Date().toISOString().split("T")[0], // 当前日期
+//     //   likes: 0, // 新评论初始点赞数
+//     //   isOwner: true, // 你是评论的拥有者
+//     // };
 
-    // const newCommentObject = {
-    //   id: comments.length + 1, // 简单生成新ID
-    //   username: "你的用户名", // 假设当前用户是你
-    //   content: newComment,
-    //   date: new Date().toISOString().split("T")[0], // 当前日期
-    //   likes: 0, // 新评论初始点赞数
-    //   isOwner: true, // 你是评论的拥有者
-    // };
+//     // setComments([...comments, newCommentObject]);
+//     // setNewComment(""); // 清空输入框
 
-    // setComments([...comments, newCommentObject]);
-    // setNewComment(""); // 清空输入框
+//     // 两种方法都可以，下面这种更简洁
+//     if (newComment.trim() === "") return;
+//     setComments([...comments, {
+//       // id: comments.length + 1, // 简单生成新ID
+//       id: uuidv4(), // 简单生成新ID
+//       username: "你的用户名", // 假设当前用户是你
+//       content: newComment,
+//       // date: new Date().toISOString().split("T")[0], // 当前日期
+//       date: dayjs().format('MM-DD hh:mm:ss'), // 当前日期
+//       likes: 0, // 新评论初始点赞数
+//       isOwner: true, // 你是评论的拥有者
+//     }])
+//     setNewComment(""); // 清空输入框
+//     // 重新聚焦到输入框
+//     inputRef.current.focus();
+//   };
 
-    // 两种方法都可以，下面这种更简洁
-    if (newComment.trim() === "") return;
-    setComments([...comments, {
-      // id: comments.length + 1, // 简单生成新ID
-      id: uuidv4(), // 简单生成新ID
-      username: "你的用户名", // 假设当前用户是你
-      content: newComment,
-      // date: new Date().toISOString().split("T")[0], // 当前日期
-      date: dayjs().format('MM-DD hh:mm:ss'), // 当前日期
-      likes: 0, // 新评论初始点赞数
-      isOwner: true, // 你是评论的拥有者
-    }])
-    setNewComment(""); // 清空输入框
-    
-  };
+//   // 按照选中的排序方式排序评论
+//   const sortedComments = [...comments].sort((a, b) => {
+//     if (sortType === "latest") {
+//       return new Date(b.date) - new Date(a.date);
+//     } else {
+//       return b.likes - a.likes;
+//     }
+//   });
 
-  // 按照选中的排序方式排序评论
-  const sortedComments = [...comments].sort((a, b) => {
-    if (sortType === "latest") {
-      return new Date(b.date) - new Date(a.date);
-    } else {
-      return b.likes - a.likes;
-    }
-  });
+//   // const tabs = [{ type: 'hot', text: '最热' }, { type: 'time', text: '最新' }]
+//   // const [type, setType] = useState('hot')
+//   // const handleTabChange = (type) => {
+//   //   console.log(type);
+//   //   setType(type)
+//   // }
 
-  // const tabs = [{ type: 'hot', text: '最热' }, { type: 'time', text: '最新' }]
-  // const [type, setType] = useState('hot')
-  // const handleTabChange = (type) => {
-  //   console.log(type);
-  //   setType(type)
-  // }
+//   return (
+//     <div className="App" style={{ padding: "20px", maxWidth: "600px", margin: "0 auto" }}>
+//       <div style={{ marginBottom: "20px" }}>
+//         <textarea
+//           value={newComment}
+//           onChange={(e) => setNewComment(e.target.value)}
+//           ref={inputRef}
+//           placeholder="发一条友善的评论"
+//           style={{ width: "100%", padding: "10px", borderRadius: "5px", border: "1px solid #ccc" }}
+//         />
+//         <button
+//           onClick={handleSubmit}
+//           style={{ marginTop: "10px", padding: "10px 20px", backgroundColor: "#00bfff", color: "white", border: "none", borderRadius: "5px", cursor: "pointer" }}
+//         >
+//           发布
+//         </button>
+//       </div>
+//       <div style={{ marginBottom: "20px" }}>
+//         <button
+//           onClick={() => setSortType("latest")}
+//           style={{ marginRight: "10px", padding: "10px 20px", backgroundColor: sortType === "latest" ? "#00bfff" : "#eee", color: sortType === "latest" ? "white" : "black", border: "none", borderRadius: "5px", cursor: "pointer" }}
+//         >
+//           最新
+//         </button>
+//         <button
+//           onClick={() => setSortType("hottest")}
+//           style={{ padding: "10px 20px", backgroundColor: sortType === "hottest" ? "#00bfff" : "#eee", color: sortType === "hottest" ? "white" : "black", border: "none", borderRadius: "5px", cursor: "pointer" }}
+//         >
+//           最热
+//         </button>
 
-  return (
-    <div className="App" style={{ padding: "20px", maxWidth: "600px", margin: "0 auto" }}>
-      <div style={{ marginBottom: "20px" }}>
-        <textarea
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-          placeholder="发一条友善的评论"
-          style={{ width: "100%", padding: "10px", borderRadius: "5px", border: "1px solid #ccc" }}
-        />
-        <button
-          onClick={handleSubmit}
-          style={{ marginTop: "10px", padding: "10px 20px", backgroundColor: "#00bfff", color: "white", border: "none", borderRadius: "5px", cursor: "pointer" }}
-        >
-          发布
-        </button>
-      </div>
-      <div style={{ marginBottom: "20px" }}>
-        <button
-          onClick={() => setSortType("latest")}
-          style={{ marginRight: "10px", padding: "10px 20px", backgroundColor: sortType === "latest" ? "#00bfff" : "#eee", color: sortType === "latest" ? "white" : "black", border: "none", borderRadius: "5px", cursor: "pointer" }}
-        >
-          最新
-        </button>
-        <button
-          onClick={() => setSortType("hottest")}
-          style={{ padding: "10px 20px", backgroundColor: sortType === "hottest" ? "#00bfff" : "#eee", color: sortType === "hottest" ? "white" : "black", border: "none", borderRadius: "5px", cursor: "pointer" }}
-        >
-          最热
-        </button>
+//         {/* 跟这个原本的有区别，要修改下面的代码 */}
+//         {/* <div className="nav-sort">
+//           高亮类名：active
+//           {tabs.map(item => (
+//             <button
+//               key={item.type}
+//               onClick={() => handleTabChange(item.type)}
+//             // className={`nav-item ${type === item.type && 'active'}`}
+//             className={classNames('nav-item', { active: type === item.type })}
+//             >
+//               {item.text}
+//             </button>
+//           ))}
+//         </div> */}
 
-        {/* 跟这个原本的有区别，要修改下面的代码 */}
-        {/* <div className="nav-sort">
-          高亮类名：active
-          {tabs.map(item => (
-            <button
-              key={item.type}
-              onClick={() => handleTabChange(item.type)}
-            // className={`nav-item ${type === item.type && 'active'}`}
-            className={classNames('nav-item', { active: type === item.type })}
-            >
-              {item.text}
-            </button>
-          ))}
-        </div> */}
-
-      </div>
-      <div>
-        {sortedComments.map((comment) => (
-          <div key={comment.id} style={{ padding: "10px 0", borderBottom: "1px solid #eee" }}>
-            <div>
-              <strong>{comment.username}</strong>
-            </div>
-            <div style={{ margin: "5px 0" }}>{comment.content}</div>
-            <div style={{ fontSize: "12px", color: "#999" }}>
-              <span>{comment.date}</span> | <span>点赞数: {comment.likes}</span>
-              {comment.isOwner && (
-                <button
-                  onClick={() => handleDelete(comment.id)}
-                  style={{ marginLeft: "10px", color: "#ff4d4f", backgroundColor: "transparent", border: "none", cursor: "pointer" }}
-                >
-                  删除
-                </button>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
+//       </div>
+//       <div>
+//         {sortedComments.map((comment) => (
+//           <div key={comment.id} style={{ padding: "10px 0", borderBottom: "1px solid #eee" }}>
+//             <div>
+//               <strong>{comment.username}</strong>
+//             </div>
+//             <div style={{ margin: "5px 0" }}>{comment.content}</div>
+//             <div style={{ fontSize: "12px", color: "#999" }}>
+//               <span>{comment.date}</span> | <span>点赞数: {comment.likes}</span>
+//               {comment.isOwner && (
+//                 <button
+//                   onClick={() => handleDelete(comment.id)}
+//                   style={{ marginLeft: "10px", color: "#ff4d4f", backgroundColor: "transparent", border: "none", cursor: "pointer" }}
+//                 >
+//                   删除
+//                 </button>
+//               )}
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// }
 
 
 
@@ -379,7 +381,6 @@ function App() {
 //   const inputRef=useRef(null)
 //   const showDom=()=>{
 //     console.log(inputRef.current.value);
-    
 //   }
 //   return (
 //     <div className="App">
@@ -389,6 +390,67 @@ function App() {
 //   )
 // }
 
+// 组件通信 父传子
+// function Son(props){
+//   // props:是一个对象，包含父组件传递给子组件的属性。
+//   // props是只读取的，不能修改props的值。
+//   // props.name='小明'
+//   console.log(props);
+//   // return <div>子组件,{props.name} jsx:  {props.child}</div>
+//   // 父传子　特殊的props.children属性，可以接收父组件的所有子元素。
+//   return <div>子组件,{props.children}</div>
+// }
+
+// function App() {
+//   const name = "父组件";
+//   return (
+//     <div className="App">
+//       {/* <Son name={name}
+//       age={20}
+//       isTrue={false}
+//       list={['Vue','React']}
+//       obj={{name:'小明',age:18}}
+//       cd={()=>console.log('点击了子组件的按钮')}
+//       child={<span>this is span</span>}
+//       /> */}
+//       <Son>
+//         <span>this is span</span>
+//       </Son>
+//     </div>
+//   );
+// }
+
+// 组件通信 子传父
+// function Son({onGetSonMsg}) {
+//   const sonMag = 'this is msg'
+//   return (
+//     <div>
+//       this is Son
+//       <button onClick={() => onGetSonMsg(sonMag)}>sendMsg</button>
+//     </div>)
+// }
+// function App() {
+//   const [msg, setMsg] = useState('')
+//   const getMsg = (msg) => {
+//     console.log(msg)
+//     setMsg(msg)
+//   }
+//   return (
+//     <div>
+//       this is App,{msg}
+//       <Son onGetSonMsg={getMsg} />
+//     </div>
+//   )
+// }
+
+
+function App() {
+  return (
+    <div className="App">
+
+    </div>
+  );
+}
 
 export default App;
 // 用lodash库实现评论列表的排序功能，并实现删除评论功能。
