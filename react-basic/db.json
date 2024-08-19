@@ -1,0 +1,114 @@
+{
+  "list": [
+    {
+      "rpid": 10,
+      "user": {
+        "uid": "87456321",
+        "avatar": "http://toutiao.itheima.net/resources/images/10.jpg",
+        "uname": "张三"
+      },
+      "content": "这个地方风景不错。",
+      "ctime": "09-15 10:00",
+      "like": 75
+    },
+    {
+      "rpid": 9,
+      "user": {
+        "uid": "74521896",
+        "avatar": "http://toutiao.itheima.net/resources/images/9.jpg",
+        "uname": "李四"
+      },
+      "content": "今天的天气很好。",
+      "ctime": "09-14 09:30",
+      "like": 92
+    },
+    {
+      "rpid": 8,
+      "user": {
+        "uid": "63214758",
+        "avatar": "http://toutiao.itheima.net/resources/images/8.jpg",
+        "uname": "王五"
+      },
+      "content": "美味的早餐，推荐大家试试。",
+      "ctime": "09-13 08:45",
+      "like": 120
+    },
+    {
+      "rpid": 7,
+      "user": {
+        "uid": "52148963",
+        "avatar": "http://toutiao.itheima.net/resources/images/7.jpg",
+        "uname": "赵六"
+      },
+      "content": "今天运动量真大，累死了。",
+      "ctime": "09-12 18:20",
+      "like": 63
+    },
+    {
+      "rpid": 6,
+      "user": {
+        "uid": "45879632",
+        "avatar": "http://toutiao.itheima.net/resources/images/6.jpg",
+        "uname": "孙七"
+      },
+      "content": "图书馆的环境很好，很安静。",
+      "ctime": "09-11 15:35",
+      "like": 110
+    },
+    {
+      "rpid": 5,
+      "user": {
+        "uid": "36985214",
+        "avatar": "http://toutiao.itheima.net/resources/images/5.jpg",
+        "uname": "周八"
+      },
+      "content": "刚刚看了一场好电影。",
+      "ctime": "09-10 21:10",
+      "like": 98
+    },
+    {
+      "rpid": 4,
+      "user": {
+        "uid": "25896314",
+        "avatar": "http://toutiao.itheima.net/resources/images/4.jpg",
+        "uname": "吴九"
+      },
+      "content": "这家餐厅的菜真好吃。",
+      "ctime": "09-09 12:25",
+      "like": 140
+    },
+    {
+      "rpid": 3,
+      "user": {
+        "uid": "13258165",
+        "avatar": "http://toutiao.itheima.net/resources/images/3.jpg",
+        "uname": "周杰伦"
+      },
+      "content": "哎呦，不错哦",
+      "ctime": "10-18 08:15",
+      "like": 126
+    },
+    {
+      "rpid": 2,
+      "user": {
+        "uid": "36080105",
+        "avatar": "http://toutiao.itheima.net/resources/images/2.jpg",
+        "uname": "许嵩"
+      },
+      "content": "我寻你千百度 日出到迟暮",
+      "ctime": "11-13 11:29",
+      "like": 88
+    },
+    {
+      "rpid": 1,
+      "user": {
+        "uid": "30009257",
+        "avatar": "http://toutiao.itheima.net/resources/images/1.jpg",
+        "uname": "林俊杰"
+      },
+      "content": "如果我变成回忆 退出了这场生命",
+      "ctime": "11-11 11:29",
+      "like": 66
+    }
+  ]
+}

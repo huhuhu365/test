@@ -446,7 +446,7 @@ import classNames from 'classnames'
 
 function App() {
   return (
-    <div className="App">
+    <div >
 
     </div>
   );
