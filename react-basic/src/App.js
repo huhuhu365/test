@@ -200,48 +200,79 @@ import { v4 as uuidv4 } from 'uuid';
 import dayjs from 'dayjs';
 import axios from 'axios';
 
-const initialComments = [
-  {
-    id: 1,
-    username: "jack",
-    content: "这是一条评论回复",
-    date: "2023-11-11",
-    likes: 100,
-    isOwner: true,
-  },
-  {
-    id: 2,
-    username: "mary",
-    content: "这是另一条评论回复",
-    date: "2023-11-12",
-    likes: 50,
-    isOwner: false,
-  },
-  {
-    id: 3,
-    username: "mary",
-    content: "这是另一条评论回复",
-    date: "2023-12-12",
-    likes: 50,
-    isOwner: false,
-  },
-];
+// const initialComments = [
+//   {
+//     id: 1,
+//     username: "jack",
+//     content: "这是一条评论回复",
+//     date: "2023-11-11",
+//     likes: 100,
+//     isOwner: true,
+//   },
+//   {
+//     id: 2,
+//     username: "mary",
+//     content: "这是另一条评论回复",
+//     date: "2023-11-12",
+//     likes: 50,
+//     isOwner: false,
+//   },
+//   {
+//     id: 3,
+//     username: "mary",
+//     content: "这是另一条评论回复",
+//     date: "2023-12-12",
+//     likes: 50,
+//     isOwner: false,
+//   },
+// ];
 
-function App() {
+// 分装请求数据的Hook
+function useGetList() {
   // const [comments, setComments] = useState(_.orderBy(initialComments, "date", "desc"));
-  // 在242已经给他排序了所以不需要用到上面的lodash库了。
+  // 在#301已经给他排序了所以不需要用到上面的lodash库了。
   // 这个的数据是写死的
   // const [comments, setComments] = useState(initialComments);
   const [comments, setComments] = useState([])
-
+  //useEffect用来处理异步请求
   useEffect(() => {
-    async function getList(){
+    async function getList() {
       const res = await axios.get('http://localhost:3004/list')
       setComments(res.data)
     }
-    getList()},[])
+    getList()
+  }, [])
   const [newComment, setNewComment] = useState("");
   const [sortType, setSortType] = useState("latest");
+  return { comments, newComment, sortType, setComments,setNewComment, setSortType }
+}
+
+// 封装ITEM组件
+function Item({comment, onDelete}) {
+  return (
+    <div style={{ padding: "10px 0", borderBottom: "1px solid #eee" }}>
+            <div>
+              <strong>{comment.username}</strong>
+            </div>
+            <div style={{ margin: "5px 0" }}>{comment.content}</div>
+            <div style={{ fontSize: "12px", color: "#999" }}>
+              <span>{comment.date}</span> | <span>点赞数: {comment.likes}</span>
+              {comment.isOwner && (
+                <button
+                onClick={() => onDelete(comment.id)}
+                  style={{ marginLeft: "10px", color: "#ff4d4f", backgroundColor: "transparent", border: "none", cursor: "pointer" }}
+                >
+                  删除
+                </button>
+              )}
+            </div>
+          </div>
+  )
+}
+
+function App() {
+  // 调用分装请求数据的Hook
+  const { comments, newComment, sortType,setComments, setNewComment, setSortType } = useGetList();
 
   // 处理删除评论
   const handleDelete = (id) => {
@@ -266,7 +297,7 @@ function App() {
 
     // 两种方法都可以，下面这种更简洁
     if (newComment.trim() === "") return;
-    setComments([...comments, {
+    const newCommentObject = {
       // id: comments.length + 1, // 简单生成新ID
       id: uuidv4(), // 简单生成新ID
       username: "你的用户名", // 假设当前用户是你
@@ -275,13 +306,19 @@ function App() {
       date: dayjs().format('MM-DD hh:mm:ss'), // 当前日期
       likes: 0, // 新评论初始点赞数
       isOwner: true, // 你是评论的拥有者
-    }])
+    };
+
+    setComments([...comments, newCommentObject]);
+
+    // 显示新添加的评论
+    const updatedComments = [...comments, newCommentObject];
+    console.log("新添加后的 comments 列表:", updatedComments);
+
     setNewComment(""); // 清空输入框
     // 重新聚焦到输入框
     inputRef.current.focus();
   };
 
-  // 按照选中的排序方式排序评论
   const sortedComments = [...comments].sort((a, b) => {
     if (sortType === "latest") {
       return new Date(b.date) - new Date(a.date);
@@ -345,24 +382,9 @@ function App() {
 
       </div>
       <div>
+        {/* 评论列表 */}
         {sortedComments.map((comment) => (
-          <div key={comment.id} style={{ padding: "10px 0", borderBottom: "1px solid #eee" }}>
-            <div>
-              <strong>{comment.username}</strong>
-            </div>
-            <div style={{ margin: "5px 0" }}>{comment.content}</div>
-            <div style={{ fontSize: "12px", color: "#999" }}>
-              <span>{comment.date}</span> | <span>点赞数: {comment.likes}</span>
-              {comment.isOwner && (
-                <button
-                  onClick={() => handleDelete(comment.id)}
-                  style={{ marginLeft: "10px", color: "#ff4d4f", backgroundColor: "transparent", border: "none", cursor: "pointer" }}
-                >
-                  删除
-                </button>
-              )}
-            </div>
-          </div>
+          <Item comment={comment} key={comment.id} onDelete={handleDelete} />
         ))}
       </div>
     </div>
