@@ -3,27 +3,27 @@
     <section class="page-header">
       <div>
         <p class="eyebrow">Student Admin</p>
-        <h1>学生管理系统</h1>
-        <p class="subtitle">集中维护学生姓名、年龄、手机号和班级信息，数据会自动保存在当前浏览器。</p>
+        <h1>学生管理システム</h1>
+        <p class="subtitle">Spring Boot と MySQL のデータを利用し、登録・編集・削除をデータベースへ同期します。</p>
       </div>
-      <el-button type="primary" size="large" @click="openCreateDialog">新增学生</el-button>
+      <el-button type="primary" size="large" @click="openCreateDialog">学生を追加</el-button>
     </section>
 
-    <section class="stats-grid" aria-label="学生统计">
+    <section class="stats-grid" aria-label="学生統計">
       <div class="stat-card">
-        <span>学生总数</span>
+        <span>学生数</span>
         <strong>{{ students.length }}</strong>
       </div>
       <div class="stat-card">
-        <span>平均年龄</span>
+        <span>平均年齢</span>
         <strong>{{ averageAge || '-' }}</strong>
       </div>
       <div class="stat-card">
-        <span>班级数量</span>
+        <span>クラス数</span>
         <strong>{{ classCount }}</strong>
       </div>
       <div class="stat-card">
-        <span>当前结果</span>
+        <span>表示件数</span>
         <strong>{{ filteredStudents.length }}</strong>
       </div>
     </section>
@@ -33,69 +33,80 @@
         v-model="keyword"
         class="search-input"
         clearable
-        placeholder="搜索姓名、手机号或班级"
+        placeholder="氏名・電話番号・クラスで検索"
       />
-      <el-select v-model="classFilter" class="class-filter" placeholder="全部班级">
-        <el-option label="全部班级" value="" />
+      <el-select v-model="classFilter" class="class-filter" placeholder="すべてのクラス">
+        <el-option label="すべてのクラス" value="" />
         <el-option v-for="className in classOptions" :key="className" :label="className" :value="className" />
       </el-select>
-      <el-button @click="resetFilters">重置筛选</el-button>
+      <el-button @click="resetFilters">条件をクリア</el-button>
+      <el-button :loading="loading" @click="loadStudents">再読み込み</el-button>
     </section>
 
+    <el-alert
+      v-if="errorMessage"
+      class="error-alert"
+      :title="errorMessage"
+      type="error"
+      show-icon
+      :closable="false"
+    />
+
     <el-table
+      v-loading="loading"
       :data="filteredStudents"
       class="student-table"
       border
       stripe
-      empty-text="暂无学生数据"
+      empty-text="学生データがありません"
     >
       <el-table-column type="index" label="#" width="64" />
-      <el-table-column prop="name" label="姓名" min-width="120" sortable />
-      <el-table-column prop="age" label="年龄" width="100" sortable />
-      <el-table-column prop="phone" label="手机号" min-width="150" />
-      <el-table-column prop="className" label="班级" min-width="130" sortable />
-      <el-table-column prop="createdAt" label="录入时间" min-width="170" sortable>
+      <el-table-column prop="name" label="氏名" min-width="120" sortable />
+      <el-table-column prop="age" label="年齢" width="100" sortable />
+      <el-table-column prop="phone" label="電話番号" min-width="150" />
+      <el-table-column prop="className" label="クラス" min-width="130" sortable />
+      <el-table-column prop="createdAt" label="登録日時" min-width="170" sortable>
         <template #default="{ row }">
           {{ formatDate(row.createdAt) }}
         </template>
       </el-table-column>
       <el-table-column label="操作" width="160" fixed="right">
         <template #default="{ row }">
-          <el-button type="primary" size="small" plain @click="openEditDialog(row)">编辑</el-button>
-          <el-button type="danger" size="small" plain @click="removeStudent(row.id)">删除</el-button>
+          <el-button type="primary" size="small" plain @click="openEditDialog(row)">編集</el-button>
+          <el-button type="danger" size="small" plain @click="removeStudent(row.id)">削除</el-button>
         </template>
       </el-table-column>
     </el-table>
 
     <el-dialog v-model="dialogVisible" :title="dialogTitle" width="520px">
-      <el-form ref="formRef" :model="form" :rules="rules" label-width="86px">
-        <el-form-item label="姓名" prop="name">
-          <el-input v-model.trim="form.name" maxlength="20" show-word-limit placeholder="请输入姓名" />
+      <el-form ref="formRef" :model="form" :rules="rules" label-width="96px">
+        <el-form-item label="氏名" prop="name">
+          <el-input v-model.trim="form.name" maxlength="20" show-word-limit placeholder="氏名を入力してください" />
         </el-form-item>
-        <el-form-item label="年龄" prop="age">
+        <el-form-item label="年齢" prop="age">
           <el-input-number v-model="form.age" :min="6" :max="80" controls-position="right" />
         </el-form-item>
-        <el-form-item label="手机号" prop="phone">
-          <el-input v-model.trim="form.phone" maxlength="11" placeholder="请输入 11 位手机号" />
+        <el-form-item label="電話番号" prop="phone">
+          <el-input v-model.trim="form.phone" maxlength="11" placeholder="11桁の電話番号を入力してください" />
         </el-form-item>
-        <el-form-item label="班级" prop="className">
-          <el-input v-model.trim="form.className" maxlength="20" placeholder="例如：三年级一班" />
+        <el-form-item label="クラス" prop="className">
+          <el-input v-model.trim="form.className" maxlength="20" placeholder="例：1年A組" />
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="submitStudent">保存</el-button>
+        <el-button @click="dialogVisible = false">キャンセル</el-button>
+        <el-button type="primary" :loading="saving" @click="submitStudent">保存</el-button>
       </template>
     </el-dialog>
   </main>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from 'element-plus'
 
 interface Student {
-  id: string
+  id: number
   name: string
   age: number
   phone: string
@@ -105,13 +116,16 @@ interface Student {
 
 type StudentForm = Omit<Student, 'id' | 'createdAt'>
 
-const STORAGE_KEY = 'students'
+const API_URL = 'http://localhost:8080/api/students'
 
 const students = ref<Student[]>([])
 const keyword = ref('')
 const classFilter = ref('')
 const dialogVisible = ref(false)
-const editingId = ref<string | null>(null)
+const editingId = ref<number | null>(null)
+const loading = ref(false)
+const saving = ref(false)
+const errorMessage = ref('')
 const formRef = ref<FormInstance>()
 
 const form = reactive<StudentForm>({
@@ -122,16 +136,16 @@ const form = reactive<StudentForm>({
 })
 
 const rules: FormRules<StudentForm> = {
-  name: [{ required: true, message: '请输入姓名', trigger: 'blur' }],
-  age: [{ required: true, message: '请输入年龄', trigger: 'change' }],
+  name: [{ required: true, message: '氏名を入力してください', trigger: 'blur' }],
+  age: [{ required: true, message: '年齢を入力してください', trigger: 'change' }],
   phone: [
-    { required: true, message: '请输入手机号', trigger: 'blur' },
-    { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的 11 位手机号', trigger: 'blur' }
+    { required: true, message: '電話番号を入力してください', trigger: 'blur' },
+    { pattern: /^1[3-9]\d{9}$/, message: '正しい11桁の電話番号を入力してください', trigger: 'blur' }
   ],
-  className: [{ required: true, message: '请输入班级', trigger: 'blur' }]
+  className: [{ required: true, message: 'クラスを入力してください', trigger: 'blur' }]
 }
 
-const dialogTitle = computed(() => (editingId.value ? '编辑学生' : '新增学生'))
+const dialogTitle = computed(() => (editingId.value ? '学生情報を編集' : '学生を追加'))
 
 const classOptions = computed(() => {
   return [...new Set(students.value.map((student) => student.className).filter(Boolean))].sort()
@@ -164,41 +178,40 @@ onMounted(() => {
   loadStudents()
 })
 
-watch(
-  students,
-  () => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(students.value))
-  },
-  { deep: true }
-)
+const request = async <T>(url: string, options: RequestInit = {}): Promise<T> => {
+  const response = await fetch(url, {
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers
+    },
+    ...options
+  })
 
-const loadStudents = () => {
-  try {
-    const rawData = localStorage.getItem(STORAGE_KEY)
-    students.value = rawData ? normalizeStudents(JSON.parse(rawData)) : []
-  } catch {
-    students.value = []
-    localStorage.removeItem(STORAGE_KEY)
-    ElMessage.warning('本地学生数据异常，已自动清空')
+  if (!response.ok) {
+    throw new Error(`リクエストに失敗しました：${response.status}`)
   }
+
+  const text = await response.text()
+
+  if (!text) {
+    return undefined as T
+  }
+
+  return JSON.parse(text) as T
 }
 
-const normalizeStudents = (data: unknown): Student[] => {
-  if (!Array.isArray(data)) return []
+const loadStudents = async () => {
+  loading.value = true
+  errorMessage.value = ''
 
-  return data
-    .filter((item) => item && typeof item === 'object')
-    .map((item) => {
-      const student = item as Partial<Student>
-      return {
-        id: student.id || crypto.randomUUID(),
-        name: student.name || '',
-        age: Number(student.age) || 18,
-        phone: student.phone || '',
-        className: student.className || '未分班',
-        createdAt: student.createdAt || new Date().toISOString()
-      }
-    })
+  try {
+    students.value = await request<Student[]>(API_URL)
+  } catch {
+    errorMessage.value = 'Spring Boot API に接続できません。バックエンドの起動と MySQL 接続を確認してください。'
+    ElMessage.error(errorMessage.value)
+  } finally {
+    loading.value = false
+  }
 }
 
 const openCreateDialog = () => {
@@ -222,44 +235,51 @@ const submitStudent = async () => {
   if (!formRef.value) return
 
   await formRef.value.validate()
+  saving.value = true
 
-  if (editingId.value) {
-    const index = students.value.findIndex((student) => student.id === editingId.value)
-    if (index !== -1) {
-      const currentStudent = students.value[index]
-      if (!currentStudent) return
+  try {
+    const payload = JSON.stringify(form)
 
-      students.value[index] = {
-        id: currentStudent.id,
-        createdAt: currentStudent.createdAt,
-        name: form.name,
-        age: form.age,
-        phone: form.phone,
-        className: form.className
-      }
-      ElMessage.success('学生信息已更新')
+    if (editingId.value) {
+      const updatedStudent = await request<Student>(`${API_URL}/${editingId.value}`, {
+        method: 'PUT',
+        body: payload
+      })
+      students.value = students.value.map((student) => (student.id === updatedStudent.id ? updatedStudent : student))
+      ElMessage.success('学生情報を更新しました')
+    } else {
+      const createdStudent = await request<Student>(API_URL, {
+        method: 'POST',
+        body: payload
+      })
+      students.value.unshift(createdStudent)
+      ElMessage.success('学生を登録しました')
     }
-  } else {
-    students.value.unshift({
-      id: crypto.randomUUID(),
-      ...form,
-      createdAt: new Date().toISOString()
-    })
-    ElMessage.success('学生已添加')
-  }
 
-  dialogVisible.value = false
+    dialogVisible.value = false
+  } catch {
+    ElMessage.error('保存に失敗しました。API またはデータベース接続を確認してください。')
+  } finally {
+    saving.value = false
+  }
 }
 
-const removeStudent = async (id: string) => {
-  await ElMessageBox.confirm('删除后无法恢复，确定要删除这名学生吗？', '确认删除', {
-    type: 'warning',
-    confirmButtonText: '删除',
-    cancelButtonText: '取消'
-  })
+const removeStudent = async (id: number) => {
+  try {
+    await ElMessageBox.confirm('削除すると元に戻せません。この学生を削除しますか？', '削除確認', {
+      type: 'warning',
+      confirmButtonText: '削除',
+      cancelButtonText: 'キャンセル'
+    })
 
-  students.value = students.value.filter((student) => student.id !== id)
-  ElMessage.success('学生已删除')
+    await request<void>(`${API_URL}/${id}`, { method: 'DELETE' })
+    students.value = students.value.filter((student) => student.id !== id)
+    ElMessage.success('学生を削除しました')
+  } catch (error) {
+    if (error !== 'cancel') {
+      ElMessage.error('削除に失敗しました。API またはデータベース接続を確認してください。')
+    }
+  }
 }
 
 const resetFilters = () => {
@@ -278,7 +298,9 @@ const resetForm = () => {
 }
 
 const formatDate = (date: string) => {
-  return new Intl.DateTimeFormat('zh-CN', {
+  if (!date) return '-'
+
+  return new Intl.DateTimeFormat('ja-JP', {
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',
@@ -363,6 +385,10 @@ h1 {
   border: 1px solid #e2e8f0;
   border-radius: 8px;
   background: #ffffff;
+}
+
+.error-alert {
+  margin-bottom: 16px;
 }
 
 .search-input {
