@@ -83,6 +83,19 @@ Vue の登録・編集フォームでは `/api/master-data` から取得した `
 
 詳しい表構成と練習 SQL は [DATABASE_PRACTICE.md](./DATABASE_PRACTICE.md) を確認してください。
 
+## 住所検索（OpenStreetMap 無料 API）
+
+「近くのグルメ・遊び案内」画面では、OpenStreetMap の無料 API（Nominatim + Overpass API）を使って駅周辺のレストラン・観光スポットを検索します。
+
+- **Geocoding**: [Nominatim](https://nominatim.openstreetmap.org/)（住所→座標）
+- **POI 検索**: [Overpass API](https://overpass-api.de/)（周辺施設検索）
+
+API キー不要、完全無料で利用できます。
+
+| Method | Path                        | 内容                                           |
+| ------ | --------------------------- | ---------------------------------------------- |
+| GET    | `/api/places/search`        | OpenStreetMap 経由で周辺スポット検索           |
+
 ## 補足
 
 Spring Boot API が起動していない場合、Vue 画面はデモデータを表示します。API を起動すると H2 データベース上のデータに切り替わります。

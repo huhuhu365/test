@@ -125,7 +125,8 @@
                     <Utensils :size="20" aria-hidden="true" />
                     <div>
                         <span>表示候補</span>
-                        <strong>{{ filteredGuideSpots.length }} 件</strong>
+                        <strong v-if="isSearchingPlaces">検索中...</strong>
+                        <strong v-else>{{ filteredGuideSpots.length }} 件</strong>
                     </div>
                 </article>
                 <article>
@@ -904,6 +905,7 @@ import {
 
 const apiUrl = "/api/vehicles";
 const masterDataUrl = "/api/master-data";
+const placesApiUrl = "/api/places/search";
 const fallbackStatusOptions = ["available", "reserved", "sold", "maintenance"];
 const currentPath = ref(window.location.pathname);
 const guideAddress = ref("東京都渋谷区");
@@ -912,6 +914,8 @@ const guideCategory = ref("all");
 const guideHistory = ref([]);
 const favoriteSpotIds = ref([]);
 const savedVehicleColors = ref({});
+const apiGuideData = ref(null);
+const isSearchingPlaces = ref(false);
 
 const guideCategoryOptions = [
     { value: "all", label: "すべて" },
@@ -1232,6 +1236,48 @@ const createGenericStationGuide = (stationName) => ({
             walk: "駅から徒歩10分圏内",
             budget: "3,000円から",
         },
+        {
+            name: "駅前の回転寿司",
+            description: "おひとり様でも入りやすい回転寿司でサクッと食事。",
+            walk: "駅から徒歩5分圏内",
+            budget: "1,500円から",
+        },
+        {
+            name: "地元の定食屋",
+            description: "ボリューム満点の日替わり定食が人気の食堂。",
+            walk: "駅から徒歩8分圏内",
+            budget: "1,000円から",
+        },
+        {
+            name: "ラーメン専門店",
+            description: "地元で評判のスープからこだわったラーメン店。",
+            walk: "駅から徒歩7分圏内",
+            budget: "1,200円から",
+        },
+        {
+            name: "惣菜・テイクアウト店",
+            description: "電車の中で食べられるおにぎりやサンドイッチの店。",
+            walk: "駅構内または徒歩3分",
+            budget: "600円から",
+        },
+        {
+            name: "うどん・そば処",
+            description: "立ち食いから座ってゆっくりまで選べる麺類の店。",
+            walk: "駅から徒歩6分圏内",
+            budget: "800円から",
+        },
+        {
+            name: "焼き鳥・串焼き店",
+            description: "夕方から楽しめるリーズナブルな焼き鳥店。",
+            walk: "駅から徒歩10分圏内",
+            budget: "2,500円から",
+        },
+        {
+            name: "ファストフード",
+            description: "時間がない時に安心の全国チェーン店。",
+            walk: "駅前すぐ",
+            budget: "800円から",
+        },
     ],
     fun: [
         {
@@ -1253,6 +1299,48 @@ const createGenericStationGuide = (stationName) => ({
                 "初めての駅なら観光案内所や地域の展示施設を確認すると動きやすいです。",
             walk: "徒歩20分圏内",
             bestTime: "昼",
+        },
+        {
+            name: "駅前の図書館",
+            description: "静かに時間を過ごしたい時におすすめの公共施設。",
+            walk: "徒歩10分圏内",
+            bestTime: "昼",
+        },
+        {
+            name: "地域の歴史跡",
+            description: "駅周辺の史跡や記念碑を巡るミニ散策。",
+            walk: "徒歩15分圏内",
+            bestTime: "午前",
+        },
+        {
+            name: "地元の商店街",
+            description: "個性豊かな店が並ぶ地域密着型の商店街。",
+            walk: "徒歩8分圏内",
+            bestTime: "昼から夕方",
+        },
+        {
+            name: "サイクリング散策",
+            description: "レンタル自転車で周辺を効率よく観光。",
+            walk: "駅前のレンタサイクル",
+            bestTime: "午前",
+        },
+        {
+            name: "コワーキングスペース",
+            description: "ちょっとした作業や休憩に使える駅近のワークスペース。",
+            walk: "徒歩5分圏内",
+            bestTime: "いつでも",
+        },
+        {
+            name: "薬局・ドラッグストア",
+            description: "旅行中の急な買い物にも便利な駅前の薬局。",
+            walk: "徒歩3分圏内",
+            bestTime: "いつでも",
+        },
+        {
+            name: "地域の銭湯・サウナ",
+            description: "旅の疲れを癒す駅近くの温浴施設。",
+            walk: "徒歩15分圏内",
+            bestTime: "夕方から夜",
         },
     ],
     plan: [
@@ -1309,6 +1397,49 @@ const guideAreas = {
                 walk: "清澄白河駅周辺",
                 budget: "900円から",
             },
+            {
+                name: "亀戸餃子専門店",
+                description: "パリッと焼けた餃子が名物の大衆的な中華料理店。",
+                walk: "亀戸駅から徒歩3分",
+                budget: "800円から",
+            },
+            {
+                name: "東陽町のイタリアン",
+                description:
+                    "ビジネス街のランチに使えるパスタ・ピッツァの店。",
+                walk: "東陽町駅から徒歩5分",
+                budget: "1,200円から",
+            },
+            {
+                name: "木場の自家製麺ラーメン",
+                description: "魚介系スープが自慢の地元で人気のラーメン店。",
+                walk: "木場駅から徒歩7分",
+                budget: "1,000円から",
+            },
+            {
+                name: "住吉のそば処",
+                description: "落ち着いた雰囲気で天ぷらそばが楽しめる老舗。",
+                walk: "住吉駅から徒歩5分",
+                budget: "1,200円から",
+            },
+            {
+                name: "大島の焼肉店",
+                description: "リーズナブルな価格で本格焼肉を楽しめる人気店。",
+                walk: "大島駅から徒歩8分",
+                budget: "3,000円から",
+            },
+            {
+                name: "越中島の海鮮居酒屋",
+                description: "新鮮な刺身と日本酒が揃う夜におすすめの居酒屋。",
+                walk: "越中島駅から徒歩6分",
+                budget: "3,500円から",
+            },
+            {
+                name: "辰巳のベーカリーカフェ",
+                description: "手作りパンとスイーツが楽しめるモーニングにも便利な店。",
+                walk: "辰巳駅から徒歩10分",
+                budget: "700円から",
+            },
         ],
         fun: [
             {
@@ -1331,6 +1462,54 @@ const guideAreas = {
                     "買い物、温浴、イベント、海沿い散歩まで組み合わせやすいエリア。",
                 walk: "有明駅周辺",
                 bestTime: "午後から夜",
+            },
+            {
+                name: "亀戸天神社",
+                description: "藤の花と梅の名所として知られる歴史ある神社。",
+                walk: "亀戸駅から徒歩15分",
+                bestTime: "春",
+            },
+            {
+                name: "東京都現代美術館",
+                description:
+                    "現代アートの企画展を楽しめるおしゃれな美術館。",
+                walk: "清澄白河駅から徒歩10分",
+                bestTime: "昼",
+            },
+            {
+                name: "木場公園",
+                description:
+                    "広い芝生と散策路があり、週末のピクニックに最適。",
+                walk: "木場駅から徒歩12分",
+                bestTime: "午前から夕方",
+            },
+            {
+                name: "夢の島公園",
+                description:
+                    "バーベキュー施設や野球場などアウトドアを楽しめる公園。",
+                walk: "新木場駅から徒歩15分",
+                bestTime: "昼",
+            },
+            {
+                name: "東京ビッグサイト",
+                description:
+                    "展示会やイベントが開催される国際展示場。",
+                walk: "有明駅から徒歩5分",
+                bestTime: "イベント開催時",
+            },
+            {
+                name: "深川ギャラリー散策",
+                description:
+                    "門前仲町周辺の小さな美術館や工芸ギャラリーを巡るコース。",
+                walk: "門前仲町駅周辺",
+                bestTime: "午後",
+            },
+            {
+                name: "潮風公園",
+                description:
+                    "お台場海沿いの散歩道。夜景も美しくデートにもおすすめ。",
+                walk: "東京テレポート駅から徒歩8分",
+                bestTime: "夕方から夜",
             },
         ],
         plan: [
@@ -1375,6 +1554,54 @@ const guideAreas = {
                 walk: "徒歩12分目安",
                 budget: "2,000円から",
             },
+            {
+                name: "東京駅弁当・駅ナカグルメ",
+                description:
+                    "構内の駅弁販売やベーカリーで手軽に食事を調達できます。",
+                walk: "駅構内",
+                budget: "1,000円から",
+            },
+            {
+                name: "八重洲地下街の定食",
+                description:
+                    "八重洲側の地下街にはリーズナブルな定食屋が充実。",
+                walk: "八重洲口から徒歩3分",
+                budget: "1,200円から",
+            },
+            {
+                name: "丸の内のイタリアンバル",
+                description:
+                    "仕事帰りに立ち寄りやすい気軽なイタリアンが増えています。",
+                walk: "丸の内口から徒歩6分",
+                budget: "2,500円から",
+            },
+            {
+                name: "日本橋の天ぷら専門店",
+                description: "老舗の天ぷらを手頃な価格で楽しめる人気店。",
+                walk: "徒歩15分目安",
+                budget: "2,000円から",
+            },
+            {
+                name: "大手町のカレー店",
+                description:
+                    "サラリーマンに愛されるスパイシーなカレーの名店。",
+                walk: "大手町駅直結",
+                budget: "1,100円から",
+            },
+            {
+                name: "東京駅フレンチトースト",
+                description:
+                    "甘いものが欲しい時に駅ナカのカフェで人気のスイーツ。",
+                walk: "駅構内",
+                budget: "900円から",
+            },
+            {
+                name: "有楽町の焼き鳥屋",
+                description:
+                    "少し歩けば有楽町のガード下で焼き鳥を楽しめます。",
+                walk: "徒歩10分目安",
+                budget: "2,500円から",
+            },
         ],
         [
             {
@@ -1395,6 +1622,55 @@ const guideAreas = {
                 description: "写真を撮りやすい代表的なスポット。",
                 walk: "丸の内口すぐ",
                 bestTime: "夕方",
+            },
+            {
+                name: "日本橋三越本店",
+                description:
+                    "老舗デパートで買い物や美術展を楽しめる文化的施設。",
+                walk: "徒歩10分目安",
+                bestTime: "昼",
+            },
+            {
+                name: "丸の内オアゾ",
+                description:
+                    "オフィス・ショップ・レストランが入居する複合施設。",
+                walk: "徒歩5分目安",
+                bestTime: "いつでも",
+            },
+            {
+                name: "東京国際フォーラム",
+                description:
+                    "ガラス張りの美しい建築とイベントスペースが見どころ。",
+                walk: "徒歩7分目安",
+                bestTime: "イベント時",
+            },
+            {
+                name: "八重洲ブックセンター",
+                description:
+                    "大型書店で専門書から文庫まで幅広く揃う。",
+                walk: "八重洲口から徒歩4分",
+                bestTime: "午後",
+            },
+            {
+                name: "日本橋の散策コース",
+                description:
+                    "日本橋のたもとから銀座方面への街歩きが楽しいエリア。",
+                walk: "徒歩15分目安",
+                bestTime: "午前",
+            },
+            {
+                name: "丸の内仲通り",
+                description:
+                    "季節ごとにイルミネーションが楽しめるおしゃれな通り。",
+                walk: "徒歩5分目安",
+                bestTime: "夕方から夜",
+            },
+            {
+                name: "東京駅一番街",
+                description:
+                    "キャラクターショップやお土産店が集まる駅ナカの人気スポット。",
+                walk: "駅構内",
+                bestTime: "いつでも",
             },
         ],
         [
@@ -1439,6 +1715,55 @@ const guideAreas = {
                 walk: "東口から徒歩8分",
                 budget: "1,000円から",
             },
+            {
+                name: "新宿南口の壽司店",
+                description:
+                    "回転寿司から本格的な江戸前寿司まで選択肢が多いエリア。",
+                walk: "南口から徒歩6分",
+                budget: "1,500円から",
+            },
+            {
+                name: "新宿中村屋カレー",
+                description:
+                    "老舗洋食店の本格カレーがリーズナブルに楽しめる。",
+                walk: "東口から徒歩7分",
+                budget: "1,300円から",
+            },
+            {
+                name: "西新宿の焼肉店",
+                description:
+                    "高層ビル街に隠れたコスパの良い焼肉の名店。",
+                walk: "西口から徒歩10分",
+                budget: "3,000円から",
+            },
+            {
+                name: "新宿二丁目の居酒屋",
+                description:
+                    "個性的な居酒屋が集まり、夜の食事にぴったり。",
+                walk: "徒歩12分目安",
+                budget: "3,000円から",
+            },
+            {
+                name: "代々木の蕎麦店",
+                description:
+                    "昼時にはサラリーマンで賑わう本格手打ちそばの店。",
+                walk: "徒歩15分目安",
+                budget: "1,200円から",
+            },
+            {
+                name: "新宿駅東口のお好み焼き",
+                description:
+                    "自分で焼くスタイルのお好み焼き・もんじゃ店。",
+                walk: "東口から徒歩5分",
+                budget: "1,800円から",
+            },
+            {
+                name: "新宿パンケーキ",
+                description:
+                    "若者に人気のふわふわパンケーキ専門カフェ。",
+                walk: "徒歩10分目安",
+                budget: "1,400円から",
+            },
         ],
         [
             {
@@ -1458,6 +1783,55 @@ const guideAreas = {
                 description: "買い物やカフェ利用に便利な駅近施設。",
                 walk: "駅直結",
                 bestTime: "いつでも",
+            },
+            {
+                name: "ゴールデン街",
+                description:
+                    "個性的な小さなバーが集まる夜の観光スポット。",
+                walk: "徒歩12分目安",
+                bestTime: "夜",
+            },
+            {
+                name: "新宿中央公園",
+                description:
+                    "高層ビルに囲まれた都会のオアシス。散歩に最適。",
+                walk: "西口から徒歩10分",
+                bestTime: "昼",
+            },
+            {
+                name: "思い出横丁",
+                description:
+                    "レトロな雰囲気の飲み屋街。写真撮影にも人気。",
+                walk: "西口から徒歩5分",
+                bestTime: "夕方から夜",
+            },
+            {
+                name: "新宿マルイ・モザイク通り",
+                description:
+                    "買い物とカフェ巡りを楽しめる若者向けエリア。",
+                walk: "東口から徒歩4分",
+                bestTime: "午後",
+            },
+            {
+                name: "花園神社",
+                description:
+                    "新宿のど真ん中にある由緒ある神社。憩いの場。",
+                walk: "東口から徒歩8分",
+                bestTime: "午前",
+            },
+            {
+                name: "歌舞伎町シアターエリア",
+                description:
+                    "映画館やエンタメ施設が集まる夜のエンタメ街。",
+                walk: "東口から徒歩10分",
+                bestTime: "夜",
+            },
+            {
+                name: "新宿バスターミナル周辺",
+                description:
+                    "新しいバスターミナル周辺の散策や写真撮影に。",
+                walk: "南口から徒歩5分",
+                bestTime: "昼",
             },
         ],
         [
@@ -1503,6 +1877,55 @@ const guideAreas = {
                 walk: "駅直結",
                 budget: "800円から",
             },
+            {
+                name: "池袋餃子スタジアム",
+                description:
+                    "全国の餃子を食べ比べできるフードコート。",
+                walk: "東口から徒歩8分",
+                budget: "1,000円から",
+            },
+            {
+                name: "目白の和食処",
+                description:
+                    "落ち着いた雰囲気の老舗和食店でランチに最適。",
+                walk: "目白駅から徒歩5分",
+                budget: "2,000円から",
+            },
+            {
+                name: "池袋西口の中華料理",
+                description:
+                    "本場の中華料理をリーズナブルに楽しめる大衆店。",
+                walk: "西口から徒歩6分",
+                budget: "1,200円から",
+            },
+            {
+                name: "東池袋のカツカレー",
+                description:
+                    "ボリューム満点のカツカレーが人気の洋食店。",
+                walk: "東池袋駅から徒歩4分",
+                budget: "1,400円から",
+            },
+            {
+                name: "池袋のハンバーグ専門店",
+                description:
+                    "ジューシーなハンバーグが楽しめるファミリー向け店。",
+                walk: "東口から徒歩10分",
+                budget: "1,600円から",
+            },
+            {
+                name: "エチカ池袋の立ち食いそば",
+                description:
+                    "駅構内の立ち食いそばで素早く食事を済ませたい時に。",
+                walk: "駅構内",
+                budget: "500円から",
+            },
+            {
+                name: "池袋のアジアンカフェ",
+                description:
+                    "エスニック料理とおしゃれな雰囲気が楽しめるカフェ。",
+                walk: "東口から徒歩8分",
+                budget: "1,500円から",
+            },
         ],
         [
             {
@@ -1523,6 +1946,55 @@ const guideAreas = {
                 description: "アニメショップや大型書店を回りやすいエリア。",
                 walk: "徒歩8分圏内",
                 bestTime: "午後",
+            },
+            {
+                name: "池袋西口公園",
+                description:
+                    "演劇やイベントが開催される文化の発信地。",
+                walk: "西口から徒歩3分",
+                bestTime: "イベント時",
+            },
+            {
+                name: "鬼子母神",
+                description:
+                    "都心とは思えない静かな境内で心を落ち着かせる場所。",
+                walk: "徒歩20分目安",
+                bestTime: "午前",
+            },
+            {
+                name: "池袋サンシャイン水族館",
+                description:
+                    "都市型水族館でクラゲやペンギンが人気。",
+                walk: "東口から徒歩10分",
+                bestTime: "昼",
+            },
+            {
+                name: "池袋演芸場",
+                description:
+                    "落語や漫才など寄席を楽しめる伝統的な施設。",
+                walk: "西口から徒歩7分",
+                bestTime: "昼から夜",
+            },
+            {
+                name: "目白庭園",
+                description:
+                    "日本庭園を散策できる静かな癒やしスポット。",
+                walk: "目白駅から徒歩8分",
+                bestTime: "午前",
+            },
+            {
+                name: "池袋パルコ",
+                description:
+                    "ファッションや雑貨が揃う若者向け商業施設。",
+                walk: "東口から徒歩5分",
+                bestTime: "午後",
+            },
+            {
+                name: "大塚駅周辺散歩",
+                description:
+                    "少し歩けば昔ながらの街並みを楽しめるエリア。",
+                walk: "徒歩15分目安",
+                bestTime: "夕方",
             },
         ],
         [
@@ -1566,6 +2038,55 @@ const guideAreas = {
                 walk: "徒歩10分目安",
                 budget: "1,000円から",
             },
+            {
+                name: "上野の海鮮丼専門店",
+                description:
+                    "アメ横で人気の海鮮丼をリーズナブルに楽しめる店。",
+                walk: "徒歩6分目安",
+                budget: "1,800円から",
+            },
+            {
+                name: "上野の焼き鳥店",
+                description:
+                    "夕方から営業する地元で人気の焼き鳥屋さん。",
+                walk: "徒歩7分目安",
+                budget: "2,500円から",
+            },
+            {
+                name: "御徒町のカレーうどん",
+                description:
+                    "和風だしの効いたカレーうどんが名物の隠れた名店。",
+                walk: "徒歩12分目安",
+                budget: "1,200円から",
+            },
+            {
+                name: "上野の抹茶スイーツ",
+                description:
+                    "公園散策の後に立ち寄りたい抹茶パフェの人気店。",
+                walk: "徒歩10分目安",
+                budget: "1,200円から",
+            },
+            {
+                name: "鶯谷の串カツ居酒屋",
+                description:
+                    "リーズナブルな串カツが楽しめる大衆酒場。",
+                walk: "徒歩15分目安",
+                budget: "2,000円から",
+            },
+            {
+                name: "上野の中華料理店",
+                description:
+                    "本格的な中華料理をランチセットで楽しめる。",
+                walk: "徒歩5分目安",
+                budget: "1,200円から",
+            },
+            {
+                name: "入谷のとんかつ店",
+                description:
+                    "サクサクの衣が自慢の老舗とんかつ店。",
+                walk: "徒歩18分目安",
+                budget: "1,600円から",
+            },
         ],
         [
             {
@@ -1585,6 +2106,55 @@ const guideAreas = {
                 description: "散歩や写真に向いた池周辺のスポット。",
                 walk: "徒歩10分目安",
                 bestTime: "夕方",
+            },
+            {
+                name: "東京国立博物館",
+                description:
+                    "日本と東洋の美術・歴史を展示する国内最大級の博物館。",
+                walk: "徒歩10分目安",
+                bestTime: "午前",
+            },
+            {
+                name: "上野動物園",
+                description:
+                    "パンダや多くの動物がいる日本最古の動物園。",
+                walk: "徒歩8分目安",
+                bestTime: "午前",
+            },
+            {
+                name: "旧岩崎邸庭園",
+                description:
+                    "洋館と和館が融合した美しい庭園と建築。",
+                walk: "徒歩18分目安",
+                bestTime: "昼",
+            },
+            {
+                name: "アメ横商店街",
+                description:
+                    "多彩な店が並ぶ活気あふれる商店街。食べ歩きもおすすめ。",
+                walk: "徒歩5分目安",
+                bestTime: "昼から夕方",
+            },
+            {
+                name: "上野の森美術館",
+                description:
+                    "現代美術から伝統美術まで幅広い企画展を開催。",
+                walk: "徒歩7分目安",
+                bestTime: "昼",
+            },
+            {
+                name: "寛永寺",
+                description:
+                    "歴史ある寺院で静かな時間を過ごせる隠れスポット。",
+                walk: "徒歩15分目安",
+                bestTime: "午前",
+            },
+            {
+                name: "谷中銀座商店街",
+                description:
+                    "レトロな商店街で買い物や猫スポットとしても人気。",
+                walk: "徒歩20分目安",
+                bestTime: "午後",
             },
         ],
         [
@@ -1620,6 +2190,55 @@ const guideAreas = {
                 walk: "徒歩12分目安",
                 budget: "3,000円から",
             },
+            {
+                name: "秋葉原のメイドカフェ",
+                description:
+                    "秋葉原ならではのユニークなコンセプトカフェ体験。",
+                walk: "徒歩4分目安",
+                budget: "1,500円から",
+            },
+            {
+                name: "岩本町の定食屋",
+                description:
+                    "昔ながらの定食屋でボリューム満点のランチ。",
+                walk: "徒歩8分目安",
+                budget: "900円から",
+            },
+            {
+                name: "秋葉原のラーメン激戦区",
+                description:
+                    "家系・中華そば・つけ麺など様々なジャンルが集結。",
+                walk: "徒歩5分目安",
+                budget: "1,100円から",
+            },
+            {
+                name: "末広町のインドカレー",
+                description:
+                    "本格的なインド・ネパール料理が楽しめるカレー店。",
+                walk: "徒歩7分目安",
+                budget: "1,300円から",
+            },
+            {
+                name: "秋葉原のハンバーガー",
+                description:
+                    "アメリカンスタイルのボリューミーなハンバーガー店。",
+                walk: "徒歩6分目安",
+                budget: "1,500円から",
+            },
+            {
+                name: "湯島の老舗甘味処",
+                description:
+                    "散歩中に立ち寄りたい落ち着いた甘味の名店。",
+                walk: "徒歩12分目安",
+                budget: "1,000円から",
+            },
+            {
+                name: "秋葉原の台湾カフェ",
+                description:
+                    "タピオカドリンクや台湾スイーツが楽しめるカフェ。",
+                walk: "徒歩3分目安",
+                budget: "700円から",
+            },
         ],
         [
             {
@@ -1639,6 +2258,55 @@ const guideAreas = {
                 description: "少し歩いて参拝や写真を楽しめるスポット。",
                 walk: "徒歩12分目安",
                 bestTime: "午前",
+            },
+            {
+                name: "秋葉原ラジオ会館",
+                description:
+                    "フィギュアやホビー用品が揃うアキバのランドマーク。",
+                walk: "徒歩3分目安",
+                bestTime: "午後",
+            },
+            {
+                name: "2k540 AKI-OKA ARTISAN",
+                description:
+                    "高架下のクラフト工芸品マーケット。お土産探しにも。",
+                walk: "徒歩8分目安",
+                bestTime: "昼",
+            },
+            {
+                name: "湯島天満宮",
+                description:
+                    "学問の神様を祀る神社。梅の名所としても有名。",
+                walk: "徒歩15分目安",
+                bestTime: "午前",
+            },
+            {
+                name: "秋葉原UDX",
+                description:
+                    "イベントスペースやショップが入居する複合施設。",
+                walk: "徒歩5分目安",
+                bestTime: "いつでも",
+            },
+            {
+                name: "万世橋",
+                description:
+                    "レトロな煉瓦造りの橋と周辺のカフェがおしゃれ。",
+                walk: "徒歩10分目安",
+                bestTime: "夕方",
+            },
+            {
+                name: "神田古書店街",
+                description:
+                    "古書やアートブックを探すなら神田の古書店エリアへ。",
+                walk: "徒歩15分目安",
+                bestTime: "昼",
+            },
+            {
+                name: "秋葉原のゲームセンター",
+                description:
+                    "クレーンゲームやリズムゲームなど最新のゲームを体験。",
+                walk: "徒歩すぐ",
+                bestTime: "いつでも",
             },
         ],
         [
@@ -1670,6 +2338,55 @@ const guideAreas = {
                 walk: "徒歩8分目安",
                 budget: "1,500円から",
             },
+            {
+                name: "品川の回転寿司",
+                description:
+                    "新鮮なネタがリーズナブルに楽しめる人気の回転寿司。",
+                walk: "徒歩7分目安",
+                budget: "2,000円から",
+            },
+            {
+                name: "高輪の焼鳥店",
+                description:
+                    "落ち着いた雰囲気の高級焼鳥店で特別な夜に。",
+                walk: "徒歩10分目安",
+                budget: "4,000円から",
+            },
+            {
+                name: "品川の天ぷら定食",
+                description:
+                    "サクサクの天ぷらをランチで気軽に楽しめる和食店。",
+                walk: "徒歩6分目安",
+                budget: "1,500円から",
+            },
+            {
+                name: "五反田の中華料理",
+                description:
+                    "少し歩けば五反田の中華街で本格中華を楽しめる。",
+                walk: "徒歩15分目安",
+                budget: "1,200円から",
+            },
+            {
+                name: "品川のパン屋さん",
+                description:
+                    "駅近のベーカリーで焼きたてパンとコーヒーの朝ごはん。",
+                walk: "徒歩3分目安",
+                budget: "600円から",
+            },
+            {
+                name: "大崎のクラフトビール",
+                description:
+                    "クラフトビールとおつまみが楽しめるおしゃれな醸造所。",
+                walk: "徒歩12分目安",
+                budget: "2,500円から",
+            },
+            {
+                name: "品川のしゃぶしゃぶ",
+                description:
+                    "上質な肉を楽しめるしゃぶしゃぶの名店。",
+                walk: "徒歩8分目安",
+                budget: "3,500円から",
+            },
         ],
         [
             {
@@ -1690,6 +2407,55 @@ const guideAreas = {
                 description: "新しい街並みや駅周辺の散歩に向いています。",
                 walk: "徒歩12分目安",
                 bestTime: "午後",
+            },
+            {
+                name: "品川シーサイド",
+                description:
+                    "海沿いの公園や散歩道を楽しめるエリア。",
+                walk: "徒歩15分目安",
+                bestTime: "午後",
+            },
+            {
+                name: "史跡 品川宿",
+                description:
+                    "旧東海道の宿場町の面影を残す歴史スポット。",
+                walk: "徒歩18分目安",
+                bestTime: "午前",
+            },
+            {
+                name: "品川プリンスホテル",
+                description:
+                    "ボウリングや映画館など館内で一日遊べる施設。",
+                walk: "高輪口から徒歩3分",
+                bestTime: "いつでも",
+            },
+            {
+                name: "大崎ニューシティ",
+                description:
+                    "ビル群の間にある緑豊かな散策路とカフェ。",
+                walk: "徒歩12分目安",
+                bestTime: "昼",
+            },
+            {
+                name: "池田山公園",
+                description:
+                    "都会の高台にある静かな庭園と湧水の池。",
+                walk: "徒歩20分目安",
+                bestTime: "午前",
+            },
+            {
+                name: "品川駅港南口の夜景",
+                description:
+                    "高層ビル群の夜景が美しい写真スポット。",
+                walk: "徒歩5分目安",
+                bestTime: "夜",
+            },
+            {
+                name: "エプソン品川アクアスタジアム",
+                description:
+                    "イルカショーやアトラクションが充実の水族館。",
+                walk: "徒歩5分目安",
+                bestTime: "昼から夜",
             },
         ],
         [
@@ -1727,6 +2493,48 @@ const guideAreas = {
                 walk: "徒歩7分目安",
                 budget: "1,000円から",
             },
+            {
+                name: "原宿のクレープ店",
+                description: "竹下通りで人気のクレープをテイクアウト。",
+                walk: "徒歩15分目安",
+                budget: "600円から",
+            },
+            {
+                name: "渋谷の焼肉店",
+                description: "厳選和牛をリーズナブルに楽しめる人気焼肉店。",
+                walk: "徒歩10分目安",
+                budget: "4,000円から",
+            },
+            {
+                name: "表参道のベーカリー",
+                description: "香り高いパンとコーヒーのモーニングにおすすめ。",
+                walk: "徒歩14分目安",
+                budget: "1,000円から",
+            },
+            {
+                name: "渋谷の韓国料理",
+                description: "若者に人気の本格韓国料理とチーズタッカルビ。",
+                walk: "徒歩8分目安",
+                budget: "2,500円から",
+            },
+            {
+                name: "原宿のヴィーガンカフェ",
+                description: "ヘルシーなヴィーガン料理とスムージーの店。",
+                walk: "徒歩15分目安",
+                budget: "1,800円から",
+            },
+            {
+                name: "渋谷の立ち食い寿司",
+                description: "新鮮なネタがリーズナブルな立ち食い寿司の人気店。",
+                walk: "徒歩5分目安",
+                budget: "2,000円から",
+            },
+            {
+                name: "神宮前のパスタ専門店",
+                description: "おしゃれな雰囲気で本格パスタをランチに。",
+                walk: "徒歩12分目安",
+                budget: "1,600円から",
+            },
         ],
         fun: [
             {
@@ -1747,6 +2555,48 @@ const guideAreas = {
                 description: "東京の街並みを上から見られる展望スポット。",
                 walk: "徒歩5分目安",
                 bestTime: "夕方",
+            },
+            {
+                name: "明治神宮",
+                description: "都心のオアシス。広大な森に囲まれた神社。",
+                walk: "徒歩12分目安",
+                bestTime: "午前",
+            },
+            {
+                name: "原宿・竹下通り",
+                description: "若者でにぎわう個性的なファッションとスイーツの街。",
+                walk: "徒歩15分目安",
+                bestTime: "午後",
+            },
+            {
+                name: "表参道ヒルズ",
+                description: "螺旋状の回廊が特徴的なおしゃれな商業施設。",
+                walk: "徒歩12分目安",
+                bestTime: "午後",
+            },
+            {
+                name: "国立新美術館",
+                description: "ガラス張りの美しい建築で企画展を楽しめる。",
+                walk: "徒歩20分目安",
+                bestTime: "昼",
+            },
+            {
+                name: "渋谷センター街",
+                description: "ネオンと看板がにぎやかな渋谷のシンボル通り。",
+                walk: "徒歩5分目安",
+                bestTime: "夜",
+            },
+            {
+                name: "奥渋谷エリア",
+                description: "おしゃれなカフェとセレクトショップが点在する大人の街。",
+                walk: "徒歩15分目安",
+                bestTime: "昼",
+            },
+            {
+                name: "NHK放送博物館",
+                description: "放送の歴史を学べるユニークな博物館。",
+                walk: "徒歩10分目安",
+                bestTime: "昼",
             },
         ],
         plan: [
@@ -1799,6 +2649,48 @@ const guideAreas = {
                 walk: "徒歩15分目安",
                 budget: "1,000円から",
             },
+            {
+                name: "祇園の湯葉料理",
+                description: "京都らしい湯葉と豆腐の懐石風ランチが楽しめる。",
+                walk: "徒歩12分目安",
+                budget: "3,000円から",
+            },
+            {
+                name: "先斗町の串揚げ",
+                description: "細い路地に隠れた串揚げの名店で夜の食事に。",
+                walk: "徒歩15分目安",
+                budget: "3,500円から",
+            },
+            {
+                name: "京都駅のラーメン小路",
+                description: "京都駅ビル内で全国のラーメンを楽しめる。",
+                walk: "駅直結",
+                budget: "1,200円から",
+            },
+            {
+                name: "嵐山の豆腐料理",
+                description: "嵯峨野の風情を感じながら湯豆腐を味わう。",
+                walk: "電車で20分",
+                budget: "2,500円から",
+            },
+            {
+                name: "寺町通りのカフェ",
+                description: "静かな寺町通りで古民家カフェを巡る。",
+                walk: "徒歩12分目安",
+                budget: "1,200円から",
+            },
+            {
+                name: "伏見稲荷のうどん店",
+                description: "参道にあるきつねうどんのおいしいお店。",
+                walk: "電車で10分",
+                budget: "1,000円から",
+            },
+            {
+                name: "四条河原町の寿司店",
+                description: "繁華街で新鮮なにぎり寿司が楽しめる人気店。",
+                walk: "徒歩10分目安",
+                budget: "2,500円から",
+            },
         ],
         fun: [
             {
@@ -1819,6 +2711,48 @@ const guideAreas = {
                 description: "雨の日でも買い物、展望、食事をまとめて楽しめる。",
                 walk: "徒歩すぐ",
                 bestTime: "いつでも",
+            },
+            {
+                name: "二条城",
+                description: "徳川家康の京都の拠点。世界遺産の壮大なお城。",
+                walk: "徒歩25分目安",
+                bestTime: "午前",
+            },
+            {
+                name: "清水寺",
+                description: "京都を代表する世界遺産の寺院。絶景の舞台。",
+                walk: "バスで15分",
+                bestTime: "午前から夕方",
+            },
+            {
+                name: "嵐山・渡月橋",
+                description: "風情ある橋と竹林の散策が楽しめる人気エリア。",
+                walk: "電車で20分",
+                bestTime: "午前",
+            },
+            {
+                name: "金閣寺",
+                description: "金色に輝く舎利殿が美しい世界遺産。",
+                walk: "バスで20分",
+                bestTime: "午前",
+            },
+            {
+                name: "伏見稲荷大社",
+                description: "千本鳥居が有名なパワースポット。",
+                walk: "電車で10分",
+                bestTime: "午前から夕方",
+            },
+            {
+                name: "錦市場",
+                description: "「京都の台所」と呼ばれる活気ある商店街。",
+                walk: "徒歩10分目安",
+                bestTime: "昼",
+            },
+            {
+                name: "三十三間堂",
+                description: "1001体の観音像が並ぶ圧巻の仏堂。",
+                walk: "バスで10分",
+                bestTime: "午前",
             },
         ],
         plan: [
@@ -1872,6 +2806,48 @@ const guideAreas = {
                 walk: "徒歩3分目安",
                 budget: "1,200円から",
             },
+            {
+                name: "串カツ専門店",
+                description: "新世界を代表する串カツを気軽に楽しめる。",
+                walk: "電車で10分",
+                budget: "2,000円から",
+            },
+            {
+                name: "大阪駅の回転寿司",
+                description: "駅ビル内で新鮮な寿司をリーズナブルに。",
+                walk: "駅直結",
+                budget: "1,800円から",
+            },
+            {
+                name: "心斎橋のイタリアン",
+                description: "おしゃれなイタリアンで夜のデートに最適。",
+                walk: "徒歩15分目安",
+                budget: "3,500円から",
+            },
+            {
+                name: "なんばのラーメン店",
+                description: "こってり系からあっさり系まで選べるラーメン激戦区。",
+                walk: "徒歩10分目安",
+                budget: "1,200円から",
+            },
+            {
+                name: "天神橋筋の寿司居酒屋",
+                description: "地元に愛される大衆寿司居酒屋で一杯。",
+                walk: "電車で8分",
+                budget: "2,500円から",
+            },
+            {
+                name: "梅田のスイーツビュッフェ",
+                description: "ホテルで楽しむアフタヌーンティー風ビュッフェ。",
+                walk: "徒歩8分目安",
+                budget: "3,000円から",
+            },
+            {
+                name: "法善寺横丁の和食",
+                description: "石畳の路地に佇む隠れ家的な和食の名店。",
+                walk: "徒歩15分目安",
+                budget: "4,000円から",
+            },
         ],
         fun: [
             {
@@ -1891,6 +2867,48 @@ const guideAreas = {
                 description: "大阪らしい看板、食べ歩き、夜景を楽しめるエリア。",
                 walk: "電車で15分目安",
                 bestTime: "夜",
+            },
+            {
+                name: "通天閣・新世界",
+                description: "大阪のシンボル。周辺の商店街も楽しい。",
+                walk: "電車で12分",
+                bestTime: "昼から夜",
+            },
+            {
+                name: "大阪城",
+                description: "歴史的な大阪城と広大な公園を散策。",
+                walk: "電車で10分",
+                bestTime: "午前",
+            },
+            {
+                name: "なんばグランド花月",
+                description: "吉本新喜劇や漫才を楽しめるお笑いの聖地。",
+                walk: "徒歩12分目安",
+                bestTime: "昼から夜",
+            },
+            {
+                name: "アメリカ村",
+                description: "若者文化の発信地。個性的なショップが並ぶ。",
+                walk: "徒歩15分目安",
+                bestTime: "午後",
+            },
+            {
+                name: "天保山マーケットプレース",
+                description: "観覧車や水族館があるベイエリアの複合施設。",
+                walk: "電車で15分",
+                bestTime: "昼",
+            },
+            {
+                name: "中之島エリア",
+                description: "川沿いの散歩と美術館巡りが楽しめる文化的エリア。",
+                walk: "徒歩10分目安",
+                bestTime: "午後",
+            },
+            {
+                name: "心斎橋筋商店街",
+                description: "アーケード街でショッピングと食べ歩きを満喫。",
+                walk: "徒歩10分目安",
+                bestTime: "昼から夜",
             },
         ],
         plan: [
@@ -1936,6 +2954,48 @@ const guideAreas = {
                 walk: "徒歩12分圏内",
                 budget: "1,000円から",
             },
+            {
+                name: "地元の回転寿司",
+                description: "新鮮な地元の魚を使ったリーズナブルな寿司店。",
+                walk: "徒歩8分圏内",
+                budget: "1,500円から",
+            },
+            {
+                name: "商店街の焼き鳥屋",
+                description: "夕方から営業する地元で愛される焼き鳥店。",
+                walk: "徒歩10分圏内",
+                budget: "2,000円から",
+            },
+            {
+                name: "ファミリーレストラン",
+                description: "子ども連れでも使いやすいチェーン店の定番。",
+                walk: "徒歩15分圏内",
+                budget: "1,200円から",
+            },
+            {
+                name: "地元の蕎麦店",
+                description: "手打ちそばが自慢の落ち着いた和食処。",
+                walk: "徒歩12分圏内",
+                budget: "1,200円から",
+            },
+            {
+                name: "駅前のハンバーガー",
+                description: "手ごねのパティが自慢の地元ハンバーガー店。",
+                walk: "徒歩5分圏内",
+                budget: "1,200円から",
+            },
+            {
+                name: "テイクアウト弁当店",
+                description: "地元の食材を使ったお弁当を公園で食べるのもおすすめ。",
+                walk: "徒歩8分圏内",
+                budget: "800円から",
+            },
+            {
+                name: "地元のうどん店",
+                description: "コシのある手打ちうどんが楽しめる老舗。",
+                walk: "徒歩10分圏内",
+                budget: "900円から",
+            },
         ],
         fun: [
             {
@@ -1956,6 +3016,48 @@ const guideAreas = {
                 description: "初めての街で情報を集めるのに便利です。",
                 walk: "徒歩20分圏内",
                 bestTime: "昼",
+            },
+            {
+                name: "図書館・学習施設",
+                description: "静かに過ごしたい時におすすめの公共施設。",
+                walk: "徒歩12分圏内",
+                bestTime: "昼",
+            },
+            {
+                name: "地域の神社・仏閣",
+                description: "地元の歴史に触れられる静かなスポット。",
+                walk: "徒歩15分圏内",
+                bestTime: "午前",
+            },
+            {
+                name: "商店街アーケード",
+                description: "天候を気にせず散策できる屋根付きの商店街。",
+                walk: "徒歩8分圏内",
+                bestTime: "昼から夕方",
+            },
+            {
+                name: "健康温泉・銭湯",
+                description: "旅の疲れを癒せる地元の温浴施設。",
+                walk: "徒歩15分圏内",
+                bestTime: "夕方から夜",
+            },
+            {
+                name: "サイクリングコース",
+                description: "レンタサイクルで巡る地域の名所めぐり。",
+                walk: "徒歩20分圏内",
+                bestTime: "午前",
+            },
+            {
+                name: "地元の市場",
+                description: "新鮮な食材や軽食が楽しめる朝市・夕市。",
+                walk: "徒歩10分圏内",
+                bestTime: "午前",
+            },
+            {
+                name: "フィットネス・運動施設",
+                description: "天気に関係なく体を動かせる屋内施設。",
+                walk: "徒歩15分圏内",
+                bestTime: "いつでも",
             },
         ],
         plan: [
@@ -1996,35 +3098,52 @@ const pageTitle = computed(
 const activeApp = computed(() =>
     currentPath.value.startsWith("/test2") ? "guide" : "vehicle",
 );
-const selectedGuideArea = computed(() =>
-    selectedGuideKey.value === "stationFallback"
+const selectedGuideArea = computed(() => {
+    if (apiGuideData.value) {
+        return {
+            name: `${apiGuideData.value.stationName} 周辺`,
+            keywords: [],
+            food: apiGuideData.value.food || [],
+            fun: apiGuideData.value.fun || [],
+            plan: [],
+        };
+    }
+    return selectedGuideKey.value === "stationFallback"
         ? createGenericStationGuide(extractStationName(guideAddress.value))
-        : guideAreas[selectedGuideKey.value] || guideAreas.default,
-);
+        : guideAreas[selectedGuideKey.value] || guideAreas.default;
+});
 const buildGuideSpot = (spot, type, index) => {
-    const walkMinutes = parseWalkMinutes(spot.walk);
+    const walkMinutes = spot.walk
+        ? parseWalkMinutes(spot.walk)
+        : 5 + index * 3;
     return {
         ...spot,
         id: `${selectedGuideArea.value.name}-${type}-${spot.name}`,
         type,
         typeLabel: type === "food" ? "グルメ" : "遊び",
         distance: `${Math.max(2, walkMinutes + index)}分`,
-        rating: (4.2 + ((index + (type === "fun" ? 2 : 0)) % 5) * 0.1).toFixed(
-            1,
-        ),
-        openLabel: index % 3 === 2 ? "営業時間確認" : "営業中目安",
-        tag: type === "food" ? spot.budget : spot.bestTime,
+        rating: spot.rating
+            ? Number(spot.rating).toFixed(1)
+            : (4.2 + ((index + (type === "fun" ? 2 : 0)) % 5) * 0.1).toFixed(1),
+        openLabel: spot.openNow !== undefined
+            ? spot.openNow ? "営業中" : "営業時間確認"
+            : index % 3 === 2 ? "営業時間確認" : "営業中目安",
+        tag: type === "food" ? (spot.budget || spot.tag || "要確認") : (spot.bestTime || "要確認"),
         walkMinutes,
     };
 };
-const guideSpots = computed(() => [
-    ...selectedGuideArea.value.food.map((spot, index) =>
-        buildGuideSpot(spot, "food", index),
-    ),
-    ...selectedGuideArea.value.fun.map((spot, index) =>
-        buildGuideSpot(spot, "fun", index),
-    ),
-]);
+const guideSpots = computed(() => {
+    const area = selectedGuideArea.value;
+    if (!area) return [];
+    return [
+        ...(area.food || []).map((spot, index) =>
+            buildGuideSpot(spot, "food", index),
+        ),
+        ...(area.fun || []).map((spot, index) =>
+            buildGuideSpot(spot, "fun", index),
+        ),
+    ];
+});
 const filteredGuideSpots = computed(() =>
     guideSpots.value
         .filter(
@@ -2287,12 +3406,28 @@ const toggleFavoriteSpot = (spot) => {
 
 const isFavoriteSpot = (spot) => favoriteSpotIds.value.includes(spot.id);
 
-const searchLocalSpots = () => {
-    const keyword = guideAddress.value.trim().toLowerCase();
+const searchLocalSpots = async () => {
+    const keyword = guideAddress.value.trim();
     const normalizedKeyword = normalizeGuideKeyword(keyword);
     if (!keyword) {
         selectedGuideKey.value = "default";
         return;
+    }
+    apiGuideData.value = null;
+    isSearchingPlaces.value = true;
+    try {
+        const response = await fetch(`${placesApiUrl}?query=${encodeURIComponent(keyword)}&maxResults=20`);
+        if (response.ok) {
+            const data = await response.json();
+            if (data.food?.length || data.fun?.length) {
+                apiGuideData.value = data;
+                rememberGuideSearch(keyword);
+                return;
+            }
+        }
+    } catch {
+    } finally {
+        isSearchingPlaces.value = false;
     }
     const matches = Object.entries(guideAreas)
         .filter(([key]) => key !== "default")
@@ -2309,7 +3444,7 @@ const searchLocalSpots = () => {
     selectedGuideKey.value =
         matches[0]?.key ||
         (keyword.includes("駅") ? "stationFallback" : "default");
-    rememberGuideSearch(guideAddress.value);
+    rememberGuideSearch(keyword);
 };
 
 const todos = computed(() => [

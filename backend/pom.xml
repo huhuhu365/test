@@ -18,7 +18,8 @@
   <description>中古車管理システム API</description>
 
   <properties>
-    <java.version>25</java.version>
+    <java.version>17</java.version>
+    <maven.compiler.release>17</maven.compiler.release>
     <mybatis-spring-boot.version>3.0.4</mybatis-spring-boot.version>
   </properties>
 
