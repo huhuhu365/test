@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.usedcar.mapper.MasterDataMapper">
+  <resultMap id="MakerResultMap" type="Maker">
+    <id property="id" column="id"/>
+    <result property="name" column="name"/>
+    <result property="country" column="country"/>
+  </resultMap>
+
+  <resultMap id="StoreResultMap" type="Store">
+    <id property="id" column="id"/>
+    <result property="name" column="name"/>
+    <result property="prefecture" column="prefecture"/>
+    <result property="phone" column="phone"/>
+  </resultMap>
+
+  <resultMap id="VehicleStatusResultMap" type="VehicleStatus">
+    <id property="code" column="code"/>
+    <result property="label" column="label"/>
+    <result property="displayOrder" column="display_order"/>
+  </resultMap>
+
+  <select id="findMakers" resultMap="MakerResultMap">
+    SELECT id, name, country
+    FROM makers
+    ORDER BY id
+  </select>
+
+  <select id="findStores" resultMap="StoreResultMap">
+    SELECT id, name, prefecture, phone
+    FROM stores
+    ORDER BY id
+  </select>
+
+  <select id="findStatuses" resultMap="VehicleStatusResultMap">
+    SELECT code, label, display_order
+    FROM vehicle_statuses
+    ORDER BY display_order
+  </select>
+</mapper>

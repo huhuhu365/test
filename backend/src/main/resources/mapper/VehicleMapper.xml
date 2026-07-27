@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.usedcar.mapper.VehicleMapper">
+  <resultMap id="VehicleResultMap" type="Vehicle">
+    <id property="id" column="id"/>
+    <result property="name" column="name"/>
+    <result property="stockNo" column="stock_no"/>
+    <result property="maker" column="maker"/>
+    <result property="year" column="model_year"/>
+    <result property="mileage" column="mileage"/>
+    <result property="price" column="price"/>
+    <result property="status" column="status"/>
+    <result property="store" column="store"/>
+    <result property="fuel" column="fuel"/>
+    <result property="color" column="color"/>
+    <result property="transmission" column="transmission"/>
+    <result property="inspection" column="inspection"/>
+  </resultMap>
+
+  <sql id="VehicleJoinColumns">
+    v.id,
+    v.name,
+    v.stock_no,
+    m.name AS maker,
+    v.model_year,
+    v.mileage,
+    v.price,
+    s.code AS status,
+    st.name AS store,
+    v.fuel,
+    v.color,
+    v.transmission,
+    v.inspection
+  </sql>
+
+  <sql id="VehicleJoin">
+    FROM vehicles v
+    INNER JOIN makers m ON v.maker_id = m.id
+    INNER JOIN stores st ON v.store_id = st.id
+    INNER JOIN vehicle_statuses s ON v.status_code = s.code
+  </sql>
+
+  <select id="findAll" resultMap="VehicleResultMap">
+    SELECT <include refid="VehicleJoinColumns"/>
+    <include refid="VehicleJoin"/>
+    ORDER BY v.id
+  </select>
+
+  <select id="findById" resultMap="VehicleResultMap">
+    SELECT <include refid="VehicleJoinColumns"/>
+    <include refid="VehicleJoin"/>
+    WHERE v.id = #{id}
+  </select>
+
+  <insert id="insert" parameterType="Vehicle" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO vehicles (
+      name, stock_no, maker_id, store_id, status_code, model_year, mileage, price, fuel, color, transmission, inspection
+    ) VALUES (
+      #{name},
+      #{stockNo},
+      (SELECT id FROM makers WHERE name = #{maker}),
+      (SELECT id FROM stores WHERE name = #{store}),
+      #{status},
+      #{year},
+      #{mileage},
+      #{price},
+      #{fuel},
+      #{color},
+      #{transmission},
+      #{inspection}
+    )
+  </insert>
+
+  <update id="update" parameterType="Vehicle">
+    UPDATE vehicles
+    SET
+      name = #{name},
+      stock_no = #{stockNo},
+      maker_id = (SELECT id FROM makers WHERE name = #{maker}),
+      store_id = (SELECT id FROM stores WHERE name = #{store}),
+      status_code = #{status},
+      model_year = #{year},
+      mileage = #{mileage},
+      price = #{price},
+      fuel = #{fuel},
+      color = #{color},
+      transmission = #{transmission},
+      inspection = #{inspection}
+    WHERE id = #{id}
+  </update>
+
+  <delete id="deleteById">
+    DELETE FROM vehicles
+    WHERE id = #{id}
+  </delete>
+</mapper>

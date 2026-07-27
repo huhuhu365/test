@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ServiceNow</title>
+</head>
+
+<body>
+    <div class="container">
+        <div>
+            <ul>
+                <h2>服务器端脚本</h2>
+                <!-- 服务器端脚本 -->
+                <li><span class="highlight">业务规则（Business Rules）</span> - 用于在记录的插入、更新、删除或查询时执行逻辑。可设为 <span
+                        class="highlight">Before</span>（记录保存前）、<span class="highlight">After</span>（记录保存后）、<span
+                        class="highlight">Async</span>（异步）或 <span class="highlight">Display</span>（显示时）。</li>
+
+                <li><span class="highlight">脚本包括（Script Includes）</span> - 定义可复用的服务器端函数。可以是 <span
+                        class="highlight">客户端可调用的</span>（Client callable）或 <span class="highlight">服务器端专用的</span>。</li>
+
+                <li><span class="highlight">计划任务（Scheduled Jobs）</span> - 定时执行脚本，用于定期任务，如数据清理、报告生成等。</li>
+
+                <li><span class="highlight">工作流脚本（Workflow Scripts）</span> - 在工作流中的脚本活动或脚本条件中使用，控制工作流的行为。</li>
+
+                <li><span class="highlight">事件脚本（Event Scripts）</span> - 当特定事件触发时执行的脚本，通常与 <span
+                        class="highlight">事件注册表</span>（Event Registry）一起使用。</li>
+
+                <li><span class="highlight">邮件脚本（Email Scripts）</span> - 定制邮件通知的内容，通常用于邮件模板中。</li>
+
+                <li><span class="highlight">入口动作（Inbound Actions）</span> - 处理从外部系统发送到 ServiceNow 的电子邮件，执行特定操作。</li>
+
+                <li><span class="highlight">导入映射脚本（Transform Maps Script）</span> - 在导入数据时转换和映射数据的脚本。</li>
+
+                <h2>客户端脚本</h2>
+                <!-- 客户端脚本 -->
+                <li><span class="highlight">客户端脚本（Client Scripts）</span> - 用于表单加载（<span
+                        class="highlight">onLoad</span>）、字段值变化（<span class="highlight">onChange</span>）、表单提交（<span
+                        class="highlight">onSubmit</span>）或字段初始化（<span class="highlight">onCellEdit</span>）时执行的脚本。</li>
+
+                <li><span class="highlight">UI 答案（UI Actions）</span> - 在表单、列表或相关列表上添加按钮或链接，可执行客户端和服务器端操作。</li>
+
+                <li><span class="highlight">UI 策略（UI Policies）</span> - 动态控制表单字段的可见性、可编辑性和必填性，可以包含客户端脚本。</li>
+
+                <li><span class="highlight">UI 页面（UI Pages）</span> - 创建自定义用户界面，通常用于构建复杂的自定义应用程序或服务门户。</li>
+
+                <li><span class="highlight">UI 宏（UI Macros）</span> - 创建可重用的 HTML 片段，通常用于表单设计或自定义 UI 组件。</li>
+
+                <li><span class="highlight">服务目录客户端脚本（Catalog Client Scripts）</span> - 用于服务目录项表单中的客户端脚本。</li>
+
+                <li><span class="highlight">服务目录 UI 策略（Catalog UI Policies）</span> - 动态控制服务目录项表单字段的可见性、可编辑性和必填性。</li>
+            </ul>
+        </div>
+        <div>
+            <ul>
+                <h2>ServiceNow クラス</h1>
+                    <li><span class="highlight">GlideForm</span> - 用于操作表单字段和表单事件，常在客户端脚本中使用。</li>
+                    <li><span class="highlight">GlideAjax</span> - 用于从客户端调用服务器端脚本以获取数据。</li>
+                    <li><span class="highlight">GlideUser</span> - 提供关于当前用户的详细信息。</li>
+                    <li><span class="highlight">GlideDateTime</span> - 处理日期和时间数据的类。</li>
+                    <li><span class="highlight">GlideElement</span> - 用于操作字段元素的类。</li>
+                    <li><span class="highlight">GlideSession</span> - 处理用户会话信息。</li>
+                    <li><span class="highlight">GlideRecordSecure</span> - 类似于 GlideRecord，但提供了额外的安全性控制。</li>
+                    <li><span class="highlight">GlideScriptable</span> - 允许在脚本中使用 JavaScript 对象。</li>
+                    <li><span class="highlight">GlideQuery</span> - 提供一种新的查询方式，用于代替 GlideRecord。</li>
+                    <li><span class="highlight">GlideException</span> - 用于处理和抛出异常。</li>
+                    <li><span class="highlight">GlideEmail</span> - 处理和发送电子邮件。</li>
+                    <li><span class="highlight">GlideSystem</span> - 提供系统相关功能，例如获取当前用户、系统时间等。</li>
+                    <li><span class="highlight">GlideDBObject</span> - 提供与数据库对象相关的操作。</li>
+                    <li><span class="highlight">GlideNotification</span> - 处理系统通知和消息。</li>
+                    <li><span class="highlight">GlideScript</span> - 用于执行和管理脚本。</li>
+                    <li><span class="highlight">GlideTemplate</span> - 处理模板相关操作，例如生成动态内容。</li>
+                    <li><span class="highlight">GlideFormContainer</span> - 管理表单容器和其字段。</li>
+                    <li><span class="highlight">GlideRecord</span> - 执行数据库查询和操作记录的类。</li>
+                    <li><span class="highlight">GlideAggregate</span> - 用于执行汇总查询，例如计算计数、总和、平均值等。</li>
+                    <li><span class="highlight">GlideQuery</span> - 用于构建和执行查询。</li>
+                    <li><span class="highlight">GlideApp</span> - 提供应用程序相关的功能和方法。</li>
+                    <li><span class="highlight">GlideUserSession</span> - 处理用户会话的信息和操作。</li>
+                    <li><span class="highlight">GlideTransform</span> - 处理数据转换任务。</li>
+                    <li><span class="highlight">GlideRequest</span> - 处理请求和响应。</li>
+                    <li><span class="highlight">GlideScriptDebugger</span> - 提供调试脚本的功能。</li>
+                    <li><span class="highlight">GlideHttpRequest</span> - 处理 HTTP 请求。</li>
+                    <li><span class="highlight">GlideHttpResponse</span> - 处理 HTTP 响应。</li>
+                    <li><span class="highlight">GlideExternalInterface</span> - 用于与外部系统的接口交互。</li>
+                    <li><span class="highlight">GlideScriptableObject</span> - 在服务端脚本中创建可访问的对象。</li>
+                    <li><span class="highlight">GlideRequestParser</span> - 解析和处理请求数据。</li>
+                    <li><span class="highlight">GlideRunLoop</span> - 管理脚本的执行周期。</li>
+                    <li><span class="highlight">GlideProperty</span> - 处理系统属性。</li>
+                    <li><span class="highlight">GlideEncoder</span> - 处理数据编码。</li>
+                    <li><span class="highlight">GlideDecode</span> - 处理数据解码。</li>
+                    <li><span class="highlight">GlideWorkflow</span> - 处理工作流相关操作。</li>
+                    <li><span class="highlight">GlideUserPreference</span> - 管理用户偏好设置。</li>
+                    <li><span class="highlight">GlideEmailUtils</span> - 处理电子邮件工具和功能。</li>
+                    <li><span class="highlight">GlideUserInput</span> - 处理用户输入数据。</li>
+                    <li><span class="highlight">GlideAttachment</span> - 处理记录的附件。</li>
+                    <li><span class="highlight">GlideDatabase</span> - 提供数据库操作和管理功能。</li>
+
+                    </li>
+            </ul>
+        </div>
+
+        <div class="sub-section">
+            <h2>在 ServiceNow 中，涉及到自定义（カスタマイズ）和定制（カスタマイズ）相关的概念和术语有很多。以下是一些常见的 ServiceNow 自定义和定制相关的内容：</h2>
+
+            <h3>Customization（カスタマイズ）：</h3>
+            <ul>
+                <li><span class="highlight">客户端脚本（Client Scripts）</span> - 在客户端执行的脚本，用于控制表单字段的行为和验证。</li>
+                <li><span class="highlight">业务规则（Business Rules）</span> - 在服务端执行的脚本，用于在记录插入、更新、删除时触发操作。</li>
+                <li><span class="highlight">UI 答案（UI Actions）</span> - 如按钮、链接等，用于触发特定的客户端或服务端脚本。</li>
+                <li><span class="highlight">UI 答案脚本（UI Scripts）</span> - 在 ServiceNow 中创建和使用的可复用 JavaScript 代码段。
+                </li>
+                <li><span class="highlight">脚本包含（Script Include）</span> - 在服务端定义的可复用脚本代码，允许在多个地方调用。</li>
+                <li><span class="highlight">数据策略（Data Policies）</span> - 强制数据一致性的规则，用于确保数据输入的准确性。</li>
+                <li><span class="highlight">UI 答案政策（UI Policies）</span> - 客户端规则，用于控制表单字段的显示、必填、可编辑等属性。</li>
+                <li><span class="highlight">流式逻辑（Flow Designer）</span> - 用于创建可视化的工作流，以自动化业务流程。</li>
+            </ul>
+
+            <h3>Configuration（設定）：</h3>
+            <ul>
+                <li><span class="highlight">表（Tables）</span> - 数据存储的基本结构，允许用户定义和管理数据。</li>
+                <li><span class="highlight">字段（Fields）</span> - 表中的列，定义数据的类型和属性。</li>
+                <li><span class="highlight">表单布局（Form Layouts）</span> - 定义表单字段的显示和组织方式。</li>
+                <li><span class="highlight">列表布局（List Layouts）</span> - 定义表中记录在列表视图中的显示方式。</li>
+                <li><span class="highlight">词汇（Dictionaries）</span> - 定义字段的属性和行为，如数据类型、长度、标签等。</li>
+                <li><span class="highlight">ACL（访问控制规则）</span> - 用于控制用户对数据和操作的访问权限。</li>
+            </ul>
+
+            <h3>Integration（統合）：</h3>
+            <ul>
+                <li><span class="highlight">REST API 和 SOAP API</span> - 用于与外部系统集成，通过 Web 服务实现数据交换。</li>
+                <li><span class="highlight">中继器（MID Server）</span> - 用于在 ServiceNow 和防火墙内的内部系统之间通信。</li>
+                <li><span class="highlight">导入集（Import Sets）</span> - 用于从外部数据源导入数据。</li>
+            </ul>
+
+            <h3>Personalization（個人化）：</h3>
+            <ul>
+                <li><span class="highlight">用户偏好（User Preferences）</span> - 允许用户自定义其界面和操作的偏好设置。</li>
+                <li><span class="highlight">UI 主题（UI Themes）</span> - 更改平台的外观和感觉。</li>
+            </ul>
+
+            <h3>Service Catalog and Portal Customization（サービスカタログとポータルのカスタマイズ）：</h3>
+            <ul>
+                <li><span class="highlight">服务目录（Service Catalog）</span> - 自定义服务项、类别、表单和工作流程。</li>
+                <li><span class="highlight">服务门户（Service Portal）</span> - 创建和定制用户界面、页面、部件等。</li>
+            </ul>
+
+            <h3>Performance Analytics and Reporting（パフォーマンスアナリティクスとレポート）：</h3>
+            <ul>
+                <li><span class="highlight">报表（Reports）</span> - 创建和定制报表，分析和展示数据。</li>
+                <li><span class="highlight">仪表板（Dashboards）</span> - 可视化数据，展示关键绩效指标。</li>
+            </ul>
+
+        </div>
+    </div>
+</body>
+
+</html>

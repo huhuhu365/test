@@ -1,0 +1,14 @@
+{
+  "name": "codex-usage-monitor",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --configLoader runner",
+    "build": "vite build --configLoader runner",
+    "preview": "vite preview --host 127.0.0.1 --configLoader runner"
+  },
+  "devDependencies": {
+    "vite": "^5.3.4"
+  }
+}

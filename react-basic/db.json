@@ -1,0 +1,94 @@
+{
+  "list": [
+    {
+      "id": 10,
+      "username": "张三",
+      "content": "这个地方风景不错。",
+      "date": "08-15 10:00",
+      "likes": 75,
+      "isOwner": false,
+      "avatar": "http://toutiao.itheima.net/resources/images/10.jpg"
+    },
+    {
+      "id": 9,
+      "username": "李四",
+      "content": "今天的天气很好。",
+      "date": "08-14 09:30",
+      "likes": 92,
+      "isOwner": false,
+      "avatar": "http://toutiao.itheima.net/resources/images/9.jpg"
+    },
+    {
+      "id": 8,
+      "username": "王五",
+      "content": "美味的早餐，推荐大家试试。",
+      "date": "08-13 08:45",
+      "likes": 120,
+      "isOwner": false,
+      "avatar": "http://toutiao.itheima.net/resources/images/8.jpg"
+    },
+    {
+      "id": 7,
+      "username": "赵六",
+      "content": "今天运动量真大，累死了。",
+      "date": "08-12 18:20",
+      "likes": 63,
+      "isOwner": false,
+      "avatar": "http://toutiao.itheima.net/resources/images/7.jpg"
+    },
+    {
+      "id": 6,
+      "username": "孙七",
+      "content": "图书馆的环境很好，很安静。",
+      "date": "08-11 15:35",
+      "likes": 110,
+      "isOwner": false,
+      "avatar": "http://toutiao.itheima.net/resources/images/6.jpg"
+    },
+    {
+      "id": 5,
+      "username": "周八",
+      "content": "刚刚看了一场好电影。",
+      "date": "08-10 21:10",
+      "likes": 98,
+      "isOwner": false,
+      "avatar": "http://toutiao.itheima.net/resources/images/5.jpg"
+    },
+    {
+      "id": 4,
+      "username": "吴九",
+      "content": "这家餐厅的菜真好吃。",
+      "date": "08-09 12:25",
+      "likes": 140,
+      "isOwner": false,
+      "avatar": "http://toutiao.itheima.net/resources/images/4.jpg"
+    },
+    {
+      "id": 3,
+      "username": "周杰伦",
+      "content": "哎呦，不错哦",
+      "date": "7-18 08:15",
+      "likes": 126,
+      "isOwner": false,
+      "avatar": "http://toutiao.itheima.net/resources/images/3.jpg"
+    },
+    {
+      "id": 2,
+      "username": "许嵩",
+      "content": "我寻你千百度 日出到迟暮",
+      "date": "1-13 11:29",
+      "likes": 88,
+      "isOwner": false,
+      "avatar": "http://toutiao.itheima.net/resources/images/2.jpg"
+    },
+    {
+      "id": 1,
+      "username": "林俊杰",
+      "content": "如果我变成回忆 退出了这场生命",
+      "date": "1-11 11:29",
+      "likes": 66,
+      "isOwner": false,
+      "avatar": "http://toutiao.itheima.net/resources/images/1.jpg"
+    }
+  ]
+}
