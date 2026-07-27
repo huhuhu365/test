@@ -1,18 +1,20 @@
 {
-  "name": "used-car-management-vue",
-  "version": "1.0.0",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "dev": "vite --host 127.0.0.1",
-    "backend:dev": "cd backend && mvn spring-boot:run",
-    "build": "vite build",
-    "preview": "vite preview --host 127.0.0.1"
-  },
-  "dependencies": {
-    "@lucide/vue": "^1.23.0",
-    "@vitejs/plugin-vue": "^6.0.1",
-    "vite": "^7.0.6",
-    "vue": "^3.5.17"
-  }
+    "name": "used-car-management-vue",
+    "version": "1.0.0",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite --host 127.0.0.1",
+        "dev:frontend": "vite --host 127.0.0.1",
+        "dev:backend": "cd backend && set JAVA_HOME=C:\\Users\\study\\.jdk\\jdk-25.0.2 && set PATH=%JAVA_HOME%\\bin;%PATH% && mvn spring-boot:run",
+        "dev:all": "powershell -ExecutionPolicy Bypass -File .\\start-dev.ps1",
+        "build": "vite build",
+        "preview": "vite preview --host 127.0.0.1"
+    },
+    "dependencies": {
+        "@lucide/vue": "^1.23.0",
+        "@vitejs/plugin-vue": "^6.0.1",
+        "vite": "^7.0.6",
+        "vue": "^3.5.17"
+    }
 }
