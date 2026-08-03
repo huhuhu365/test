@@ -49,8 +49,11 @@ async function initializeDatabase() {
       order_number TEXT NOT NULL,
       table_number INTEGER NOT NULL,
       status TEXT DEFAULT 'new' NOT NULL,
+      payment_status TEXT DEFAULT 'unpaid' NOT NULL,
       note TEXT DEFAULT '' NOT NULL,
       total INTEGER NOT NULL,
+      checkout_requested_at TEXT,
+      paid_at TEXT,
       created_at TEXT DEFAULT (CURRENT_TIMESTAMP) NOT NULL
     )`),
     d1.prepare(`CREATE TABLE IF NOT EXISTS order_items (
@@ -68,6 +71,13 @@ async function initializeDatabase() {
     d1.prepare("CREATE INDEX IF NOT EXISTS idx_orders_table_created ON orders(table_number, created_at)"),
     d1.prepare("CREATE INDEX IF NOT EXISTS idx_order_items_order_id ON order_items(order_id)"),
   ]);
+
+  const orderColumns = await d1.prepare("PRAGMA table_info(orders)").all<{ name: string }>();
+  const columnNames = new Set(orderColumns.results.map((column) => column.name));
+  if (!columnNames.has("payment_status")) await d1.prepare("ALTER TABLE orders ADD COLUMN payment_status TEXT DEFAULT 'unpaid' NOT NULL").run();
+  if (!columnNames.has("checkout_requested_at")) await d1.prepare("ALTER TABLE orders ADD COLUMN checkout_requested_at TEXT").run();
+  if (!columnNames.has("paid_at")) await d1.prepare("ALTER TABLE orders ADD COLUMN paid_at TEXT").run();
+  await d1.prepare("CREATE INDEX IF NOT EXISTS idx_orders_table_payment ON orders(table_number, payment_status)").run();
 
   const row = await d1.prepare("SELECT COUNT(*) AS count FROM dishes").first<{ count: number }>();
   if (!row?.count) {

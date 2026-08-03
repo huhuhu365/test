@@ -18,13 +18,17 @@ export const orders = sqliteTable("orders", {
   orderNumber: text("order_number").notNull(),
   tableNumber: integer("table_number").notNull(),
   status: text("status").notNull().default("new"),
+  paymentStatus: text("payment_status").notNull().default("unpaid"),
   note: text("note").notNull().default(""),
   total: integer("total").notNull(),
+  checkoutRequestedAt: text("checkout_requested_at"),
+  paidAt: text("paid_at"),
   createdAt: text("created_at").notNull().default(sql`(CURRENT_TIMESTAMP)`),
 }, (table) => [
   uniqueIndex("idx_orders_order_number").on(table.orderNumber),
   index("idx_orders_status_created").on(table.status, table.createdAt),
   index("idx_orders_table_created").on(table.tableNumber, table.createdAt),
+  index("idx_orders_table_payment").on(table.tableNumber, table.paymentStatus),
 ]);
 
 export const orderItems = sqliteTable("order_items", {
