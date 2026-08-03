@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
 type Dish = { id: number; name: string; description: string; price: number; category: string; imageUrl: string | null };
@@ -52,7 +51,7 @@ export default function OrderingApp({ tableNumber }: { tableNumber: number }) {
   return (
     <main>
       <header className="topbar">
-        <Link href="/" className="back-link" aria-label="返回桌号选择">‹</Link>
+        <a href="/" className="back-link" aria-label="返回桌号选择">‹</a>
         <div className="brand-mark">小</div>
         <div className="brand-copy"><strong>小满食堂</strong><span><i /> 营业中 · 预计 15 分钟出餐</span></div>
         <div className="table-badge">{tableNumber} 号桌</div>
