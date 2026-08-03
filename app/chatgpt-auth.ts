@@ -1,4 +1,4 @@
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 export type ChatGPTUser = {
@@ -17,6 +17,8 @@ const PERCENT_ENCODED_UTF8 = "percent-encoded-utf-8";
 const SIGN_IN_PATH = "/signin-with-chatgpt";
 const SIGN_OUT_PATH = "/signout-with-chatgpt";
 const CALLBACK_PATH = "/callback";
+const LOCAL_ADMIN_COOKIE = "xiaoman-local-admin";
+const LOCAL_ADMIN_COOKIE_VALUE = "xiaoman-local-owner";
 
 export async function getChatGPTUser(): Promise<ChatGPTUser | null> {
   const requestHeaders = await headers();
@@ -47,6 +49,33 @@ export async function requireChatGPTUser(
 
   redirect(chatGPTSignInPath(returnTo));
 }
+
+export async function isLocalRequest(): Promise<boolean> {
+  const requestHeaders = await headers();
+  const host = (requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host") ?? "").split(":")[0];
+  return host === "localhost" || host === "127.0.0.1";
+}
+
+export async function getAdminUser(): Promise<ChatGPTUser | null> {
+  const chatGPTUser = await getChatGPTUser();
+  if (chatGPTUser) return chatGPTUser;
+  if (!await isLocalRequest()) return null;
+  const cookieStore = await cookies();
+  if (cookieStore.get(LOCAL_ADMIN_COOKIE)?.value !== LOCAL_ADMIN_COOKIE_VALUE) return null;
+  return { userId: "local-admin", displayName: "本地店主", email: "admin@localhost", fullName: "本地店主" };
+}
+
+export async function requireAdminUser(returnTo: string): Promise<ChatGPTUser> {
+  const user = await getAdminUser();
+  if (user) return user;
+  if (await isLocalRequest()) redirect(`/admin/login?return_to=${encodeURIComponent(returnTo)}`);
+  return requireChatGPTUser(returnTo);
+}
+
+export const localAdminCookie = {
+  name: LOCAL_ADMIN_COOKIE,
+  value: LOCAL_ADMIN_COOKIE_VALUE,
+};
 
 export function chatGPTSignInPath(returnTo: string): string {
   const safeReturnTo = safeRelativeReturnPath(returnTo);

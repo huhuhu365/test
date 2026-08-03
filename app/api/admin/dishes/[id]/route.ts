@@ -1,10 +1,10 @@
 import { eq } from "drizzle-orm";
 import { getDb } from "../../../../../db";
 import { dishes } from "../../../../../db/schema";
-import { getChatGPTUser } from "../../../../chatgpt-auth";
+import { getAdminUser } from "../../../../chatgpt-auth";
 
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
-  if (!await getChatGPTUser()) return Response.json({ error: "请先登录" }, { status: 401 });
+  if (!await getAdminUser()) return Response.json({ error: "请先登录" }, { status: 401 });
   const id = Number((await params).id);
   const body = await request.json() as { name?: string; description?: string; price?: number; category?: string; imageUrl?: string | null; isActive?: boolean };
   if (!Number.isInteger(id)) return Response.json({ error: "菜品无效" }, { status: 400 });

@@ -1,10 +1,10 @@
 import { desc, inArray } from "drizzle-orm";
 import { getDb } from "../../../db";
 import { dishes, orderItems, orders } from "../../../db/schema";
-import { getChatGPTUser } from "../../chatgpt-auth";
+import { getAdminUser } from "../../chatgpt-auth";
 
 export async function GET() {
-  if (!await getChatGPTUser()) return Response.json({ error: "请先登录" }, { status: 401 });
+  if (!await getAdminUser()) return Response.json({ error: "请先登录" }, { status: 401 });
   const db = getDb();
   const recentOrders = await db.select().from(orders).orderBy(desc(orders.id)).limit(100);
   const ids = recentOrders.map((order) => order.id);

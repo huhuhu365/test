@@ -9,7 +9,7 @@ type Order = { id: number; orderNumber: string; tableNumber: number; status: str
 const statusMap: Record<string, string> = { new: "新订单", preparing: "制作中", ready: "待上菜", completed: "已完成", cancelled: "已取消" };
 const emptyForm = { name: "", description: "", price: "", category: "主食", imageUrl: "" };
 
-export default function AdminDashboard({ userName }: { userName: string }) {
+export default function AdminDashboard({ userName, isLocal }: { userName: string; isLocal: boolean }) {
   const [tab, setTab] = useState<"orders" | "menu" | "tables">("orders");
   const [orders, setOrders] = useState<Order[]>([]);
   const [dishes, setDishes] = useState<Dish[]>([]);
@@ -51,7 +51,7 @@ export default function AdminDashboard({ userName }: { userName: string }) {
   const openOrders = orders.filter((order) => !["completed", "cancelled"].includes(order.status));
 
   return <main className="admin-page">
-    <header className="admin-header"><div className="brand-mark">小</div><div><strong>小满食堂 · 店家后台</strong><span>{userName}</span></div><a href="/signout-with-chatgpt?return_to=/" className="logout">退出</a></header>
+    <header className="admin-header"><div className="brand-mark">小</div><div><strong>小满食堂 · 店家后台</strong><span>{userName}</span></div><a href={isLocal ? "/api/admin/logout" : "/signout-with-chatgpt?return_to=/"} className="logout">退出</a></header>
     <section className="admin-summary"><div><span>待处理</span><strong>{openOrders.filter((order) => order.status === "new").length}</strong><small>笔新订单</small></div><div><span>制作中</span><strong>{openOrders.filter((order) => order.status === "preparing").length}</strong><small>桌正在等待</small></div><div><span>今日订单</span><strong>{orders.length}</strong><small>最近 100 笔</small></div></section>
     <nav className="admin-tabs"><button className={tab === "orders" ? "active" : ""} onClick={() => setTab("orders")}>订单</button><button className={tab === "menu" ? "active" : ""} onClick={() => setTab("menu")}>菜品管理</button><button className={tab === "tables" ? "active" : ""} onClick={() => setTab("tables")}>桌位链接</button></nav>
     {message && <button className="toast" onClick={() => setMessage("")}>{message} ×</button>}
