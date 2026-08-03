@@ -66,6 +66,12 @@ async function initializeDatabase() {
       FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
       FOREIGN KEY (dish_id) REFERENCES dishes(id)
     )`),
+    d1.prepare(`CREATE TABLE IF NOT EXISTS dish_images (
+      key TEXT PRIMARY KEY NOT NULL,
+      content_type TEXT NOT NULL,
+      data_base64 TEXT NOT NULL,
+      created_at TEXT DEFAULT (CURRENT_TIMESTAMP) NOT NULL
+    )`),
     d1.prepare("CREATE UNIQUE INDEX IF NOT EXISTS idx_orders_order_number ON orders(order_number)"),
     d1.prepare("CREATE INDEX IF NOT EXISTS idx_orders_status_created ON orders(status, created_at)"),
     d1.prepare("CREATE INDEX IF NOT EXISTS idx_orders_table_created ON orders(table_number, created_at)"),

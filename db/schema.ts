@@ -39,3 +39,10 @@ export const orderItems = sqliteTable("order_items", {
   unitPrice: integer("unit_price").notNull(),
   quantity: integer("quantity").notNull(),
 }, (table) => [index("idx_order_items_order_id").on(table.orderId)]);
+
+export const dishImages = sqliteTable("dish_images", {
+  key: text("key").primaryKey(),
+  contentType: text("content_type").notNull(),
+  dataBase64: text("data_base64").notNull(),
+  createdAt: text("created_at").notNull().default(sql`(CURRENT_TIMESTAMP)`),
+});

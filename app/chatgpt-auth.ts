@@ -1,5 +1,6 @@
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { env } from "cloudflare:workers";
 
 export type ChatGPTUser = {
   userId: string;
@@ -18,7 +19,6 @@ const SIGN_IN_PATH = "/signin-with-chatgpt";
 const SIGN_OUT_PATH = "/signout-with-chatgpt";
 const CALLBACK_PATH = "/callback";
 const LOCAL_ADMIN_COOKIE = "xiaoman-local-admin";
-const LOCAL_ADMIN_COOKIE_VALUE = "xiaoman-local-owner";
 
 export async function getChatGPTUser(): Promise<ChatGPTUser | null> {
   const requestHeaders = await headers();
@@ -57,25 +57,30 @@ export async function isLocalRequest(): Promise<boolean> {
 }
 
 export async function getAdminUser(): Promise<ChatGPTUser | null> {
-  const chatGPTUser = await getChatGPTUser();
-  if (chatGPTUser) return chatGPTUser;
-  if (!await isLocalRequest()) return null;
   const cookieStore = await cookies();
-  if (cookieStore.get(LOCAL_ADMIN_COOKIE)?.value !== LOCAL_ADMIN_COOKIE_VALUE) return null;
-  return { userId: "local-admin", displayName: "本地店主", email: "admin@localhost", fullName: "本地店主" };
+  if (cookieStore.get(LOCAL_ADMIN_COOKIE)?.value === await getAdminSessionValue()) {
+    return { userId: "store-admin", displayName: "店主", email: "admin@xiaoman.store", fullName: "店主" };
+  }
+  return null;
 }
 
 export async function requireAdminUser(returnTo: string): Promise<ChatGPTUser> {
   const user = await getAdminUser();
   if (user) return user;
-  if (await isLocalRequest()) redirect(`/admin/login?return_to=${encodeURIComponent(returnTo)}`);
-  return requireChatGPTUser(returnTo);
+  redirect(`/admin/login?return_to=${encodeURIComponent(returnTo)}`);
 }
 
-export const localAdminCookie = {
-  name: LOCAL_ADMIN_COOKIE,
-  value: LOCAL_ADMIN_COOKIE_VALUE,
-};
+export function getAdminPassword() {
+  return typeof env.ADMIN_PASSWORD === "string" && env.ADMIN_PASSWORD ? env.ADMIN_PASSWORD : "123456";
+}
+
+export async function getAdminSessionValue() {
+  const bytes = new TextEncoder().encode(`${getAdminPassword()}:xiaoman-admin-session`);
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
+  return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+export const adminCookieName = LOCAL_ADMIN_COOKIE;
 
 export function chatGPTSignInPath(returnTo: string): string {
   const safeReturnTo = safeRelativeReturnPath(returnTo);

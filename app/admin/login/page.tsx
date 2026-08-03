@@ -20,7 +20,7 @@ export default function LocalAdminLogin() {
   return <main className="login-page">
     <section className="login-card">
       <div className="login-brand"><div className="brand-mark">小</div><div><strong>小满食堂</strong><span>店家管理后台</span></div></div>
-      <p className="login-eyebrow">LOCAL STORE ADMIN</p>
+      <p className="login-eyebrow">STORE ADMIN</p>
       <h1>欢迎回来</h1>
       <p className="login-tip">登录后可以管理菜品、图片和各桌订单</p>
       <form onSubmit={login}>
@@ -29,7 +29,7 @@ export default function LocalAdminLogin() {
         {error && <p className="login-error">{error}</p>}
         <button disabled={loading}>{loading ? "正在登录…" : "登录店家后台"}</button>
       </form>
-      <small>本地初始账号：admin　密码：123456</small>
+      <small>初始账号：admin　密码：123456</small>
       <a href="/">← 返回顾客点餐</a>
     </section>
   </main>;
