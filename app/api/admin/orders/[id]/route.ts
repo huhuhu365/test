@@ -1,5 +1,5 @@
 import { eq } from "drizzle-orm";
-import { getDb } from "../../../../../db";
+import { getReadyDb } from "../../../../../db";
 import { orders } from "../../../../../db/schema";
 import { getAdminUser } from "../../../../chatgpt-auth";
 
@@ -9,6 +9,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
   const id = Number((await params).id);
   const { status } = await request.json() as { status?: string };
   if (!Number.isInteger(id) || !status || !allowed.includes(status)) return Response.json({ error: "状态无效" }, { status: 400 });
-  const [order] = await getDb().update(orders).set({ status }).where(eq(orders.id, id)).returning();
+  const db = await getReadyDb();
+  const [order] = await db.update(orders).set({ status }).where(eq(orders.id, id)).returning();
   return Response.json({ order });
 }

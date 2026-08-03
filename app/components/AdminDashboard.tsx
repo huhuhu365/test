@@ -9,6 +9,14 @@ type Order = { id: number; orderNumber: string; tableNumber: number; status: str
 const statusMap: Record<string, string> = { new: "新订单", preparing: "制作中", ready: "待上菜", completed: "已完成", cancelled: "已取消" };
 const emptyForm = { name: "", description: "", price: "", category: "主食", imageUrl: "" };
 
+async function readJson(response: Response) {
+  const text = await response.text();
+  if (!text) throw new Error("服务器暂时没有返回数据，请刷新重试");
+  const data = JSON.parse(text);
+  if (!response.ok) throw new Error(data.error || "请求失败，请稍后重试");
+  return data;
+}
+
 export default function AdminDashboard({ userName, isLocal }: { userName: string; isLocal: boolean }) {
   const [tab, setTab] = useState<"orders" | "menu" | "tables">("orders");
   const [orders, setOrders] = useState<Order[]>([]);
@@ -19,8 +27,8 @@ export default function AdminDashboard({ userName, isLocal }: { userName: string
   const [message, setMessage] = useState("");
   const [origin, setOrigin] = useState("");
 
-  const loadOrders = useCallback(() => fetch("/api/orders").then((res) => res.json()).then((data) => setOrders(data.orders ?? [])), []);
-  const loadDishes = useCallback(() => fetch("/api/admin/dishes").then((res) => res.json()).then((data) => setDishes(data.dishes ?? [])), []);
+  const loadOrders = useCallback(() => fetch("/api/orders").then(readJson).then((data) => setOrders(data.orders ?? [])).catch((error) => setMessage(error.message)), []);
+  const loadDishes = useCallback(() => fetch("/api/admin/dishes").then(readJson).then((data) => setDishes(data.dishes ?? [])).catch((error) => setMessage(error.message)), []);
 
   useEffect(() => { setOrigin(window.location.origin); loadOrders(); loadDishes(); const timer = window.setInterval(loadOrders, 5000); return () => window.clearInterval(timer); }, [loadDishes, loadOrders]);
 
@@ -28,9 +36,11 @@ export default function AdminDashboard({ userName, isLocal }: { userName: string
     event.preventDefault(); setSaving(true); setMessage("");
     const payload = { ...form, price: Number(form.price) };
     const response = await fetch(editingId ? `/api/admin/dishes/${editingId}` : "/api/admin/dishes", { method: editingId ? "PATCH" : "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload) });
-    const data = await response.json();
-    setMessage(response.ok ? (editingId ? "菜品已更新" : "菜品已上架") : data.error || "保存失败");
-    if (response.ok) { setForm(emptyForm); setEditingId(null); loadDishes(); }
+    try {
+      await readJson(response);
+      setMessage(editingId ? "菜品已更新" : "菜品已上架");
+      setForm(emptyForm); setEditingId(null); loadDishes();
+    } catch (error) { setMessage(error instanceof Error ? error.message : "保存失败"); }
     setSaving(false);
   }
 
@@ -38,8 +48,10 @@ export default function AdminDashboard({ userName, isLocal }: { userName: string
     if (!file) return;
     setSaving(true); const body = new FormData(); body.append("file", file);
     const response = await fetch("/api/admin/upload", { method: "POST", body });
-    const data = await response.json();
-    if (response.ok) setForm((current) => ({ ...current, imageUrl: data.url })); else setMessage(data.error || "图片上传失败");
+    try {
+      const data = await readJson(response);
+      setForm((current) => ({ ...current, imageUrl: data.url }));
+    } catch (error) { setMessage(error instanceof Error ? error.message : "图片上传失败"); }
     setSaving(false);
   }
 

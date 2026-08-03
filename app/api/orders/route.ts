@@ -1,11 +1,11 @@
 import { desc, inArray } from "drizzle-orm";
-import { getDb } from "../../../db";
+import { getReadyDb } from "../../../db";
 import { dishes, orderItems, orders } from "../../../db/schema";
 import { getAdminUser } from "../../chatgpt-auth";
 
 export async function GET() {
   if (!await getAdminUser()) return Response.json({ error: "请先登录" }, { status: 401 });
-  const db = getDb();
+  const db = await getReadyDb();
   const recentOrders = await db.select().from(orders).orderBy(desc(orders.id)).limit(100);
   const ids = recentOrders.map((order) => order.id);
   const items = ids.length ? await db.select().from(orderItems).where(inArray(orderItems.orderId, ids)) : [];
@@ -18,7 +18,7 @@ export async function POST(request: Request) {
     if (!Number.isInteger(payload.tableNumber) || payload.tableNumber! < 1 || payload.tableNumber! > 10) return Response.json({ error: "桌号无效" }, { status: 400 });
     const cleanItems = (payload.items ?? []).filter((item) => Number.isInteger(item.dishId) && Number.isInteger(item.quantity) && item.quantity > 0 && item.quantity <= 20);
     if (!cleanItems.length) return Response.json({ error: "请先选择菜品" }, { status: 400 });
-    const db = getDb();
+    const db = await getReadyDb();
     const selectedDishes = await db.select().from(dishes).where(inArray(dishes.id, cleanItems.map((item) => item.dishId)));
     if (selectedDishes.length !== new Set(cleanItems.map((item) => item.dishId)).size) return Response.json({ error: "部分菜品已下架，请刷新菜单" }, { status: 409 });
     const total = cleanItems.reduce((sum, item) => sum + (selectedDishes.find((dish) => dish.id === item.dishId)?.price ?? 0) * item.quantity, 0);
