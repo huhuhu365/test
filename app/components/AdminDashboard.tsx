@@ -19,7 +19,7 @@ async function readJson(response: Response) {
   return data;
 }
 
-export default function AdminDashboard({ userName, isLocal }: { userName: string; isLocal: boolean }) {
+export default function AdminDashboard({ userName, isLocal, publicOrigin }: { userName: string; isLocal: boolean; publicOrigin: string }) {
   const [tab, setTab] = useState<"orders" | "menu" | "tables">("orders");
   const [orders, setOrders] = useState<Order[]>([]);
   const [dishes, setDishes] = useState<Dish[]>([]);
@@ -27,12 +27,12 @@ export default function AdminDashboard({ userName, isLocal }: { userName: string
   const [editingId, setEditingId] = useState<number | null>(null);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
-  const [origin, setOrigin] = useState("");
+  const [origin, setOrigin] = useState(publicOrigin);
 
   const loadOrders = useCallback(() => fetch("/api/orders").then(readJson).then((data) => setOrders(data.orders ?? [])).catch((error) => setMessage(error.message)), []);
   const loadDishes = useCallback(() => fetch("/api/admin/dishes").then(readJson).then((data) => setDishes(data.dishes ?? [])).catch((error) => setMessage(error.message)), []);
 
-  useEffect(() => { setOrigin(window.location.origin); loadOrders(); loadDishes(); const timer = window.setInterval(loadOrders, 5000); return () => window.clearInterval(timer); }, [loadDishes, loadOrders]);
+  useEffect(() => { if (!publicOrigin) setOrigin(window.location.origin); loadOrders(); loadDishes(); const timer = window.setInterval(loadOrders, 5000); return () => window.clearInterval(timer); }, [loadDishes, loadOrders, publicOrigin]);
 
   async function saveDish(event: FormEvent) {
     event.preventDefault(); setSaving(true); setMessage("");
@@ -61,8 +61,6 @@ export default function AdminDashboard({ userName, isLocal }: { userName: string
   async function toggleDish(dish: Dish) { await fetch(`/api/admin/dishes/${dish.id}`, { method: "PATCH", headers: { "content-type": "application/json" }, body: JSON.stringify({ isActive: !dish.isActive }) }); loadDishes(); }
   async function updateOrder(id: number, status: string) { await fetch(`/api/admin/orders/${id}`, { method: "PATCH", headers: { "content-type": "application/json" }, body: JSON.stringify({ status }) }); loadOrders(); }
   async function confirmPaid(tableNumber: number) { const response = await fetch(`/api/admin/bills/${tableNumber}`, { method: "PATCH" }); try { await readJson(response); setMessage(`${tableNumber} 号桌已确认收款并结清`); loadOrders(); } catch (error) { setMessage(error instanceof Error ? error.message : "确认收款失败"); } }
-  async function copyLink(number: number) { await navigator.clipboard.writeText(`${origin}/table/${number}`); setMessage(`${number} 号桌链接已复制`); }
-
   const openOrders = orders.filter((order) => !["completed", "cancelled"].includes(order.status));
   const checkoutTables = Array.from(new Set(orders.filter((order) => order.paymentStatus === "requested").map((order) => order.tableNumber))).map((tableNumber) => ({ tableNumber, orders: orders.filter((order) => order.tableNumber === tableNumber && order.paymentStatus === "requested" && order.status !== "cancelled") })).filter((bill) => bill.orders.length);
 

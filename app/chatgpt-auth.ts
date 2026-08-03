@@ -53,7 +53,7 @@ export async function requireChatGPTUser(
 export async function isLocalRequest(): Promise<boolean> {
   const requestHeaders = await headers();
   const host = (requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host") ?? "").split(":")[0];
-  return host === "localhost" || host === "127.0.0.1";
+  return host === "localhost" || host === "127.0.0.1" || host.startsWith("192.168.") || host.startsWith("10.") || /^172\.(1[6-9]|2\d|3[01])\./.test(host);
 }
 
 export async function getAdminUser(): Promise<ChatGPTUser | null> {

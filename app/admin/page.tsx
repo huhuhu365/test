@@ -5,5 +5,5 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminPage() {
   const user = await requireAdminUser("/admin");
-  return <AdminDashboard userName={user.displayName} isLocal={user.userId === "local-admin"} />;
+  return <AdminDashboard userName={user.displayName} isLocal={user.userId === "local-admin"} publicOrigin={process.env.SITE_PUBLIC_ORIGIN ?? ""} />;
 }
