@@ -32,7 +32,18 @@ export default function AdminDashboard({ userName, isLocal, publicOrigin }: { us
   const loadOrders = useCallback(() => fetch("/api/orders").then(readJson).then((data) => setOrders(data.orders ?? [])).catch((error) => setMessage(error.message)), []);
   const loadDishes = useCallback(() => fetch("/api/admin/dishes").then(readJson).then((data) => setDishes(data.dishes ?? [])).catch((error) => setMessage(error.message)), []);
 
-  useEffect(() => { if (!publicOrigin) setOrigin(window.location.origin); loadOrders(); loadDishes(); const timer = window.setInterval(loadOrders, 5000); return () => window.clearInterval(timer); }, [loadDishes, loadOrders, publicOrigin]);
+  useEffect(() => {
+    const hostname = window.location.hostname;
+    const localNetwork = hostname === "localhost" || hostname === "127.0.0.1" || hostname.startsWith("192.168.") || hostname.startsWith("10.") || /^172\.(1[6-9]|2\d|3[01])\./.test(hostname);
+    if (localNetwork) {
+      fetch(`/local-site.json?t=${Date.now()}`).then((response) => response.json()).then((data) => setOrigin(data.origin || window.location.origin)).catch(() => setOrigin(window.location.origin));
+    } else {
+      setOrigin(publicOrigin || window.location.origin);
+    }
+    loadOrders(); loadDishes();
+    const timer = window.setInterval(loadOrders, 5000);
+    return () => window.clearInterval(timer);
+  }, [loadDishes, loadOrders, publicOrigin]);
 
   async function saveDish(event: FormEvent) {
     event.preventDefault(); setSaving(true); setMessage("");
