@@ -270,6 +270,39 @@ main { min-height: 100vh; max-width: 560px; margin: 0 auto; background: var(--cr
 .checkout-request-grid article > div:nth-child(2) span { color: #9d765f; font-size: 8px; }
 .checkout-request-grid article > b { color: #c65d2a; font-size: 17px; }
 .checkout-request-grid article > button { border: 0; border-radius: 9px; padding: 9px 10px; background: var(--green); color: white; font-size: 9px; white-space: nowrap; }
+.table-state-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin-bottom: 22px; }
+.table-state-card { border: 1px solid #e6e5de; border-radius: 16px; background: white; padding: 14px; text-align: left; color: var(--ink); box-shadow: 0 5px 18px rgba(40,45,39,.04); }
+.table-state-card.active { border-color: #9db59d; box-shadow: 0 10px 24px rgba(55,108,75,.12); }
+.table-state-card.requested { background: #fff4eb; border-color: #f0cfbb; }
+.table-state-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.table-state-top strong { font-size: 13px; }
+.table-state-top span { color: #8c9188; font-size: 9px; }
+.table-state-card.requested .table-state-top span { color: #c36a3c; font-weight: 700; }
+.table-state-metrics { display: flex; flex-direction: column; gap: 3px; margin-top: 13px; }
+.table-state-metrics b { color: var(--green); font-size: 22px; }
+.table-state-card.requested .table-state-metrics b { color: #d8682f; }
+.table-state-metrics small { color: #90958d; font-size: 9px; }
+.detail-title { margin-top: 6px; }
+.table-detail-panel { background: white; border-radius: 18px; padding: 16px; box-shadow: 0 5px 18px rgba(40,45,39,.04); }
+.table-detail-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+.table-detail-summary > div { padding: 14px; border-radius: 14px; background: #f7f6f1; display: flex; flex-direction: column; gap: 4px; }
+.table-detail-summary span { color: #8f948b; font-size: 9px; }
+.table-detail-summary strong { font-size: 19px; color: var(--green); }
+.table-order-list { display: grid; gap: 12px; }
+.table-order-card { border: 1px solid #eceae3; border-radius: 16px; padding: 15px; background: #fffdf9; }
+.table-order-card > header { display: flex; justify-content: space-between; align-items: start; gap: 10px; }
+.table-order-card > header div { display: flex; flex-direction: column; gap: 4px; }
+.table-order-card > header strong { font-size: 14px; }
+.table-order-card > header span { color: #8a9087; font-size: 9px; }
+.table-order-card > header b { color: #d8682f; font-size: 18px; }
+.table-order-items { display: grid; gap: 9px; margin: 14px 0; }
+.table-item-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px; border-radius: 12px; background: #f7f6f1; }
+.table-item-row > div:first-child { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.table-item-row strong { font-size: 12px; }
+.table-item-row span { color: #8a8f87; font-size: 10px; }
+.table-item-actions { display: flex; gap: 7px; flex-wrap: wrap; justify-content: flex-end; }
+.table-item-actions button { border: 0; border-radius: 9px; padding: 8px 10px; background: #e6efe5; color: var(--green); font-size: 9px; white-space: nowrap; }
+.table-item-actions .danger-light { background: #f8e7e1; color: #b95534; }
 .qr-table-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); align-items: stretch; }
 .admin-table-grid .qr-card { display: flex; flex-direction: column; align-items: stretch; padding: 15px; }
 .qr-card-heading { display: flex; align-items: center; gap: 9px; }
@@ -292,6 +325,10 @@ main { min-height: 100vh; max-width: 560px; margin: 0 auto; background: var(--cr
   .admin-summary strong { font-size: 22px; }
   .admin-content { padding-inline: 12px; }
   .admin-tabs { margin-inline: 12px; }
+  .table-detail-summary { grid-template-columns: 1fr; }
+  .table-item-row { flex-direction: column; align-items: stretch; }
+  .table-item-actions { justify-content: stretch; }
+  .table-item-actions button { flex: 1; }
 }
 
 /* Local store login */
