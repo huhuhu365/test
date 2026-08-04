@@ -1,0 +1,87 @@
+
+--- 2026-08-03T08:17:55.719Z debug
+🪵  Writing logs to "C:\wang\.wrangler-config\.wrangler\logs\wrangler-2026-08-03_08-17-55_556.log"
+---
+
+--- 2026-08-03T08:17:55.719Z debug
+.env file not found at "C:\wang\mobile-order\.env". Continuing... For more details, refer to https://developers.cloudflare.com/workers/wrangler/system-environment-variables/
+---
+
+--- 2026-08-03T08:17:55.720Z debug
+.env file not found at "C:\wang\mobile-order\.env.local". Continuing... For more details, refer to https://developers.cloudflare.com/workers/wrangler/system-environment-variables/
+---
+
+--- 2026-08-03T08:17:55.728Z log
+
+ ⛅️ wrangler 4.92.0 (update available 4.118.0)
+──────────────────────────────────────────────
+---
+
+--- 2026-08-03T08:17:55.735Z debug
+Metrics dispatcher: Posting data {"deviceId":"62481879-fe5f-41db-8e59-654eafe8c63e","event":"wrangler command started","timestamp":1785745075735,"properties":{"amplitude_session_id":1785745075732,"amplitude_event_id":0,"wranglerVersion":"4.92.0","wranglerMajorVersion":4,"wranglerMinorVersion":92,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 11 Home","nodeVersion":24,"packageManager":"npm","isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":false,"hasAssets":false,"agent":null,"argsUsed":[],"argsCombination":"","sanitizedCommand":"d1 create","sanitizedArgs":{}}}
+---
+
+--- 2026-08-03T08:17:55.758Z debug
+-- START CF API REQUEST: POST https://api.cloudflare.com/client/v4/accounts/c8efdeac9c51e5db063ae854270042a9/d1/database
+---
+
+--- 2026-08-03T08:17:55.759Z debug
+QUERY STRING: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-03T08:17:55.759Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-03T08:17:55.759Z debug
+INIT: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-03T08:17:55.759Z debug
+-- END CF API REQUEST
+---
+
+--- 2026-08-03T08:17:56.815Z debug
+-- START CF API RESPONSE: OK 200
+---
+
+--- 2026-08-03T08:17:56.815Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-03T08:17:56.815Z debug
+RESPONSE: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-03T08:17:56.815Z debug
+-- END CF API RESPONSE
+---
+
+--- 2026-08-03T08:17:56.816Z log
+✅ Successfully created DB 'xiaoman-mobile-order-db' in region APAC
+---
+
+--- 2026-08-03T08:17:56.816Z log
+Created your new D1 database.
+
+---
+
+--- 2026-08-03T08:17:56.816Z log
+To access your new D1 Database in your Worker, add the following snippet to your configuration file:
+---
+
+--- 2026-08-03T08:17:56.817Z log
+{
+  "d1_databases": [
+    {
+      "binding": "xiaoman_mobile_order_db",
+      "database_name": "xiaoman-mobile-order-db",
+      "database_id": "fba34a8f-f50a-4a46-92ce-34c5f8d79926"
+    }
+  ]
+}
+---
+
+--- 2026-08-03T08:17:56.819Z debug
+Metrics dispatcher: Posting data {"deviceId":"62481879-fe5f-41db-8e59-654eafe8c63e","event":"wrangler command completed","timestamp":1785745076818,"properties":{"amplitude_session_id":1785745075732,"amplitude_event_id":1,"wranglerVersion":"4.92.0","wranglerMajorVersion":4,"wranglerMinorVersion":92,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 11 Home","nodeVersion":24,"packageManager":"npm","isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":false,"hasAssets":false,"agent":null,"argsUsed":[],"argsCombination":"","sanitizedCommand":"d1 create","sanitizedArgs":{},"durationMs":1096}}
+---

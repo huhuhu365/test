@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1785739001760,
+      "tag": "0000_rare_thing",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1785742674687,
+      "tag": "0001_fantastic_slayback",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1785745152654,
+      "tag": "0002_cloudy_ogun",
+      "breakpoints": true
+    }
+  ]
+}

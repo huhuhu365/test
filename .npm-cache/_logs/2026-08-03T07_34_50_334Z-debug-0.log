@@ -1,0 +1,60 @@
+0 verbose cli C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js
+1 info using npm@11.11.0
+2 info using node@v24.14.1
+3 silly config load:file:C:\Program Files\nodejs\node_modules\npm\npmrc
+4 silly config load:file:C:\wang\mobile-order\.npmrc
+5 silly config load:file:C:\Users\study\.npmrc
+6 silly config load:file:C:\Users\study\AppData\Roaming\npm\etc\npmrc
+7 verbose title npm install qrcode
+8 verbose argv "install" "qrcode"
+9 verbose logfile logs-max:10 dir:C:\wang\.npm-cache\_logs\2026-08-03T07_34_50_334Z-
+10 verbose logfile C:\wang\.npm-cache\_logs\2026-08-03T07_34_50_334Z-debug-0.log
+11 silly logfile done cleaning log files
+12 silly packumentCache heap:4496293888 maxSize:1124073472 maxEntrySize:562036736
+13 verbose shrinkwrap failed to load node_modules/.package-lock.json out of date, updated: node_modules
+14 silly idealTree buildDeps
+15 silly fetch manifest qrcode@*
+16 silly packumentCache full:https://registry.npmjs.org/qrcode cache-miss
+17 http fetch GET https://registry.npmjs.org/qrcode attempt 1 failed with EACCES
+18 http fetch GET https://registry.npmjs.org/qrcode attempt 2 failed with EACCES
+19 http fetch GET https://registry.npmjs.org/qrcode attempt 3 failed with EACCES
+20 silly placeDep ROOT qrcode@ OK for: site-creator-vinext-starter@0.1.0 want: *
+21 verbose type system
+22 verbose stack FetchError: request to https://registry.npmjs.org/qrcode failed, reason: 
+22 verbose stack     at ClientRequest.<anonymous> (C:\Program Files\nodejs\node_modules\npm\node_modules\minipass-fetch\lib\index.js:130:14)
+22 verbose stack     at ClientRequest.emit (node:events:508:28)
+22 verbose stack     at emitErrorEvent (node:_http_client:108:11)
+22 verbose stack     at _destroy (node:_http_client:963:9)
+22 verbose stack     at onSocketNT (node:_http_client:983:5)
+22 verbose stack     at process.processTicksAndRejections (node:internal/process/task_queues:91:21)
+23 error code EACCES
+24 error errno EACCES
+25 error FetchError: request to https://registry.npmjs.org/qrcode failed, reason: 
+25 error     at ClientRequest.<anonymous> (C:\Program Files\nodejs\node_modules\npm\node_modules\minipass-fetch\lib\index.js:130:14)
+25 error     at ClientRequest.emit (node:events:508:28)
+25 error     at emitErrorEvent (node:_http_client:108:11)
+25 error     at _destroy (node:_http_client:963:9)
+25 error     at onSocketNT (node:_http_client:983:5)
+25 error     at process.processTicksAndRejections (node:internal/process/task_queues:91:21) {
+25 error   code: 'EACCES',
+25 error   errno: 'EACCES',
+25 error   type: 'system',
+25 error   requiredBy: '.'
+25 error }
+26 error
+26 error The operation was rejected by your operating system.
+26 error It's possible that the file was already in use (by a text editor or antivirus),
+26 error or that you lack permissions to access it.
+26 error
+26 error If you believe this might be a permissions issue, please double-check the
+26 error permissions of the file and its containing directories, or try running
+26 error the command again as root/Administrator.
+27 silly unfinished npm timer reify 1785742491655
+28 silly unfinished npm timer reify:loadTrees 1785742491656
+29 verbose cwd C:\wang\mobile-order
+30 verbose os Windows_NT 10.0.26200
+31 verbose node v24.14.1
+32 verbose npm  v11.11.0
+33 verbose exit 1
+34 verbose code 1
+35 error A complete log of this run can be found in: C:\wang\.npm-cache\_logs\2026-08-03T07_34_50_334Z-debug-0.log

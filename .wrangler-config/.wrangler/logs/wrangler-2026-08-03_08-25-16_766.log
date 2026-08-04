@@ -1,0 +1,74 @@
+
+--- 2026-08-03T08:25:16.929Z debug
+🪵  Writing logs to "C:\wang\.wrangler-config\.wrangler\logs\wrangler-2026-08-03_08-25-16_766.log"
+---
+
+--- 2026-08-03T08:25:16.929Z debug
+.env file not found at "C:\wang\mobile-order\.env". Continuing... For more details, refer to https://developers.cloudflare.com/workers/wrangler/system-environment-variables/
+---
+
+--- 2026-08-03T08:25:16.930Z debug
+.env file not found at "C:\wang\mobile-order\.env.local". Continuing... For more details, refer to https://developers.cloudflare.com/workers/wrangler/system-environment-variables/
+---
+
+--- 2026-08-03T08:25:16.937Z log
+
+ ⛅️ wrangler 4.92.0 (update available 4.118.0)
+──────────────────────────────────────────────
+---
+
+--- 2026-08-03T08:25:16.946Z debug
+Metrics dispatcher: Posting data {"deviceId":"62481879-fe5f-41db-8e59-654eafe8c63e","event":"wrangler command started","timestamp":1785745516946,"properties":{"amplitude_session_id":1785745516943,"amplitude_event_id":0,"wranglerVersion":"4.92.0","wranglerMajorVersion":4,"wranglerMinorVersion":92,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 11 Home","nodeVersion":24,"packageManager":"npm","isFirstUsage":false,"configFileType":"jsonc","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":false,"hasAssets":true,"agent":null,"argsUsed":["config"],"argsCombination":"config","sanitizedCommand":"secret put","sanitizedArgs":{}}}
+---
+
+--- 2026-08-03T08:25:16.972Z log
+🌀 Creating the secret for the Worker "xiaoman-mobile-order" 
+---
+
+--- 2026-08-03T08:25:16.973Z debug
+-- START CF API REQUEST: PUT https://api.cloudflare.com/client/v4/accounts/c8efdeac9c51e5db063ae854270042a9/workers/scripts/xiaoman-mobile-order/secrets
+---
+
+--- 2026-08-03T08:25:16.973Z debug
+QUERY STRING: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-03T08:25:16.974Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-03T08:25:16.974Z debug
+INIT: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-03T08:25:16.974Z debug
+-- END CF API REQUEST
+---
+
+--- 2026-08-03T08:25:17.712Z debug
+-- START CF API RESPONSE: Created 201
+---
+
+--- 2026-08-03T08:25:17.712Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-03T08:25:17.712Z debug
+RESPONSE: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-03T08:25:17.712Z debug
+-- END CF API RESPONSE
+---
+
+--- 2026-08-03T08:25:17.714Z debug
+Metrics dispatcher: Posting data {"deviceId":"62481879-fe5f-41db-8e59-654eafe8c63e","event":"create encrypted variable","timestamp":1785745517714,"properties":{"amplitude_session_id":1785745517712,"amplitude_event_id":0,"wranglerVersion":"4.92.0","wranglerMajorVersion":4,"wranglerMinorVersion":92,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 11 Home","nodeVersion":24,"packageManager":"npm","isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":false,"hasAssets":false,"agent":null,"category":"Workers","os":"win32:x64","secretOperation":"single","secretSource":"stdin","hasEnvironment":false}}
+---
+
+--- 2026-08-03T08:25:17.714Z log
+✨ Success! Uploaded secret ADMIN_PASSWORD
+---
+
+--- 2026-08-03T08:25:17.716Z debug
+Metrics dispatcher: Posting data {"deviceId":"62481879-fe5f-41db-8e59-654eafe8c63e","event":"wrangler command completed","timestamp":1785745517716,"properties":{"amplitude_session_id":1785745516943,"amplitude_event_id":1,"wranglerVersion":"4.92.0","wranglerMajorVersion":4,"wranglerMinorVersion":92,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 11 Home","nodeVersion":24,"packageManager":"npm","isFirstUsage":false,"configFileType":"jsonc","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":false,"hasAssets":true,"agent":null,"argsUsed":["config"],"argsCombination":"config","sanitizedCommand":"secret put","sanitizedArgs":{},"durationMs":784}}
+---

@@ -1,0 +1,771 @@
+
+--- 2026-08-04T01:26:30.936Z debug
+🪵  Writing logs to "C:\wang\.wrangler-config\.wrangler\logs\wrangler-2026-08-04_01-26-30_807.log"
+---
+
+--- 2026-08-04T01:26:30.936Z debug
+.env file not found at "C:\wang\mobile-order\.env". Continuing... For more details, refer to https://developers.cloudflare.com/workers/wrangler/system-environment-variables/
+---
+
+--- 2026-08-04T01:26:30.937Z debug
+.env file not found at "C:\wang\mobile-order\.env.local". Continuing... For more details, refer to https://developers.cloudflare.com/workers/wrangler/system-environment-variables/
+---
+
+--- 2026-08-04T01:26:31.038Z log
+
+ ⛅️ wrangler 4.92.0
+───────────────────
+---
+
+--- 2026-08-04T01:26:31.048Z debug
+Metrics dispatcher: Posting data {"deviceId":"62481879-fe5f-41db-8e59-654eafe8c63e","event":"wrangler command started","timestamp":1785806791048,"properties":{"amplitude_session_id":1785806791043,"amplitude_event_id":0,"wranglerVersion":"4.92.0","wranglerMajorVersion":4,"wranglerMinorVersion":92,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 11 Home","nodeVersion":24,"packageManager":"npm","isFirstUsage":false,"configFileType":"jsonc","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":false,"hasAssets":true,"agent":null,"argsUsed":["config"],"argsCombination":"config","sanitizedCommand":"deploy","sanitizedArgs":{}}}
+---
+
+--- 2026-08-04T01:26:31.324Z debug
+fetching auth token grant_type=refresh_token&refresh_token=cfort_1Y0uacByr0GFyRvDBeHxYhWhstsdWTLmuH25epF5Hng.975ESVf78vUGfFaYIueFk9c1zxdfSf0TySe1cg_uYCc&client_id=54d11594-84e4-41aa-b438-e81b8fa78ee7
+---
+
+--- 2026-08-04T01:26:31.324Z debug
+Checking if domain has Access enabled: dash.cloudflare.com
+---
+
+--- 2026-08-04T01:26:31.324Z debug
+Access switch not cached for: dash.cloudflare.com
+---
+
+--- 2026-08-04T01:26:31.427Z debug
+Caching access switch for: dash.cloudflare.com
+---
+
+--- 2026-08-04T01:26:31.427Z debug
+Fetching auth token from https://dash.cloudflare.com/oauth2/token
+---
+
+--- 2026-08-04T01:26:32.201Z debug
+Starting verifyWorkerMatchesCITag() with tag: undefined, name: xiaoman-mobile-order
+---
+
+--- 2026-08-04T01:26:32.201Z debug
+No WRANGLER_CI_MATCH_TAG variable provided, aborting verifyWorkerMatchesCITag()
+---
+
+--- 2026-08-04T01:26:32.202Z debug
+-- START CF API REQUEST: GET https://api.cloudflare.com/client/v4/accounts/c8efdeac9c51e5db063ae854270042a9/workers/services/xiaoman-mobile-order
+---
+
+--- 2026-08-04T01:26:32.202Z debug
+QUERY STRING: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:32.203Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:32.203Z debug
+INIT: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:32.203Z debug
+-- END CF API REQUEST
+---
+
+--- 2026-08-04T01:26:32.604Z debug
+-- START CF API RESPONSE: OK 200
+---
+
+--- 2026-08-04T01:26:32.604Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:32.604Z debug
+RESPONSE: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:32.604Z debug
+-- END CF API RESPONSE
+---
+
+--- 2026-08-04T01:26:32.606Z debug
+-- START CF API REQUEST: GET https://api.cloudflare.com/client/v4/accounts/c8efdeac9c51e5db063ae854270042a9/workers/scripts/xiaoman-mobile-order/deployments
+---
+
+--- 2026-08-04T01:26:32.606Z debug
+QUERY STRING: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:32.606Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:32.606Z debug
+INIT: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:32.606Z debug
+-- END CF API REQUEST
+---
+
+--- 2026-08-04T01:26:32.897Z debug
+-- START CF API RESPONSE: OK 200
+---
+
+--- 2026-08-04T01:26:32.897Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:32.897Z debug
+RESPONSE: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:32.897Z debug
+-- END CF API RESPONSE
+---
+
+--- 2026-08-04T01:26:32.911Z info
+Attaching additional modules:
+---
+
+--- 2026-08-04T01:26:32.917Z log
+┌───────────────────────────────────────────────┬──────┬────────────┐
+│ Name                                          │ Type │ Size       │
+├───────────────────────────────────────────────┼──────┼────────────┤
+│ ssr/assets/AdminDashboard-DD4Fd7zr.js         │ esm  │ 166.00 KiB │
+├───────────────────────────────────────────────┼──────┼────────────┤
+│ ssr/assets/error-boundary-D9m9x3qt.js         │ esm  │ 8.22 KiB   │
+├───────────────────────────────────────────────┼──────┼────────────┤
+│ ssr/assets/layout-segment-context-BA17t9-a.js │ esm  │ 1.70 KiB   │
+├───────────────────────────────────────────────┼──────┼────────────┤
+│ ssr/assets/OrderingApp-BvekHhZL.js            │ esm  │ 16.72 KiB  │
+├───────────────────────────────────────────────┼──────┼────────────┤
+│ ssr/assets/page-DjBC_g-r.js                   │ esm  │ 3.59 KiB   │
+├───────────────────────────────────────────────┼──────┼────────────┤
+│ ssr/index.js                                  │ esm  │ 570.98 KiB │
+├───────────────────────────────────────────────┼──────┼────────────┤
+│ ssr/__vite_rsc_assets_manifest.js             │ esm  │ 1.55 KiB   │
+├───────────────────────────────────────────────┼──────┼────────────┤
+│ __vite_rsc_assets_manifest.js                 │ esm  │ 1.55 KiB   │
+├───────────────────────────────────────────────┼──────┼────────────┤
+│ Total (8 modules)                             │      │ 770.32 KiB │
+└───────────────────────────────────────────────┴──────┴────────────┘
+---
+
+--- 2026-08-04T01:26:32.919Z info
+🌀 Building list of assets...
+---
+
+--- 2026-08-04T01:26:32.921Z info
+✨ Read 19 files from the assets directory C:\wang\mobile-order\dist\client
+---
+
+--- 2026-08-04T01:26:32.921Z debug
+/.assetsignore
+---
+
+--- 2026-08-04T01:26:32.921Z debug
+/.vite
+---
+
+--- 2026-08-04T01:26:32.921Z debug
+/assets
+---
+
+--- 2026-08-04T01:26:32.921Z debug
+/favicon.svg
+---
+
+--- 2026-08-04T01:26:32.921Z debug
+/file.svg
+---
+
+--- 2026-08-04T01:26:32.921Z debug
+/globe.svg
+---
+
+--- 2026-08-04T01:26:32.922Z debug
+/local-site.json
+---
+
+--- 2026-08-04T01:26:32.922Z debug
+/og.png
+---
+
+--- 2026-08-04T01:26:32.922Z debug
+/window.svg
+---
+
+--- 2026-08-04T01:26:32.922Z debug
+/_headers
+---
+
+--- 2026-08-04T01:26:32.922Z debug
+/assets\AdminDashboard-Bxi1EGEZ.js
+---
+
+--- 2026-08-04T01:26:32.922Z debug
+/assets\framework-CXnKph_e.js
+---
+
+--- 2026-08-04T01:26:32.922Z debug
+/assets\index-BObpt0cU.css
+---
+
+--- 2026-08-04T01:26:32.922Z debug
+/assets\index-Ysl7w5ly.js
+---
+
+--- 2026-08-04T01:26:32.922Z debug
+/assets\layout-segment-context-DantatPq.js
+---
+
+--- 2026-08-04T01:26:32.922Z debug
+/assets\OrderingApp-DUv1Ffd8.js
+---
+
+--- 2026-08-04T01:26:32.922Z debug
+/assets\page-yyiuNXJa.js
+---
+
+--- 2026-08-04T01:26:32.922Z debug
+/assets\rolldown-runtime-S-ySWqyJ.js
+---
+
+--- 2026-08-04T01:26:32.922Z debug
+/.vite\manifest.json
+---
+
+--- 2026-08-04T01:26:32.923Z debug
+Ignoring asset: .assetsignore
+---
+
+--- 2026-08-04T01:26:32.924Z debug
+Ignoring asset: _headers
+---
+
+--- 2026-08-04T01:26:32.945Z info
+🌀 Starting asset upload...
+---
+
+--- 2026-08-04T01:26:32.946Z debug
+-- START CF API REQUEST: POST https://api.cloudflare.com/client/v4/accounts/c8efdeac9c51e5db063ae854270042a9/workers/scripts/xiaoman-mobile-order/assets-upload-session
+---
+
+--- 2026-08-04T01:26:32.946Z debug
+QUERY STRING: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:32.946Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:32.946Z debug
+INIT: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:32.947Z debug
+-- END CF API REQUEST
+---
+
+--- 2026-08-04T01:26:34.792Z debug
+-- START CF API RESPONSE: OK 200
+---
+
+--- 2026-08-04T01:26:34.792Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:34.792Z debug
+RESPONSE: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:34.792Z debug
+-- END CF API RESPONSE
+---
+
+--- 2026-08-04T01:26:34.792Z info
+🌀 Found 5 new or modified static assets to upload. Proceeding with upload...
+---
+
+--- 2026-08-04T01:26:34.793Z info
++ /assets/layout-segment-context-DantatPq.js
+---
+
+--- 2026-08-04T01:26:34.793Z info
++ /assets/AdminDashboard-Bxi1EGEZ.js
+---
+
+--- 2026-08-04T01:26:34.793Z info
++ /.vite/manifest.json
+---
+
+--- 2026-08-04T01:26:34.793Z info
++ /assets/index-Ysl7w5ly.js
+---
+
+--- 2026-08-04T01:26:34.793Z info
++ /assets/index-BObpt0cU.css
+---
+
+--- 2026-08-04T01:26:34.796Z debug
+-- START CF API REQUEST: POST https://api.cloudflare.com/client/v4/accounts/c8efdeac9c51e5db063ae854270042a9/workers/assets/upload?base64=true
+---
+
+--- 2026-08-04T01:26:34.796Z debug
+QUERY STRING: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:34.796Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:34.796Z debug
+INIT: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:34.798Z debug
+BODY: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:34.798Z debug
+-- END CF API REQUEST
+---
+
+--- 2026-08-04T01:26:34.801Z debug
+-- START CF API REQUEST: POST https://api.cloudflare.com/client/v4/accounts/c8efdeac9c51e5db063ae854270042a9/workers/assets/upload?base64=true
+---
+
+--- 2026-08-04T01:26:34.801Z debug
+QUERY STRING: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:34.801Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:34.801Z debug
+INIT: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:34.801Z debug
+BODY: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:34.801Z debug
+-- END CF API REQUEST
+---
+
+--- 2026-08-04T01:26:34.803Z debug
+-- START CF API REQUEST: POST https://api.cloudflare.com/client/v4/accounts/c8efdeac9c51e5db063ae854270042a9/workers/assets/upload?base64=true
+---
+
+--- 2026-08-04T01:26:34.803Z debug
+QUERY STRING: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:34.803Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:34.803Z debug
+INIT: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:34.805Z debug
+BODY: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:34.805Z debug
+-- END CF API REQUEST
+---
+
+--- 2026-08-04T01:26:35.665Z debug
+-- START CF API RESPONSE: Accepted 202
+---
+
+--- 2026-08-04T01:26:35.665Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:35.665Z debug
+RESPONSE: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:35.665Z debug
+-- END CF API RESPONSE
+---
+
+--- 2026-08-04T01:26:35.665Z info
+Uploaded 2 of 5 assets
+---
+
+--- 2026-08-04T01:26:35.666Z debug
+✨ /assets/layout-segment-context-DantatPq.js
+---
+
+--- 2026-08-04T01:26:35.666Z debug
+✨ /assets/AdminDashboard-Bxi1EGEZ.js
+---
+
+--- 2026-08-04T01:26:35.682Z debug
+-- START CF API RESPONSE: Accepted 202
+---
+
+--- 2026-08-04T01:26:35.682Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:35.682Z debug
+RESPONSE: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:35.682Z debug
+-- END CF API RESPONSE
+---
+
+--- 2026-08-04T01:26:35.682Z info
+Uploaded 4 of 5 assets
+---
+
+--- 2026-08-04T01:26:35.682Z debug
+✨ /.vite/manifest.json
+---
+
+--- 2026-08-04T01:26:35.682Z debug
+✨ /assets/index-Ysl7w5ly.js
+---
+
+--- 2026-08-04T01:26:35.867Z debug
+-- START CF API RESPONSE: Created 201
+---
+
+--- 2026-08-04T01:26:35.867Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:35.867Z debug
+RESPONSE: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:35.867Z debug
+-- END CF API RESPONSE
+---
+
+--- 2026-08-04T01:26:35.867Z info
+Uploaded 5 of 5 assets
+---
+
+--- 2026-08-04T01:26:35.868Z debug
+✨ /assets/index-BObpt0cU.css
+---
+
+--- 2026-08-04T01:26:35.868Z log
+✨ Success! Uploaded 5 files (10 already uploaded) (1.07 sec)
+
+---
+
+--- 2026-08-04T01:26:35.898Z log
+Total Upload: 1563.87 KiB / gzip: 341.40 KiB
+---
+
+--- 2026-08-04T01:26:35.898Z debug
+-- START CF API REQUEST: GET https://api.cloudflare.com/client/v4/accounts/c8efdeac9c51e5db063ae854270042a9/workers/scripts/xiaoman-mobile-order/settings
+---
+
+--- 2026-08-04T01:26:35.898Z debug
+QUERY STRING: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:35.898Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:35.898Z debug
+INIT: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:35.899Z debug
+-- END CF API REQUEST
+---
+
+--- 2026-08-04T01:26:36.173Z debug
+-- START CF API RESPONSE: OK 200
+---
+
+--- 2026-08-04T01:26:36.173Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:36.173Z debug
+RESPONSE: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:36.173Z debug
+-- END CF API RESPONSE
+---
+
+--- 2026-08-04T01:26:36.178Z debug
+-- START CF API REQUEST: POST https://api.cloudflare.com/client/v4/accounts/c8efdeac9c51e5db063ae854270042a9/workers/scripts/xiaoman-mobile-order/versions
+---
+
+--- 2026-08-04T01:26:36.178Z debug
+QUERY STRING: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:36.178Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:36.178Z debug
+INIT: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:36.181Z debug
+BODY: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:36.182Z debug
+-- END CF API REQUEST
+---
+
+--- 2026-08-04T01:26:37.400Z debug
+-- START CF API RESPONSE: OK 200
+---
+
+--- 2026-08-04T01:26:37.400Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:37.401Z debug
+RESPONSE: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:37.401Z debug
+-- END CF API RESPONSE
+---
+
+--- 2026-08-04T01:26:37.401Z debug
+-- START CF API REQUEST: POST https://api.cloudflare.com/client/v4/accounts/c8efdeac9c51e5db063ae854270042a9/workers/scripts/xiaoman-mobile-order/deployments
+---
+
+--- 2026-08-04T01:26:37.401Z debug
+QUERY STRING: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:37.401Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:37.401Z debug
+INIT: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:37.401Z debug
+-- END CF API REQUEST
+---
+
+--- 2026-08-04T01:26:37.880Z debug
+-- START CF API RESPONSE: OK 200
+---
+
+--- 2026-08-04T01:26:37.880Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:37.880Z debug
+RESPONSE: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:37.880Z debug
+-- END CF API RESPONSE
+---
+
+--- 2026-08-04T01:26:37.880Z debug
+-- START CF API REQUEST: PATCH https://api.cloudflare.com/client/v4/accounts/c8efdeac9c51e5db063ae854270042a9/workers/scripts/xiaoman-mobile-order/script-settings
+---
+
+--- 2026-08-04T01:26:37.880Z debug
+QUERY STRING: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:37.880Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:37.880Z debug
+INIT: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:37.881Z debug
+-- END CF API REQUEST
+---
+
+--- 2026-08-04T01:26:38.287Z debug
+-- START CF API RESPONSE: OK 200
+---
+
+--- 2026-08-04T01:26:38.287Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:38.287Z debug
+RESPONSE: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:38.287Z debug
+-- END CF API RESPONSE
+---
+
+--- 2026-08-04T01:26:38.288Z log
+Worker Startup Time: 24 ms
+---
+
+--- 2026-08-04T01:26:38.289Z log
+Your Worker has access to the following bindings:
+---
+
+--- 2026-08-04T01:26:38.290Z log
+Binding                                   Resource         
+---
+
+--- 2026-08-04T01:26:38.290Z log
+env.DB (xiaoman-mobile-order-db)          D1 Database      
+---
+
+--- 2026-08-04T01:26:38.290Z log
+env.ASSETS                                Assets           
+---
+
+--- 2026-08-04T01:26:38.290Z log
+
+---
+
+--- 2026-08-04T01:26:38.291Z log
+Uploaded xiaoman-mobile-order (5.68 sec)
+---
+
+--- 2026-08-04T01:26:38.291Z debug
+-- START CF API REQUEST: GET https://api.cloudflare.com/client/v4/accounts/c8efdeac9c51e5db063ae854270042a9/workers/subdomain
+---
+
+--- 2026-08-04T01:26:38.291Z debug
+QUERY STRING: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:38.291Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:38.292Z debug
+INIT: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:38.292Z debug
+-- END CF API REQUEST
+---
+
+--- 2026-08-04T01:26:38.575Z debug
+-- START CF API RESPONSE: OK 200
+---
+
+--- 2026-08-04T01:26:38.575Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:38.575Z debug
+RESPONSE: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:38.575Z debug
+-- END CF API RESPONSE
+---
+
+--- 2026-08-04T01:26:38.575Z debug
+-- START CF API REQUEST: GET https://api.cloudflare.com/client/v4/accounts/c8efdeac9c51e5db063ae854270042a9/workers/scripts/xiaoman-mobile-order/subdomain
+---
+
+--- 2026-08-04T01:26:38.575Z debug
+QUERY STRING: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:38.575Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:38.575Z debug
+INIT: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:38.576Z debug
+-- END CF API REQUEST
+---
+
+--- 2026-08-04T01:26:38.834Z debug
+-- START CF API RESPONSE: OK 200
+---
+
+--- 2026-08-04T01:26:38.835Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:38.835Z debug
+RESPONSE: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:38.835Z debug
+-- END CF API RESPONSE
+---
+
+--- 2026-08-04T01:26:38.835Z debug
+-- START CF API REQUEST: POST https://api.cloudflare.com/client/v4/accounts/c8efdeac9c51e5db063ae854270042a9/workers/scripts/xiaoman-mobile-order/subdomain
+---
+
+--- 2026-08-04T01:26:38.835Z debug
+QUERY STRING: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:38.835Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:38.835Z debug
+INIT: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:38.835Z debug
+-- END CF API REQUEST
+---
+
+--- 2026-08-04T01:26:39.112Z debug
+-- START CF API RESPONSE: OK 200
+---
+
+--- 2026-08-04T01:26:39.113Z debug
+HEADERS: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:39.113Z debug
+RESPONSE: omitted; set WRANGLER_LOG_SANITIZE=false to include sanitized data
+---
+
+--- 2026-08-04T01:26:39.113Z debug
+-- END CF API RESPONSE
+---
+
+--- 2026-08-04T01:26:39.113Z log
+Deployed xiaoman-mobile-order triggers (0.82 sec)
+---
+
+--- 2026-08-04T01:26:39.113Z log
+  https://xiaoman-mobile-order.wangyonghuang.workers.dev
+---
+
+--- 2026-08-04T01:26:39.114Z log
+Current Version ID: 34c46010-de8b-4436-b8e7-e09eb9e80020
+---
+
+--- 2026-08-04T01:26:39.116Z debug
+Metrics dispatcher: Posting data {"deviceId":"62481879-fe5f-41db-8e59-654eafe8c63e","event":"deploy worker script","timestamp":1785806799116,"properties":{"amplitude_session_id":1785806799114,"amplitude_event_id":0,"wranglerVersion":"4.92.0","wranglerMajorVersion":4,"wranglerMinorVersion":92,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 11 Home","nodeVersion":24,"packageManager":"npm","isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":false,"hasAssets":false,"agent":null,"category":"Workers","os":"win32:x64","usesTypeScript":false,"durationMs":6913}}
+---
+
+--- 2026-08-04T01:26:39.119Z debug
+Metrics dispatcher: Posting data {"deviceId":"62481879-fe5f-41db-8e59-654eafe8c63e","event":"wrangler command completed","timestamp":1785806799119,"properties":{"amplitude_session_id":1785806791043,"amplitude_event_id":1,"wranglerVersion":"4.92.0","wranglerMajorVersion":4,"wranglerMinorVersion":92,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 11 Home","nodeVersion":24,"packageManager":"npm","isFirstUsage":false,"configFileType":"jsonc","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":false,"hasAssets":true,"agent":null,"argsUsed":["config"],"argsCombination":"config","sanitizedCommand":"deploy","sanitizedArgs":{},"durationMs":8179}}
+---

@@ -1,0 +1,10 @@
+[2mDefault inspector port 9229 not available, using 9231 instead
+[22m
+Unable to fetch the `Request.cf` object! Falling back to a default placeholder...
+AggregateError [EACCES]: 
+    at internalConnectMultiple (node:net:1142:49)
+    at afterConnectMultiple (node:net:1723:7)
+Unable to fetch the `Request.cf` object! Falling back to a default placeholder...
+AggregateError [EACCES]: 
+    at internalConnectMultiple (node:net:1142:49)
+    at afterConnectMultiple (node:net:1723:7)

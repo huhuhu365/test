@@ -1,0 +1,62 @@
+
+--- 2026-08-03T08:15:29.477Z debug
+🪵  Writing logs to "C:\wang\.wrangler-config\.wrangler\logs\wrangler-2026-08-03_08-15-29_323.log"
+---
+
+--- 2026-08-03T08:15:29.477Z debug
+.env file not found at "C:\wang\mobile-order\.env". Continuing... For more details, refer to https://developers.cloudflare.com/workers/wrangler/system-environment-variables/
+---
+
+--- 2026-08-03T08:15:29.479Z debug
+.env file not found at "C:\wang\mobile-order\.env.local". Continuing... For more details, refer to https://developers.cloudflare.com/workers/wrangler/system-environment-variables/
+---
+
+--- 2026-08-03T08:15:29.589Z log
+
+ ⛅️ wrangler 4.92.0
+───────────────────
+---
+
+--- 2026-08-03T08:15:29.597Z debug
+Metrics dispatcher: Posting data {"deviceId":"62481879-fe5f-41db-8e59-654eafe8c63e","event":"wrangler command started","timestamp":1785744929597,"properties":{"amplitude_session_id":1785744929593,"amplitude_event_id":0,"wranglerVersion":"4.92.0","wranglerMajorVersion":4,"wranglerMinorVersion":92,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 11 Home","nodeVersion":24,"packageManager":"npm","isFirstUsage":true,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":false,"hasAssets":false,"agent":null,"argsUsed":[],"argsCombination":"","sanitizedCommand":"login","sanitizedArgs":{}}}
+---
+
+--- 2026-08-03T08:15:29.613Z log
+Attempting to login via OAuth...
+---
+
+--- 2026-08-03T08:15:29.631Z log
+Opening a link in your default browser: https://dash.cloudflare.com/oauth2/auth?response_type=code&client_id=54d11594-84e4-41aa-b438-e81b8fa78ee7&redirect_uri=http%3A%2F%2Flocalhost%3A8976%2Foauth%2Fcallback&scope=account%3Aread%20user%3Aread%20workers%3Awrite%20workers_kv%3Awrite%20workers_routes%3Awrite%20workers_scripts%3Awrite%20workers_tail%3Aread%20d1%3Awrite%20pages%3Awrite%20zone%3Aread%20ssl_certs%3Awrite%20ai%3Awrite%20ai-search%3Awrite%20ai-search%3Arun%20queues%3Awrite%20pipelines%3Awrite%20secrets_store%3Awrite%20artifacts%3Awrite%20flagship%3Awrite%20containers%3Awrite%20cloudchamber%3Awrite%20connectivity%3Aadmin%20email_routing%3Awrite%20email_sending%3Awrite%20browser%3Awrite%20offline_access&state=emTa5USN4ExI93ux~Ob1f4kF-~rWE1cg&code_challenge=BYAkY4SFqM_7yaKM3yQBfcNmPkqBMXNugul8zEf9xIU&code_challenge_method=S256
+---
+
+--- 2026-08-03T08:16:06.483Z debug
+fetching auth token grant_type=authorization_code&code=cfoac_JQ0bEGAk4lQPtjRPRUkEJRqZiSZX5p7fh_FnLQksTXA.HMSKQyB0XPmPppHmshR4v5OSmzjNHThoZ6DS5VXn3kc&redirect_uri=http%3A%2F%2Flocalhost%3A8976%2Foauth%2Fcallback&client_id=54d11594-84e4-41aa-b438-e81b8fa78ee7&code_verifier=X0ZOR3lTRDFybzQxbFRCN2V3NmpXbC5xVzcxTll6RDhMRTUtZ2o1Tms0NnlDVW1oNDBWeFJYUGZ-MDhIVlU1UWJIQ0U1Q2V4cjM5NTRSUlNsUi5VZ0JwZnRteVF3TEZu
+---
+
+--- 2026-08-03T08:16:06.483Z debug
+Checking if domain has Access enabled: dash.cloudflare.com
+---
+
+--- 2026-08-03T08:16:06.483Z debug
+Access switch not cached for: dash.cloudflare.com
+---
+
+--- 2026-08-03T08:16:06.529Z debug
+Caching access switch for: dash.cloudflare.com
+---
+
+--- 2026-08-03T08:16:06.530Z debug
+Fetching auth token from https://dash.cloudflare.com/oauth2/token
+---
+
+--- 2026-08-03T08:16:06.801Z log
+Successfully logged in.
+---
+
+--- 2026-08-03T08:16:06.811Z debug
+Metrics dispatcher: Posting data {"deviceId":"62481879-fe5f-41db-8e59-654eafe8c63e","event":"login user","timestamp":1785744966810,"properties":{"amplitude_session_id":1785744966802,"amplitude_event_id":0,"wranglerVersion":"4.92.0","wranglerMajorVersion":4,"wranglerMinorVersion":92,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 11 Home","nodeVersion":24,"packageManager":"npm","isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":false,"hasAssets":false,"agent":null,"category":"Workers","os":"win32:x64"}}
+---
+
+--- 2026-08-03T08:16:06.815Z debug
+Metrics dispatcher: Posting data {"deviceId":"62481879-fe5f-41db-8e59-654eafe8c63e","event":"wrangler command completed","timestamp":1785744966815,"properties":{"amplitude_session_id":1785744929593,"amplitude_event_id":1,"wranglerVersion":"4.92.0","wranglerMajorVersion":4,"wranglerMinorVersion":92,"wranglerPatchVersion":0,"osPlatform":"Windows","osVersion":"Windows 11 Home","nodeVersion":24,"packageManager":"npm","isFirstUsage":false,"configFileType":"none","isCI":false,"isPagesCI":false,"isWorkersCI":false,"isInteractive":false,"hasAssets":false,"agent":null,"argsUsed":[],"argsCombination":"","sanitizedCommand":"login","sanitizedArgs":{},"durationMs":37333}}
+---

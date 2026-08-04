@@ -1,0 +1,4 @@
+oauth_token = "cfoat_vNwDEaFR_KxhQieTZMaikFDOj1uEtH-ZZC6lgGPzhSM.18KdwjtqMKlIU_kx6hRtBTa4RdmznPiPJYrWEshxihE"
+expiration_time = "2026-08-04T02:26:32.197Z"
+refresh_token = "cfort_5yz__Q7FcEqYIC1c0a1EXSUIZ90f8s_m-NLOWosP6xc.X8Dsuj3Iugs5FTPV-_u6DgHQplY90aFerPn7Ijk8ALs"
+scopes = [ "account:read", "user:read", "workers:write", "workers_kv:write", "workers_routes:write", "workers_scripts:write", "workers_tail:read", "d1:write", "pages:write", "zone:read", "ssl_certs:write", "ai:write", "ai-search:write", "ai-search:run", "queues:write", "pipelines:write", "secrets_store:write", "artifacts:write", "flagship:write", "containers:write", "cloudchamber:write", "connectivity:admin", "email_routing:write", "email_sending:write", "browser:write", "offline_access" ]
