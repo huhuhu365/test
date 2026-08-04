@@ -4,3 +4,13 @@ vite-dev*.log
 .vscode/
 .DS_Store
 backend/target/
+.npm-cache/
+.wrangler-config/
+mobile-order/.git_disabled/
+mobile-order/node_modules/
+mobile-order/dist/
+mobile-order/.wrangler/
+mobile-order/dev.out.log
+mobile-order/dev.err.log
+mobile-order/store-dev.out.log
+mobile-order/store-dev.err.log
