@@ -24,7 +24,6 @@ export async function GET(
       and(
         eq(orders.tableNumber, tableNumber),
         ne(orders.status, "cancelled"),
-        ne(orders.status, "completed"),
         ne(orders.paymentStatus, "paid"),
       ),
     )
