@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.times;
 
 import com.example.usedcar.entity.Vehicle;
 import com.example.usedcar.mapper.VehicleMapper;
@@ -79,7 +80,7 @@ class VehicleServiceTest {
     assertEquals(3L, input.getId());
     assertSame(existing, updated);
     verify(vehicleMapper).update(input);
-    verify(vehicleMapper).findById(3L);
+    verify(vehicleMapper, times(2)).findById(3L);
   }
 
   @Test
