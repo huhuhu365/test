@@ -16,6 +16,7 @@ export const dishes = sqliteTable("dishes", {
 export const orders = sqliteTable("orders", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   orderNumber: text("order_number").notNull(),
+  requestId: text("request_id"),
   tableNumber: integer("table_number").notNull(),
   status: text("status").notNull().default("new"),
   paymentStatus: text("payment_status").notNull().default("unpaid"),
@@ -26,6 +27,7 @@ export const orders = sqliteTable("orders", {
   createdAt: text("created_at").notNull().default(sql`(CURRENT_TIMESTAMP)`),
 }, (table) => [
   uniqueIndex("idx_orders_order_number").on(table.orderNumber),
+  uniqueIndex("idx_orders_request_id").on(table.requestId),
   index("idx_orders_status_created").on(table.status, table.createdAt),
   index("idx_orders_table_created").on(table.tableNumber, table.createdAt),
   index("idx_orders_table_payment").on(table.tableNumber, table.paymentStatus),

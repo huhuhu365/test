@@ -22,6 +22,13 @@
       "when": 1785745152654,
       "tag": "0002_cloudy_ogun",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1787732989278,
+      "tag": "0003_rich_iron_monger",
+      "breakpoints": true
     }
   ]
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 type Dish = { id: number; name: string; description: string; price: number; category: string; imageUrl: string | null };
 type BillItem = { id: number; dishName: string; unitPrice: number; quantity: number };
@@ -28,6 +28,7 @@ export default function OrderingApp({ tableNumber, seatToken }: { tableNumber: n
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState<{ orderNumber: string; total: number } | null>(null);
   const [error, setError] = useState("");
+  const submitLock = useRef(false);
 
   const loadBill = useCallback(() => fetch(`/api/table-bill?token=${encodeURIComponent(seatToken)}`).then(readJson).then((data) => setBill(data.bill)).catch(() => undefined), [seatToken]);
 
@@ -54,14 +55,16 @@ export default function OrderingApp({ tableNumber, seatToken }: { tableNumber: n
   }
 
   async function submitOrder() {
+    if (submitLock.current || !count) return;
+    submitLock.current = true;
     setSubmitting(true); setError("");
     try {
-      const response = await fetch("/api/orders", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ seatToken, note, items: Object.entries(cart).map(([dishId, quantity]) => ({ dishId: Number(dishId), quantity })) }) });
+      const response = await fetch("/api/orders", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ requestId: crypto.randomUUID(), seatToken, note, items: Object.entries(cart).map(([dishId, quantity]) => ({ dishId: Number(dishId), quantity })) }) });
       const data = await readJson(response);
       setSuccess({ orderNumber: data.order.orderNumber, total: data.order.total });
       setCart({}); setSheet(null); setNote(""); await loadBill();
     } catch (caught) { setError(caught instanceof Error ? caught.message : "下单失败，请重试"); }
-    finally { setSubmitting(false); }
+    finally { submitLock.current = false; setSubmitting(false); }
   }
 
   async function requestCheckout() {
