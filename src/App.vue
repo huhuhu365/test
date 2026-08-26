@@ -1,5 +1,26 @@
 ﻿<template>
-    <div v-if="activeApp === 'guide'" class="guide-shell">
+    <main v-if="activeApp === 'vehicle' && !isAuthenticated" class="login-page">
+        <section class="login-card" aria-labelledby="login-title">
+            <div class="login-brand" aria-hidden="true">車</div>
+            <p class="login-eyebrow">USED CAR MANAGEMENT</p>
+            <h1 id="login-title">中古車管理システム</h1>
+            <p class="login-description">管理画面を利用するにはログインしてください。</p>
+            <form class="login-form" @submit.prevent="login">
+                <label>
+                    <span>ユーザー名</span>
+                    <input v-model.trim="loginForm.username" type="text" autocomplete="username" placeholder="ユーザー名を入力" autofocus />
+                </label>
+                <label>
+                    <span>パスワード</span>
+                    <input v-model="loginForm.password" type="password" autocomplete="current-password" placeholder="パスワードを入力" />
+                </label>
+                <p v-if="loginError" class="login-error" role="alert">{{ loginError }}</p>
+                <button type="submit" class="login-button">ログイン</button>
+            </form>
+        </section>
+    </main>
+
+    <div v-else-if="activeApp === 'guide'" class="guide-shell">
         <aside class="guide-sidebar">
             <button
                 type="button"
@@ -392,6 +413,10 @@
                     >
                         <Plus :size="18" aria-hidden="true" />
                         <span>車両を追加</span>
+                    </button>
+                    <button type="button" class="logout-button" title="ログアウト" @click="logout">
+                        <LogOut :size="18" aria-hidden="true" />
+                        <span>ログアウト</span>
                     </button>
                 </div>
             </header>
@@ -886,6 +911,7 @@ import {
     FerrisWheel,
     Gauge,
     LayoutDashboard,
+    LogOut,
     MapPin,
     PanelLeftClose,
     PanelRightOpen,
@@ -908,6 +934,9 @@ const masterDataUrl = "/api/master-data";
 const placesApiUrl = "/api/places/search";
 const fallbackStatusOptions = ["available", "reserved", "sold", "maintenance"];
 const currentPath = ref(window.location.pathname);
+const isAuthenticated = ref(sessionStorage.getItem("usedCarAuthenticated") === "true");
+const loginForm = reactive({ username: "", password: "" });
+const loginError = ref("");
 const guideAddress = ref("東京都渋谷区");
 const selectedGuideKey = ref("tokyo");
 const guideCategory = ref("all");
@@ -916,6 +945,26 @@ const favoriteSpotIds = ref([]);
 const savedVehicleColors = ref({});
 const apiGuideData = ref(null);
 const isSearchingPlaces = ref(false);
+
+const login = async () => {
+    loginError.value = "";
+    if (loginForm.username !== "admin" || loginForm.password !== "password") {
+        loginError.value = "ユーザー名またはパスワードが正しくありません。";
+        return;
+    }
+    sessionStorage.setItem("usedCarAuthenticated", "true");
+    isAuthenticated.value = true;
+    loginForm.password = "";
+    await Promise.all([loadMasterData(), loadVehicles()]);
+};
+
+const logout = () => {
+    sessionStorage.removeItem("usedCarAuthenticated");
+    isAuthenticated.value = false;
+    loginForm.username = "";
+    loginForm.password = "";
+    loginError.value = "";
+};
 
 const guideCategoryOptions = [
     { value: "all", label: "すべて" },
@@ -3659,6 +3708,8 @@ onMounted(async () => {
         activeApp.value === "guide"
             ? "近くのグルメ・遊び案内"
             : "中古車管理システム";
-    await Promise.all([loadMasterData(), loadVehicles()]);
+    if (activeApp.value === "guide" || isAuthenticated.value) {
+        await Promise.all([loadMasterData(), loadVehicles()]);
+    }
 });
 </script>
