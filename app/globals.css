@@ -1,4 +1,4 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
 
 :root {
   --ink: #20241e;
@@ -177,6 +177,10 @@ main { min-height: 100vh; max-width: 560px; margin: 0 auto; background: var(--cr
 .admin-section-title { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 13px; }
 .admin-section-title h1 { margin: 0; font-size: 19px; }
 .admin-section-title span { color: #989c94; font-size: 10px; }
+.admin-section-title-with-action { align-items: center; gap: 12px; }
+.admin-section-title-with-action > div { display: flex; flex-direction: column; gap: 4px; }
+.admin-refresh-button { border: 0; border-radius: 10px; padding: 9px 12px; background: #e7eee5; color: var(--green); font-size: 10px; font-weight: 700; white-space: nowrap; }
+.admin-refresh-button:disabled { opacity: .6; cursor: default; }
 .admin-empty { padding: 65px 20px; background: white; border-radius: 18px; text-align: center; color: #969b92; font-size: 12px; }
 .order-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(285px, 1fr)); gap: 13px; }
 .order-card { border-radius: 17px; background: white; padding: 15px; box-shadow: 0 5px 22px rgba(42,47,40,.05); border-top: 4px solid #dd7840; }
