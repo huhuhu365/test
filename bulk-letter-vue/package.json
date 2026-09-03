@@ -1,0 +1,19 @@
+{
+  "name": "bulk-letter-vue",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "server": "node server/server.js",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@vitejs/plugin-vue": "latest",
+    "express": "latest",
+    "nodemailer": "^9.1.1",
+    "vite": "latest",
+    "vue": "latest",
+    "vue-router": "^5.3.0"
+  }
+}
