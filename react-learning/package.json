@@ -1,0 +1,20 @@
+{
+  "name": "react-learning",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "server": "node server/server.js",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "latest",
+    "express": "^5.2.1",
+    "react": "latest",
+    "react-dom": "latest",
+    "react-router-dom": "^7.18.3",
+    "vite": "latest"
+  }
+}

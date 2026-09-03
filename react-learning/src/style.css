@@ -1,0 +1,81 @@
+:root {
+  font-family: Inter, "Microsoft YaHei", system-ui, sans-serif;
+  color: #20242c;
+  background: #eef4f2;
+  font-synthesis: none;
+}
+
+* { box-sizing: border-box; }
+
+body { margin: 0; min-width: 320px; min-height: 100vh; }
+
+button, input { font: inherit; }
+
+button { cursor: pointer; }
+
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 32px 16px;
+  background:
+    radial-gradient(circle at 15% 15%, #d6eee5 0, transparent 32%),
+    radial-gradient(circle at 85% 85%, #f5dfc5 0, transparent 30%);
+}
+
+.card {
+  width: min(680px, 100%);
+  padding: 38px;
+  border: 1px solid rgba(32, 36, 44, 0.08);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 24px 70px rgba(31, 60, 50, 0.12);
+}
+
+.eyebrow { margin: 0 0 8px; color: #13805c; font-size: 12px; font-weight: 800; letter-spacing: 0.16em; }
+h1 { margin: 0; font-size: clamp(32px, 7vw, 50px); letter-spacing: -0.04em; }
+.intro { margin: 10px 0 28px; color: #697078; }
+
+.add-form { display: flex; gap: 10px; }
+.add-form input { flex: 1; min-width: 0; padding: 13px 15px; border: 1px solid #d9dedc; border-radius: 12px; outline: none; }
+.add-form input:focus { border-color: #15956b; box-shadow: 0 0 0 3px rgba(21, 149, 107, 0.12); }
+.add-form button { padding: 0 20px; border: 0; border-radius: 12px; color: white; background: #157b5b; font-weight: 700; }
+
+.toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 26px 0 14px; color: #697078; font-size: 14px; }
+.filters { display: flex; padding: 4px; border-radius: 10px; background: #f0f3f2; }
+.filters button { padding: 7px 10px; border: 0; border-radius: 7px; color: #697078; background: transparent; }
+.filters button.active { color: #20242c; background: white; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+
+.task-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.task { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 15px 16px; border: 1px solid #e5e9e7; border-radius: 13px; background: white; }
+.task label { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.task input { width: 18px; height: 18px; accent-color: #157b5b; }
+.task--done span { color: #919795; text-decoration: line-through; }
+.delete-button { padding: 6px 9px; border: 0; color: #a34747; background: transparent; }
+.empty { padding: 32px; border: 1px dashed #ced7d3; border-radius: 13px; color: #7c8581; text-align: center; }
+
+@media (max-width: 560px) {
+  .card { padding: 25px 18px; }
+  .add-form { flex-direction: column; }
+  .add-form button { padding: 13px; }
+  .toolbar { align-items: flex-start; flex-direction: column; }
+}
+
+.login-page { min-height: 100vh; display: grid; place-items: center; padding: 24px; background: radial-gradient(circle at 15% 20%, #ccece0 0, transparent 34%), radial-gradient(circle at 85% 80%, #f6dcbc 0, transparent 32%), #eef4f2; }
+.login-card { width: min(430px, 100%); padding: 40px; border: 1px solid rgba(32, 36, 44, .08); border-radius: 24px; background: rgba(255, 255, 255, .94); box-shadow: 0 24px 70px rgba(31, 60, 50, .14); }
+.login-logo { display: grid; place-items: center; width: 48px; height: 48px; margin-bottom: 22px; border-radius: 14px; color: white; background: #157b5b; font-size: 24px; font-weight: 800; }
+.login-intro { margin: 10px 0 28px; color: #697078; }
+.login-form { display: grid; gap: 18px; }
+.login-form label { display: grid; gap: 8px; font-size: 14px; font-weight: 700; }
+.login-form input { width: 100%; padding: 13px 14px; border: 1px solid #d9dedc; border-radius: 12px; outline: none; }
+.login-form input:focus { border-color: #15956b; box-shadow: 0 0 0 3px rgba(21, 149, 107, .12); }
+.login-form > button { padding: 14px; border: 0; border-radius: 12px; color: white; background: #157b5b; font-weight: 800; }
+.login-form > button:hover { background: #106849; }
+.login-error { margin: -4px 0; color: #b33f3f; font-size: 14px; }
+.login-tip { margin: 22px 0 0; color: #8a918e; font-size: 13px; text-align: center; }
+.home-header { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 14px max(20px, calc((100% - 680px) / 2)); border-bottom: 1px solid #dfe7e3; background: rgba(255, 255, 255, .92); backdrop-filter: blur(10px); }
+.home-header button { padding: 8px 12px; border: 1px solid #d7dfdc; border-radius: 9px; background: white; }
+
+@media (max-width: 560px) {
+  .login-card { padding: 30px 22px; }
+}
