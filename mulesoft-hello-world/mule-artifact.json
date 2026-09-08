@@ -1,0 +1,5 @@
+{
+  "minMuleVersion": "4.9.0",
+  "javaSpecificationVersions": ["17"],
+  "configs": ["hello-world.xml"]
+}

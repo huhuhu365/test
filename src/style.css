@@ -1514,3 +1514,22 @@ td {
         flex-basis: auto;
     }
 }
+.employee-layout{display:grid;grid-template-columns:280px minmax(0,1fr);gap:22px}.employee-list-panel{align-self:start}.employee-list-item{display:flex;align-items:center;gap:12px;width:100%;padding:12px;border:1px solid transparent;border-radius:12px;background:transparent;text-align:left}.employee-list-item:hover,.employee-list-item.active{border-color:#b8c9ff;background:#eef3ff}.employee-list-item>span{display:grid;place-items:center;width:38px;height:38px;border-radius:10px;color:#fff;background:#3157d5;font-weight:800}.employee-list-item div{display:grid;gap:3px}.employee-list-item small{color:#718096}.employee-edit-panel .panel-header a{color:#3157d5;font-size:13px;font-weight:700}.employee-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.employee-form-grid label{display:grid;gap:7px;color:#344054;font-size:13px;font-weight:700}.employee-form-grid label.full{grid-column:1/-1}.employee-form-grid label b{display:inline;color:#d14343;font-size:11px}.employee-form-grid input,.employee-form-grid select{width:100%;padding:11px 12px;border:1px solid #d8deea;border-radius:9px;background:#fff;outline:none}.employee-form-grid input:focus,.employee-form-grid select:focus{border-color:#5a78df;box-shadow:0 0 0 3px rgba(49,87,213,.12)}.employee-form-grid .retired-check{display:flex;align-items:center;align-self:end;height:42px}.retired-check input{width:18px}.password-field{display:flex}.password-field input{border-radius:9px 0 0 9px}.password-field button{padding:0 12px;border:1px solid #d8deea;border-left:0;border-radius:0 9px 9px 0;background:#f7f9fc}.field-error{color:#cf3f3f}.form-note{color:#718096;font-size:12px}.employee-success{padding:11px;border-radius:9px;color:#176b45;background:#e8f7ef}.employee-edit-panel .modal-actions{position:static;margin-top:22px}.employee-edit-panel .primary-button:disabled{cursor:not-allowed;opacity:.45}@media(max-width:900px){.employee-layout{grid-template-columns:1fr}.employee-form-grid{grid-template-columns:1fr}.employee-form-grid label.full{grid-column:auto}}
+.employee-layout.list-only{grid-template-columns:1fr}.employee-layout.list-only .employee-list-panel{width:100%}.employee-layout.list-only .employee-list-item{padding:15px 16px}.employee-layout.list-only .employee-list-item>span:first-child{display:grid;place-items:center;flex:0 0 38px;width:38px;height:38px;border-radius:10px;color:#fff;background:#3157d5;font-weight:800}.employee-layout.list-only .employee-list-item .employee-mail{display:inline;width:auto;height:auto;margin-left:auto;border-radius:0;color:#667085;background:transparent;font-weight:500}.employee-layout.list-only .employee-list-item em{padding:5px 9px;border-radius:99px;color:#3656b5;background:#edf2ff;font-size:11px;font-style:normal}.employee-layout.list-only .employee-list-item>b{color:#3157d5;font-size:12px}
+.employee-layout.edit-only{grid-template-columns:minmax(0,920px);justify-content:start}.employee-layout.edit-only .employee-edit-panel{width:100%;padding:28px 32px}.employee-layout.edit-only .panel-header{align-items:flex-start;gap:20px}.employee-layout.edit-only .panel-header a{flex:0 0 auto;padding:8px 12px;border-radius:8px;background:#eef3ff;text-decoration:none}.employee-layout.edit-only .retired-check{display:flex;align-items:center;gap:9px;align-self:end;padding-bottom:10px;white-space:nowrap}.employee-layout.edit-only .retired-check input{flex:0 0 18px;width:18px;height:18px}.employee-layout.edit-only .password-field input{min-width:0}@media(max-width:700px){.employee-layout.edit-only .employee-edit-panel{padding:22px 18px}}
+
+/* 已经退职的员工再次进入画面时，以灰色明确表示所有资料均不可修改。
+   在职员工本次勾选退职时不套用此样式，以便继续点击更新完成退职处理。 */
+.employee-form-grid.retirement-selected label:not(.retired-check){color:#98a2b3}
+.employee-form-grid.retirement-selected label:not(.retired-check) b{color:#b8bec8}
+.employee-form-grid.retirement-selected input:not([type="checkbox"]),
+.employee-form-grid.retirement-selected select,
+.employee-form-grid.retirement-selected .password-field button{
+    border-color:#d5d9e0;
+    color:#8b95a5;
+    background:#eef0f3;
+    box-shadow:none;
+}
+.employee-form-grid.retirement-selected input:not([type="checkbox"])::placeholder{color:#aeb5c0}
+.employee-form-grid.retirement-selected .retired-check{color:#98a2b3}
+.employee-form-grid.retirement-selected .retired-check input{cursor:not-allowed;opacity:.6}

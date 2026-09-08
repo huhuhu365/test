@@ -16,6 +16,7 @@
                 </label>
                 <p v-if="loginError" class="login-error" role="alert">{{ loginError }}</p>
                 <button type="submit" class="login-button">ログイン</button>
+                <small class="login-hint">管理者：admin / password　一般社員：EMP-002 / Password1</small>
             </form>
         </section>
     </main>
@@ -26,7 +27,7 @@
                 type="button"
                 class="brand guide-brand"
                 title="testへ"
-                @click="goToPath('/test')"
+                @click="goToPath('/vehicles')"
             >
                 <div class="brand-mark">旅</div>
                 <div class="brand-copy">
@@ -43,7 +44,7 @@
                 <button
                     type="button"
                     title="車両管理へ"
-                    @click="goToPath('/test')"
+                    @click="goToPath('/vehicles')"
                 >
                     <Car :size="19" aria-hidden="true" />
                     <span>車両管理へ</span>
@@ -52,7 +53,7 @@
 
             <div class="sidebar-footer">
                 <p>URL</p>
-                <strong>/test2</strong>
+                <strong>/local-guide</strong>
             </div>
         </aside>
 
@@ -67,7 +68,7 @@
                 <button
                     type="button"
                     class="ghost-button"
-                    @click="goToPath('/test')"
+                    @click="goToPath('/vehicles')"
                 >
                     車両管理システムへ
                 </button>
@@ -358,11 +359,11 @@
 
             <nav class="side-nav" aria-label="メインナビゲーション">
                 <button
-                    v-for="item in navItems"
+                    v-for="item in visibleNavItems"
                     :key="item.id"
                     type="button"
                     :class="{ active: currentView === item.id }"
-                    @click="currentView = item.id"
+                    @click="handleNavClick(item.id)"
                     :title="item.label"
                 >
                     <component :is="item.icon" :size="19" aria-hidden="true" />
@@ -376,9 +377,9 @@
                 <button
                     type="button"
                     class="mini-link"
-                    @click="goToPath('/test2')"
+                    @click="goToPath('/local-guide')"
                 >
-                    /test2へ
+                    周辺ガイドへ
                 </button>
             </div>
         </aside>
@@ -390,30 +391,32 @@
                     <h1>{{ pageTitle }}</h1>
                 </div>
                 <div class="topbar-actions">
-                    <button
-                        type="button"
-                        class="icon-button"
-                        title="再読み込み"
-                        @click="loadVehicles"
-                    >
-                        <RefreshCw :size="19" aria-hidden="true" />
-                    </button>
-                    <button
-                        type="button"
-                        class="icon-button"
-                        title="CSVを書き出し"
-                        @click="exportVehicles"
-                    >
-                        <Download :size="19" aria-hidden="true" />
-                    </button>
-                    <button
-                        type="button"
-                        class="primary-button"
-                        @click="openCreateModal"
-                    >
-                        <Plus :size="18" aria-hidden="true" />
-                        <span>車両を追加</span>
-                    </button>
+                    <template v-if="currentView === 'overview'">
+                        <button
+                            type="button"
+                            class="icon-button"
+                            title="再読み込み"
+                            @click="loadVehicles"
+                        >
+                            <RefreshCw :size="19" aria-hidden="true" />
+                        </button>
+                        <button
+                            type="button"
+                            class="icon-button"
+                            title="CSVを書き出し"
+                            @click="exportVehicles"
+                        >
+                            <Download :size="19" aria-hidden="true" />
+                        </button>
+                        <button
+                            type="button"
+                            class="primary-button"
+                            @click="openCreateModal"
+                        >
+                            <Plus :size="18" aria-hidden="true" />
+                            <span>車両を追加</span>
+                        </button>
+                    </template>
                     <button type="button" class="logout-button" title="ログアウト" @click="logout">
                         <LogOut :size="18" aria-hidden="true" />
                         <span>ログアウト</span>
@@ -686,6 +689,39 @@
                 </section>
             </section>
 
+            <section v-else-if="currentView === 'employees'" :class="['employee-layout', employeeMode === 'list' ? 'list-only' : 'edit-only']">
+                <aside v-if="employeeMode === 'list'" class="panel employee-list-panel">
+                    <div class="panel-header"><div><h2>社員一覧</h2><p>社員をクリックするとログイン情報・社員情報の更新画面へ移動します</p></div><button type="button" class="primary-button" @click="openCreateEmployee"><Plus :size="18" /><span>社員登録</span></button></div>
+                    <p v-if="employeeMessage" class="employee-success">{{ employeeMessage }}</p>
+                    <button v-for="employee in employees" :key="employee.userId" type="button" :class="['employee-list-item', { active: selectedEmployeeId === employee.userId }]" @click="selectEmployee(employee)">
+                        <span>{{ employee.lastName.slice(0, 1) }}</span>
+                        <div><strong>{{ employee.lastName }} {{ employee.firstName }}</strong><small>{{ employee.userId }} · {{ employee.retired ? '退職' : '在籍' }}</small></div>
+                        <em>{{ employee.role === 'admin' ? '管理者' : '一般社員' }}</em>
+                        <span class="employee-mail">{{ employee.email }}</span>
+                        <b>更新する →</b>
+                    </button>
+                </aside>
+
+                <form v-else class="panel employee-edit-panel" @submit.prevent="updateEmployee">
+                    <div class="panel-header"><div><h2>{{ employeeMode === 'create' ? '社員登録' : currentUserRole === 'admin' ? '社員更新' : '登録情報更新' }}</h2><p>{{ employeeMode === 'create' ? '新しい社員のログイン情報・社員情報を登録します' : 'ログイン情報・登録済み社員情報を変更します' }}</p></div><a v-if="currentUserRole === 'admin'" href="/employees" @click.prevent="showEmployeeList">社員一覧へ戻る</a></div>
+                    <div :class="['employee-form-grid', { 'retirement-selected': retiredEmployeeLocked }]">
+                        <label class="full">ユーザーID <b>必須</b><input v-model.trim="employeeForm.userId" :disabled="retiredEmployeeLocked" maxlength="128" /><small v-if="employeeErrors.userId" class="field-error">{{ employeeErrors.userId }}</small></label>
+                        <label>姓 <b>必須</b><input v-model.trim="employeeForm.lastName" :disabled="retiredEmployeeLocked" maxlength="100" /><small v-if="employeeErrors.lastName" class="field-error">{{ employeeErrors.lastName }}</small></label>
+                        <label>名 <b>必須</b><input v-model.trim="employeeForm.firstName" :disabled="retiredEmployeeLocked" maxlength="100" /><small v-if="employeeErrors.firstName" class="field-error">{{ employeeErrors.firstName }}</small></label>
+                        <label>姓（かな） <b>必須</b><input v-model.trim="employeeForm.lastNameKana" :disabled="retiredEmployeeLocked" maxlength="100" /><small v-if="employeeErrors.lastNameKana" class="field-error">{{ employeeErrors.lastNameKana }}</small></label>
+                        <label>名（かな） <b>必須</b><input v-model.trim="employeeForm.firstNameKana" :disabled="retiredEmployeeLocked" maxlength="100" /><small v-if="employeeErrors.firstNameKana" class="field-error">{{ employeeErrors.firstNameKana }}</small></label>
+                        <label>権限 <b>必須</b><select v-model="employeeForm.role" :disabled="retiredEmployeeLocked"><option value="admin">管理者</option><option value="staff">一般社員</option></select></label>
+                        <label v-if="currentUserRole === 'admin' && employeeMode === 'edit'" class="retired-check"><input v-model="employeeForm.retired" type="checkbox" :disabled="retiredEmployeeLocked" />退職者にする</label>
+                        <label class="full">メールアドレス <b>必須</b><input v-model.trim="employeeForm.email" :disabled="retiredEmployeeLocked" type="email" maxlength="255" /><small v-if="employeeErrors.email" class="field-error">{{ employeeErrors.email }}</small></label>
+                        <label>パスワード <b v-if="!employeeForm.retired">必須</b><div class="password-field"><input v-model="employeeForm.password" :disabled="retiredEmployeeLocked" :type="showEmployeePassword ? 'text' : 'password'" autocomplete="new-password" /><button type="button" :disabled="retiredEmployeeLocked" @click="showEmployeePassword = !showEmployeePassword">{{ showEmployeePassword ? '非表示' : '表示' }}</button></div><small v-if="employeeErrors.password" class="field-error">{{ employeeErrors.password }}</small></label>
+                        <label>パスワード（確認） <b v-if="!employeeForm.retired">必須</b><div class="password-field"><input v-model="employeeForm.passwordConfirm" :disabled="retiredEmployeeLocked" :type="showEmployeePasswordConfirm ? 'text' : 'password'" autocomplete="new-password" /><button type="button" :disabled="retiredEmployeeLocked" @click="showEmployeePasswordConfirm = !showEmployeePasswordConfirm">{{ showEmployeePasswordConfirm ? '非表示' : '表示' }}</button></div><small v-if="employeeErrors.passwordConfirm" class="field-error">{{ employeeErrors.passwordConfirm }}</small></label>
+                    </div>
+                    <p class="form-note">{{ employeeForm.retired ? '退職処理ではパスワードの入力は不要です。' : employeeMode === 'create' ? '新規登録用の初期パスワードを入力してください。' : '社員情報を更新するにはパスワードを入力してください。' }}</p>
+                    <p v-if="employeeMessage" class="employee-success">{{ employeeMessage }}</p>
+                    <div class="modal-actions"><button type="submit" class="primary-button" :disabled="retiredEmployeeLocked"><Save :size="18" /><span>{{ employeeMode === 'create' ? '登録' : '更新' }}</span></button></div>
+                </form>
+            </section>
+
             <section v-else class="content-grid">
                 <article class="panel">
                     <div class="panel-header">
@@ -925,6 +961,7 @@ import {
     Trash2,
     TriangleAlert,
     Utensils,
+    Users,
     Wrench,
     X,
 } from "@lucide/vue";
@@ -935,8 +972,98 @@ const placesApiUrl = "/api/places/search";
 const fallbackStatusOptions = ["available", "reserved", "sold", "maintenance"];
 const currentPath = ref(window.location.pathname);
 const isAuthenticated = ref(sessionStorage.getItem("usedCarAuthenticated") === "true");
+const currentUserRole = ref(sessionStorage.getItem("usedCarRole") || "");
+const currentUserId = ref(sessionStorage.getItem("usedCarUserId") || "");
 const loginForm = reactive({ username: "", password: "" });
 const loginError = ref("");
+const employeeMessage = ref("");
+const employeeErrors = reactive({});
+const showEmployeePassword = ref(false);
+const showEmployeePasswordConfirm = ref(false);
+const selectedEmployeeId = ref("EMP-001");
+const employeeMode = ref("list");
+// 记录进入更新画面时的退职状态。
+// 只有原本已经退职的员工才会被永久锁定；在职员工本次勾选退职时仍可提交更新。
+const originalEmployeeRetired = ref(false);
+const retiredEmployeeLocked = computed(
+    () => employeeMode.value === "edit" && originalEmployeeRetired.value,
+);
+const employees = ref([
+    { userId: "EMP-001", lastName: "山田", firstName: "太郎", lastNameKana: "ヤマダ", firstNameKana: "タロウ", role: "admin", retired: false, email: "yamada@example.jp" },
+    { userId: "EMP-002", lastName: "佐藤", firstName: "花子", lastNameKana: "サトウ", firstNameKana: "ハナコ", role: "staff", retired: false, email: "sato@example.jp" },
+]);
+const employeeForm = reactive({ userId: "EMP-001", lastName: "山田", firstName: "太郎", lastNameKana: "ヤマダ", firstNameKana: "タロウ", role: "admin", retired: false, email: "yamada@example.jp", password: "", passwordConfirm: "" });
+
+const selectEmployee = (employee, updateUrl = true) => {
+    selectedEmployeeId.value = employee.userId;
+    employeeMode.value = "edit";
+    originalEmployeeRetired.value = employee.retired;
+    Object.assign(employeeForm, employee, { password: "", passwordConfirm: "" });
+    employeeMessage.value = "";
+    Object.keys(employeeErrors).forEach((key) => delete employeeErrors[key]);
+    if (updateUrl) setAppPath(`/employees/${encodeURIComponent(employee.userId)}`);
+};
+
+const openCreateEmployee = (updateUrl = true) => {
+    selectedEmployeeId.value = "";
+    employeeMode.value = "create";
+    originalEmployeeRetired.value = false;
+    Object.assign(employeeForm, {
+        userId: "",
+        lastName: "",
+        firstName: "",
+        lastNameKana: "",
+        firstNameKana: "",
+        role: "staff",
+        retired: false,
+        email: "",
+        password: "",
+        passwordConfirm: "",
+    });
+    employeeMessage.value = "";
+    Object.keys(employeeErrors).forEach((key) => delete employeeErrors[key]);
+    if (updateUrl) setAppPath("/employees/new");
+};
+
+const showEmployeeList = () => {
+    employeeMode.value = "list";
+    employeeMessage.value = "";
+    setAppPath("/employees");
+};
+
+const updateEmployee = () => {
+    // 已退职员工不允许修改资料，也不允许恢复为在职状态。
+    if (retiredEmployeeLocked.value) return;
+    Object.keys(employeeErrors).forEach((key) => delete employeeErrors[key]);
+    if (!employeeForm.userId || employeeForm.userId.length > 128) employeeErrors.userId = "ユーザーIDは必須・128文字以内です。";
+    if (employees.value.some((item) => item.userId === employeeForm.userId && item.userId !== selectedEmployeeId.value)) employeeErrors.userId = "ユーザーIDは重複できません。";
+    for (const key of ["lastName", "firstName", "lastNameKana", "firstNameKana"]) {
+        if (!employeeForm[key] || employeeForm[key].length > 100) employeeErrors[key] = "必須・全角100文字以内で入力してください。";
+    }
+    if (!/^\S+@\S+\.\S+$/.test(employeeForm.email) || employeeForm.email.length > 255) employeeErrors.email = "正しいメールアドレスを255文字以内で入力してください。";
+    // 退职处理只更新退职状态，因此不要求重新输入密码。
+    if (!employeeForm.retired) {
+        if (!employeeForm.password) employeeErrors.password = "パスワードは必須です。";
+        if (employeeForm.password && (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(employeeForm.password))) employeeErrors.password = "8文字以上で英大文字・英小文字・数字を含めてください。";
+        if (!employeeForm.passwordConfirm) employeeErrors.passwordConfirm = "確認用パスワードは必須です。";
+        if (employeeForm.password && employeeForm.passwordConfirm && employeeForm.password !== employeeForm.passwordConfirm) employeeErrors.passwordConfirm = "確認用パスワードが一致しません。";
+    }
+    if (Object.keys(employeeErrors).length) return;
+    const index = employees.value.findIndex((item) => item.userId === selectedEmployeeId.value);
+    const saved = { userId: employeeForm.userId, lastName: employeeForm.lastName, firstName: employeeForm.firstName, lastNameKana: employeeForm.lastNameKana, firstNameKana: employeeForm.firstNameKana, role: employeeForm.role, retired: employeeForm.retired, email: employeeForm.email };
+    if (index >= 0) employees.value[index] = saved; else employees.value.push(saved);
+    selectedEmployeeId.value = saved.userId;
+    originalEmployeeRetired.value = saved.retired;
+    localStorage.setItem("usedCarEmployees", JSON.stringify(employees.value));
+    const wasCreate = employeeMode.value === "create";
+    employeeMessage.value = wasCreate ? "社員を登録しました。" : "社員情報を更新しました。";
+    // 更新完成后保留本次输入值，避免成功提示出现时密码框突然变空。
+    // 密码不会写入 employees 或 localStorage，离开画面后仍会被清除。
+    if (wasCreate) {
+        employeeMode.value = "list";
+        setAppPath("/employees");
+    }
+};
 const guideAddress = ref("東京都渋谷区");
 const selectedGuideKey = ref("tokyo");
 const guideCategory = ref("all");
@@ -948,19 +1075,37 @@ const isSearchingPlaces = ref(false);
 
 const login = async () => {
     loginError.value = "";
-    if (loginForm.username !== "admin" || loginForm.password !== "password") {
+    const isAdminLogin = loginForm.username === "admin" && loginForm.password === "password";
+    const employee = employees.value.find((item) => item.userId === loginForm.username && !item.retired);
+    const isEmployeeLogin = Boolean(employee && loginForm.password === "Password1");
+    if (!isAdminLogin && !isEmployeeLogin) {
         loginError.value = "ユーザー名またはパスワードが正しくありません。";
         return;
     }
     sessionStorage.setItem("usedCarAuthenticated", "true");
+    currentUserRole.value = isAdminLogin ? "admin" : "staff";
+    currentUserId.value = isAdminLogin ? "admin" : employee.userId;
+    sessionStorage.setItem("usedCarRole", currentUserRole.value);
+    sessionStorage.setItem("usedCarUserId", currentUserId.value);
     isAuthenticated.value = true;
     loginForm.password = "";
+    if (isEmployeeLogin) {
+        currentView.value = "employees";
+        selectEmployee(employee);
+    } else {
+        currentView.value = "overview";
+        setAppPath("/vehicles", true);
+    }
     await Promise.all([loadMasterData(), loadVehicles()]);
 };
 
 const logout = () => {
     sessionStorage.removeItem("usedCarAuthenticated");
+    sessionStorage.removeItem("usedCarRole");
+    sessionStorage.removeItem("usedCarUserId");
     isAuthenticated.value = false;
+    currentUserRole.value = "";
+    currentUserId.value = "";
     loginForm.username = "";
     loginForm.password = "";
     loginError.value = "";
@@ -1176,6 +1321,51 @@ const rememberVehicleColor = (vehicle) => {
 
 const vehicles = ref([]);
 const currentView = ref("overview");
+const viewPaths = {
+    overview: "/vehicles",
+    employees: "/employees",
+    analytics: "/analytics",
+    calendar: "/calendar",
+    makers: "/makers",
+};
+
+const setAppPath = (path, replace = false) => {
+    window.history[replace ? "replaceState" : "pushState"]({}, "", path);
+    currentPath.value = path;
+};
+
+const handleNavClick = (viewId) => {
+    currentView.value = viewId;
+    if (viewId === "employees" && currentUserRole.value === "admin") {
+        employeeMode.value = "list";
+    } else if (viewId === "employees") {
+        const ownEmployee = employees.value.find((item) => item.userId === currentUserId.value);
+        if (ownEmployee) selectEmployee(ownEmployee);
+    }
+    if (viewId !== "employees" || currentUserRole.value === "admin") {
+        setAppPath(viewPaths[viewId] || "/vehicles");
+    }
+};
+
+const syncViewFromPath = () => {
+    const path = window.location.pathname;
+    currentPath.value = path;
+    if (path.startsWith("/employees")) {
+        currentView.value = "employees";
+        const tail = decodeURIComponent(path.slice("/employees/".length));
+        if (tail === "new" && currentUserRole.value === "admin") {
+            openCreateEmployee(false);
+        } else if (tail && tail !== path) {
+            const employee = employees.value.find((item) => item.userId === tail);
+            if (employee) selectEmployee(employee, false);
+            else employeeMode.value = "list";
+        } else {
+            employeeMode.value = "list";
+        }
+        return;
+    }
+    currentView.value = Object.entries(viewPaths).find(([, value]) => value === path)?.[0] || "overview";
+};
 const isSidebarCollapsed = ref(false);
 const calendarSaturdayHidden = ref(false);
 const query = ref("");
@@ -3131,21 +3321,29 @@ const guideAreas = {
 
 const navItems = [
     { id: "overview", label: "車両管理", icon: LayoutDashboard },
+    { id: "employees", label: "社員管理", icon: Users },
     { id: "analytics", label: "販売分析", icon: BarChart3 },
     { id: "calendar", label: "カレンダー", icon: CalendarDays },
     { id: "makers", label: "メーカー情報", icon: Tags },
 ];
+
+// 一般社員には車両管理や社員一覧を見せず、自分の登録情報更新だけを表示する。
+const visibleNavItems = computed(() =>
+    currentUserRole.value === "staff"
+        ? [{ id: "employees", label: "登録情報更新", icon: Users }]
+        : navItems,
+);
 
 const apiStatusLabel = computed(() =>
     apiConnected.value ? "Spring API 接続中" : "デモデータ表示",
 );
 const pageTitle = computed(
     () =>
-        navItems.find((item) => item.id === currentView.value)?.label ||
+        visibleNavItems.value.find((item) => item.id === currentView.value)?.label ||
         "車両管理",
 );
 const activeApp = computed(() =>
-    currentPath.value.startsWith("/test2") ? "guide" : "vehicle",
+    currentPath.value.startsWith("/local-guide") ? "guide" : "vehicle",
 );
 const selectedGuideArea = computed(() => {
     if (apiGuideData.value) {
@@ -3424,7 +3622,7 @@ const handleLogoClick = () => {
 const goToPath = (path) => {
     window.history.pushState({}, "", path);
     currentPath.value = window.location.pathname;
-    if (path === "/test") {
+    if (path === "/vehicles") {
         document.title = "中古車管理システム";
     } else {
         document.title = "近くのグルメ・遊び案内";
@@ -3698,11 +3896,22 @@ const exportVehicles = () => {
 
 onMounted(async () => {
     window.addEventListener("popstate", () => {
-        currentPath.value = window.location.pathname;
+        syncViewFromPath();
     });
     guideHistory.value = readStoredArray("guideHistory");
     favoriteSpotIds.value = readStoredArray("guideFavorites");
     savedVehicleColors.value = readStoredObject("vehicleColors");
+    const storedEmployees = readStoredArray("usedCarEmployees");
+    if (storedEmployees.length) {
+        employees.value = storedEmployees;
+        selectEmployee(storedEmployees[0], false);
+    }
+    if (currentUserRole.value === "staff") {
+        const ownEmployee = employees.value.find((item) => item.userId === currentUserId.value);
+        currentView.value = "employees";
+        if (ownEmployee) selectEmployee(ownEmployee);
+    }
+    if (activeApp.value === "vehicle") syncViewFromPath();
     searchLocalSpots();
     document.title =
         activeApp.value === "guide"
