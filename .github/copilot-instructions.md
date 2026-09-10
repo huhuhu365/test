@@ -8,6 +8,7 @@
 - 保留用户尚未提交的修改；只改与任务有关的内容，避免顺带重构和全文件格式化。
 
 ## 仓库与范围
+- 所有项目统一由 `C:\wang` 的 Git 仓库管理，使用 `main` 分支。不要在子项目中重新初始化独立 Git 仓库；`.git-backups/` 仅保存本地旧 Git 元数据，不提交或上传。
 - `used-car-management/` 是二手车管理系统，提供车辆查询、筛选、增删改、统计及 CSV 导出；前端还包含附近餐饮与游玩地点查询界面。
 - `used-car-management/src/` 是 Vue 前端，`used-car-management/backend/` 是对应的 Spring Boot API。根目录仅管理多个项目，项目列表见根目录 `README.md`。
 - `bulk-letter-vue/`、`mobile-order/`、`my-vue/`、`react-basic/`、`react-learning/`、`todo-app/`、`wang1/`、`mulesoft-hello-world/` 是其他项目目录，技术栈各不相同（例如 `todo-app/` 是 React 18 + TypeScript + Vite 5，`mulesoft-hello-world/` 是 Mule 4 + Maven，`wang1/` 混有 Python 脚本）。修改其中内容前，先检查其自身 README、依赖和脚本；不要套用主应用的技术栈与启动命令。

@@ -10,6 +10,7 @@ __pycache__/
 !.env.example
 /tmp_xls_reader/
 /xls_reader_ready/
+/.git-backups/
 vite-dev*.log
 .vscode/
 .DS_Store

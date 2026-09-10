@@ -3,6 +3,12 @@
 每个项目都直接放在 `C:\wang` 下自己的目录中。根目录用于管理项目，不再直接启动应用。
 可用 VS Code 打开 [我的项目.code-workspace](./我的项目.code-workspace)，或单独打开某个项目目录。
 
+## Git 统一管理
+
+所有项目统一由 `C:\wang\.git` 管理，日常使用 `main` 分支，远程仓库为 `https://github.com/huhuhu365/test.git`。
+在 `C:\wang` 执行 `git status`、`git add`、`git commit` 和 `git push`，即可统一管理各项目；不再在项目子目录中执行 `git init`。
+`mobile-order` 原有的独立 Git 元数据已保存在根目录 `.git-backups/`，仅供本地恢复旧分支、历史和配置，不上传 GitHub。
+
 | 项目 | 文件夹 | 启动方式（在对应目录执行） |
 | --- | --- | --- |
 | 二手车管理系统 | [used-car-management](./used-car-management/) | `npm run dev`；另一终端进入该项目的 `backend/` 运行 `mvn spring-boot:run` |
