@@ -1,0 +1,40 @@
+{
+    "folders":  [
+                    {
+                        "name":  "01 二手车管理",
+                        "path":  "used-car-management"
+                    },
+                    {
+                        "name":  "02 学生管理",
+                        "path":  "my-vue"
+                    },
+                    {
+                        "name":  "03 小满食堂点单",
+                        "path":  "mobile-order"
+                    },
+                    {
+                        "name":  "04 批量信件",
+                        "path":  "bulk-letter-vue"
+                    },
+                    {
+                        "name":  "05 待办事项",
+                        "path":  "todo-app"
+                    },
+                    {
+                        "name":  "06 React基础",
+                        "path":  "react-basic"
+                    },
+                    {
+                        "name":  "07 React学习清单",
+                        "path":  "react-learning"
+                    },
+                    {
+                        "name":  "08 MuleSoft入门",
+                        "path":  "mulesoft-hello-world"
+                    },
+                    {
+                        "name":  "09 Codex Pulse",
+                        "path":  "wang1"
+                    }
+                ]
+}

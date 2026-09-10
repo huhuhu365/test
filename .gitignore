@@ -1,5 +1,15 @@
 node_modules/
 dist/
+target/
+.vite/
+*.log
+*.tsbuildinfo
+__pycache__/
+.env
+.env.*
+!.env.example
+/tmp_xls_reader/
+/xls_reader_ready/
 vite-dev*.log
 .vscode/
 .DS_Store
