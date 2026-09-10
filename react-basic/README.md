@@ -1,70 +1,42 @@
-# Getting Started with Create React App
+# React 基础练习
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+路径：`C:\wang\react-basic`。React 18 + Create React App，包含组件、Hook、列表和评论练习。
 
-## Available Scripts
+## 启动
 
-In the project directory, you can run:
+本项目使用 **start**，与其他 Vite 项目的 dev 不同。依赖不存在时先在项目目录执行 `npm install`。
 
-### `npm start`
+终端 1：启动 JSON 模拟后端。
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```powershell
+cd C:\wang\react-basic
+pnpm run serve
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+终端 2：启动 React 页面。
 
-### `npm test`
+```powershell
+cd C:\wang\react-basic
+pnpm start
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+npm 对应命令是 `npm run serve` 和 `npm start`。前端通常为 `http://localhost:3000`，以终端为准。
+模拟接口为 `http://localhost:3004/list`，当前 App.js 从此地址读取列表。
 
-### `npm run build`
+## 后端与数据
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+`serve` 执行 `json-server db.json --port 3004`，用 `db.json` 模拟接口，并不是 Spring Boot 业务服务。对模拟 API 的写入可能修改该 JSON 文件。
+无需启动学生或二手车后端。
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 检查
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```powershell
+cd C:\wang\react-basic
+pnpm run build
+pnpm test
+```
 
-### `npm run eject`
+`test` 使用 react-scripts 的测试运行器，默认可能进入监视模式，按 `Ctrl + C` 结束。脚本存在不代表当前测试均已通过；本次没有运行本项目构建或测试。
+若启动提示模块缺失，应核对 package.json 与实际 import（当前 App.js 直接引用 lodash，但未在 package.json 声明）；不要通过启动另一个项目后端解决模块依赖错误。
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+返回 [全部项目启动指南](../启动指南.md)。

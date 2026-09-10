@@ -1,25 +1,26 @@
-# ToDo アプリ
+# 待办事项应用（ToDo）
 
-React + TypeScript + Vite で構築した ToDo アプリです。単一ファイルの HTML 版を
-同じ UI・同じ機能のままコンポーネント構成へリファクタリングしたものです。
+路径：`C:\wang\todo-app`。这是纯前端 React + TypeScript 应用，**不需要独立后端、Java 或数据库服务**。
 
-## セットアップ
+## 快速启动
 
-```bash
-npm install
-npm run dev
+```powershell
+cd C:\wang\todo-app
+pnpm dev
 ```
 
-`http://localhost:5173` で確認できます。
+npm 对应命令为 `npm run dev`。首次依赖缺失时先执行 `npm install`，或沿用项目已选定的包管理器安装。
+打开终端实际显示的地址，通常为 `http://localhost:5173`。本项目没有 `start`、`server` 脚本。
 
-## ビルド
+## 保存方式
 
-```bash
-npm run build
-npm run preview
-```
+任务与语言偏好存在浏览器 localStorage，不是服务器数据库。清除浏览器网站数据会丢失记录；不同浏览器、端口和电脑之间不会自动同步。
 
-## 構成
+## 构建
+
+`pnpm run build` 执行 TypeScript 检查和 Vite 构建；`pnpm run preview` 预览构建结果，保持纯前端运行。
+
+## 文件结构与功能（原项目说明）
 
 - `index.html` — Vite のエントリ（`#root` にマウント）
 - `src/main.tsx` — React のエントリポイント
@@ -45,3 +46,5 @@ npm run preview
 - ライト / ダークモード対応（OS 設定に追従）
 - 残り件数 / 全件数の表示
 - 画面右上の言語切り替え（日本語 / 英語、デフォルトは日本語、選択内容も保存）
+
+返回 [全部项目启动指南](../启动指南.md)。

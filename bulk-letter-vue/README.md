@@ -1,6 +1,6 @@
 # Vue 批量信件工作台
 
-用于管理最多 500 位已授权收件人的个性化信件。支持 `{{companyName}}` 公司名变量、CSV 导入、逐条预览和模拟投递。
+用于管理最多 500 位已授权收件人的个性化信件。支持 `{{companyName}}` 公司名变量、CSV 导入、逐条预览和 SMTP 邮件投递。
 
 ## 启动
 
@@ -59,3 +59,28 @@ bulk-letter-vue/
 - 每个登录会话使用自己的 SMTP 配置，不能使用其他人的发件账号。
 - CSV 和页面输入都需要在后端重新验证，不能只依赖前端校验。
 - 当前 JSON 文件适合学习和单机使用；多人正式使用时应改为数据库，并增加 HTTPS、CSRF 防护、登录限流、密码修改和审计日志。
+
+## pnpm 用户与前后端地址
+
+在 `C:\wang\bulk-letter-vue` 中，后端使用 `pnpm run server`，另一个终端使用 `pnpm dev` 启动前端；没有 `start` 脚本。首次缺少依赖可执行 `npm install`，如已采用 pnpm 则继续使用 pnpm 的锁文件和安装流程。
+
+前端通常为 `http://localhost:5173`，以终端输出为准；Express 后端固定为 `http://localhost:3002`。Vite 将 `/api` 代理到 3002。
+`pnpm run build` 只构建前端，不会启动后台服务。
+
+## 接口速查
+
+| 方法 | 路径 | 用途 |
+| --- | --- | --- |
+| POST | `/api/login` | 登录并建立会话 |
+| POST | `/api/logout` | 注销 |
+| GET | `/api/session` | 当前会话 |
+| GET / POST | `/api/users` | 管理员查询、创建用户 |
+| GET | `/api/smtp/status` | SMTP 会话配置状态 |
+| POST | `/api/smtp/test` | 配置并验证 SMTP 连接 |
+| GET / PUT | `/api/recipients` | 读取、保存收件人 |
+| POST | `/api/campaigns/send` | 实际发送邮件 |
+
+除登录外，上表接口需要会话 Token，部分还要求管理员权限。直接在浏览器访问受保护 API 时出现 401，不代表服务未启动。
+仅启动前后端不会自动发送邮件；点击发送或调用发送接口会产生真实邮件。本次文档检查没有发送或测试邮件。
+
+返回 [全部项目启动指南](../启动指南.md)。

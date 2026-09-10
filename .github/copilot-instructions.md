@@ -13,7 +13,7 @@
 - `used-car-management/src/` 是 Vue 前端，`used-car-management/backend/` 是对应的 Spring Boot API。根目录仅管理多个项目，项目列表见根目录 `README.md`。
 - `bulk-letter-vue/`、`mobile-order/`、`my-vue/`、`react-basic/`、`react-learning/`、`todo-app/`、`wang1/`、`mulesoft-hello-world/` 是其他项目目录，技术栈各不相同（例如 `todo-app/` 是 React 18 + TypeScript + Vite 5，`mulesoft-hello-world/` 是 Mule 4 + Maven，`wang1/` 混有 Python 脚本）。修改其中内容前，先检查其自身 README、依赖和脚本；不要套用主应用的技术栈与启动命令。
 - `学习资料/` 存放 COBOL、ServiceNow 和 Git 笔记，不是可运行项目。
-- `used-car-management/README.md` 描述二手车应用与启动方式，该目录的 `DATABASE_PRACTICE.md` 说明数据库练习；涉及具体行为时仍需核对实现。注意 `README.md` 写的是 Java 25，而 `backend/pom.xml` 实际为 Java 17，以 `pom.xml` 为准。
+- `used-car-management/README.md` 描述二手车应用与启动方式，该目录的 `DATABASE_PRACTICE.md` 说明数据库练习，`要件详情与API使用说明.md` 记录功能范围和接口约定；涉及具体行为时仍需核对实现，Java 版本以该项目的 `backend/pom.xml` 为准。
 
 ## 二手车应用技术栈（以下路径均相对于 `used-car-management/`）
 - 前端：Vue 3.5、Vite 7、JavaScript ES Modules、`@lucide/vue` 图标；具体版本约束见该项目的 `package.json`，解析版本见锁文件。

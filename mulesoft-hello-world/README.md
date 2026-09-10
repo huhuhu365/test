@@ -37,3 +37,19 @@ $response.Content
 
 - https://docs.mulesoft.com/http-connector/latest/
 - https://docs.mulesoft.com/mule-runtime/latest/package-a-mule-application
+
+## Windows 启动提醒
+
+本项目本身就是后端 API，没有 Vue/React 前端，也没有 package.json；不要执行 `pnpm start` 或 `pnpm dev`。
+在 Studio 中导入整个 `C:\wang\mulesoft-hello-world` 项目，使用兼容 Mule 4.9 的运行时和 Java 17，通过 Run As → Mule Application 启动。
+`mvn package` 只生成部署包，不会启动 8081 服务；登录 Anypoint 网站本身也不会自动运行本地项目。
+
+```powershell
+cd C:\wang\mulesoft-hello-world
+$env:JAVA_HOME = 'C:\Program Files\Java\jdk-17.0.18'
+mvn package
+```
+
+本文没有给出未经验证的云端部署地址。运行后再访问 `http://127.0.0.1:8081/hello`；前面的启动步骤仍需在 Studio 中完成。
+
+返回 [全部项目启动指南](../启动指南.md)。

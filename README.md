@@ -3,6 +3,8 @@
 每个项目都直接放在 `C:\wang` 下自己的目录中。根目录用于管理项目，不再直接启动应用。
 可用 VS Code 打开 [我的项目.code-workspace](./我的项目.code-workspace)，或单独打开某个项目目录。
 
+**先看 [全部项目启动指南](./启动指南.md)**：包含 pnpm/npm 命令、每个项目的后端、端口和常见错误。学生项目 `my-vue` 的后端源码目前未定位，打开前端不代表学生 API 已启动。
+
 ## Git 统一管理
 
 所有项目统一由 `C:\wang\.git` 管理，日常使用 `main` 分支，远程仓库为 `https://github.com/huhuhu365/test.git`。
@@ -12,7 +14,7 @@
 | 项目 | 文件夹 | 启动方式（在对应目录执行） |
 | --- | --- | --- |
 | 二手车管理系统 | [used-car-management](./used-car-management/) | `npm run dev`；另一终端进入该项目的 `backend/` 运行 `mvn spring-boot:run` |
-| 学生管理系统 | [my-vue](./my-vue/) | `npm run dev` |
+| 学生管理系统 | [my-vue](./my-vue/README.md) | `pnpm dev`；独立学生后端源码未定位，详见该项目说明 |
 | 小满食堂点单系统 | [mobile-order](./mobile-order/) | 本地 `npm run dev`；目录内中文启动脚本打开线上页面 |
 | 批量信件工作台 | [bulk-letter-vue](./bulk-letter-vue/) | 两个终端分别运行 `npm run server` 和 `npm run dev` |
 | 待办事项应用 | [todo-app](./todo-app/) | `npm run dev` |

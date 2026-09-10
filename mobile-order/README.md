@@ -1,100 +1,58 @@
-# vinext-starter
+# 小满食堂点单系统
 
-A clean full-stack starter running on
-[vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
+路径：`C:\wang\mobile-order`。React + TypeScript + vinext，包含顾客点单、桌号与店家管理；数据由 Cloudflare D1 及 Drizzle 管理。
 
-## Prerequisites
+## 前后端怎么启动
 
-- Node.js `>=22.13.0`
+**前后端在同一项目中运行，不需要另外启动 Java 或 Express 后端。** API 位于 `app/api/`。Node.js 要求 `>=22.13.0`。
 
-## Quick Start
+首次没有依赖时在该目录执行 `npm install`；已安装后运行：
 
-```bash
-npm install
-npm run dev
-npm run build
+```powershell
+cd C:\wang\mobile-order
+pnpm dev
 ```
 
-This starter does not use `wrangler.jsonc`.
+npm 用户执行 `npm run dev`。请打开终端显示的地址，不固定假定是 5173 或 3000。
+在同一地址下访问 `/admin` 是店家入口，`/api/menu` 是菜单 API。
 
-## Included Shape
+## 数据与配置
 
-- edit site code under `app/`
-- `.openai/hosting.json` declares optional Sites D1 and R2 bindings
-- `vite.config.ts` simulates declared bindings for local development
-- `db/schema.ts` starts intentionally empty
-- `examples/d1/` contains an optional D1 example surface
-- `drizzle.config.ts` supports local migration generation when needed
+`vite.config.ts` 通过 Cloudflare 插件提供本地运行环境，数据库绑定名由 `.openai/hosting.json` 指定。
+`db/index.ts` 中的初始化逻辑创建应用表；`db/schema.ts` 是实际菜品、订单等结构，不是空模板。
+如果提示 D1 binding `DB` unavailable，需检查本地 Cloudflare 运行环境与绑定，而不是启动二手车后端。
+本地模拟数据库与线上 D1 数据相互独立。不要为解决页面问题直接清空 `.wrangler/`，其中可能保存本地数据。
 
-## Workspace Auth Headers
+## 入口
 
-Signed-in visitors receive both `oai-authenticated-user-id` and `oai-authenticated-user-email`. Private Sites require every visitor to sign in; public Sites may also have anonymous visitors, for whom neither header is present.
+| 路径 | 用途 |
+| --- | --- |
+| `/` | 顾客入口 |
+| `/table/[tableNumber]` | 桌号页面 |
+| `/seat/[token]` | 桌位令牌页面 |
+| `/admin` | 店家管理 |
+| `/admin/login` | 店家登录 |
+| `/api/menu` | 菜单查询 |
+| `/api/orders` | 订单接口 |
 
-The user ID is stable for the same user on the same Site and different across Sites. Email and name are intended for display or contact purposes.
+管理 API 使用管理员会话验证；前台能打开不代表自动拥有后台权限。登录相关逻辑见 `app/chatgpt-auth.ts`。
 
-SIWC-authenticated workspace sites may also receive
-`oai-authenticated-user-full-name` when the user's SIWC profile has a non-empty
-`name` claim. The full-name value is percent-encoded UTF-8 and is accompanied by
-`oai-authenticated-user-full-name-encoding: percent-encoded-utf-8`.
+## 本地与线上区别
 
-Treat the full name as optional and fall back to email when it is absent:
+目录中的 `启动小满食堂点单系统.bat`、同名 `.ps1`、`打开店家管理后台.bat`、`打开顾客点单页面.bat` 打开的是既有线上地址，不会在本机启动开发服务。
+线上入口以这些脚本保存的地址为准；本次只核对本地配置，未验证线上可用性，也没有重新部署。
 
-```tsx
-import { headers } from "next/headers";
+## 构建和测试
 
-export default async function Home() {
-  const requestHeaders = await headers();
-  const userId = requestHeaders.get("oai-authenticated-user-id");
-  const email = requestHeaders.get("oai-authenticated-user-email");
-  const encodedFullName = requestHeaders.get("oai-authenticated-user-full-name");
-  const fullName =
-    encodedFullName &&
-    requestHeaders.get("oai-authenticated-user-full-name-encoding") ===
-      "percent-encoded-utf-8"
-      ? decodeURIComponent(encodedFullName)
-      : null;
-
-  const displayName = fullName ?? email;
-  // ...
-}
+```powershell
+cd C:\wang\mobile-order
+pnpm run build
+pnpm test
+pnpm run lint
 ```
 
-## Optional Dispatch-Owned ChatGPT Sign-In
+`pnpm start` 对应 `vinext start`，用于已有构建结果的运行；日常修改请使用 `pnpm dev`。
+`pnpm run db:generate` 生成 Drizzle 迁移，不等于自动更新线上数据库。
+Git 统一由 `C:\wang` 管理，不要在此目录重新 `git init`。
 
-Import the ready-to-use helpers from `app/chatgpt-auth.ts` when the site needs
-optional or required ChatGPT sign-in:
-
-- Use `getChatGPTUser()` for optional signed-in UI.
-- Use `requireChatGPTUser(returnTo)` for server-rendered pages that should send
-  anonymous visitors through Sign in with ChatGPT.
-- Use `chatGPTSignInPath(returnTo)` and `chatGPTSignOutPath(returnTo)` for
-  browser links or actions.
-- Pass a same-origin relative `returnTo` path for the destination after sign-in
-  or sign-out. The helper validates and safely encodes it.
-- Mark protected pages with `export const dynamic = "force-dynamic"` because
-  they depend on per-request identity headers.
-
-Dispatch owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, `/callback`, the
-OAuth cookies, and identity header injection. Do not implement app routes for
-those reserved paths. Routes that do not import and call the helper remain
-anonymous-compatible.
-
-SIWC establishes identity only; it does not prove workspace membership. Use the
-Sites hosting platform's access policy controls for workspace-wide restrictions,
-or enforce explicit server-side membership or allowlist checks.
-
-Use SIWC for account pages, user-specific dashboards, saved records, and write
-actions tied to the current ChatGPT user. Leave public content anonymous.
-
-## Useful Commands
-
-- `npm run dev`: start local development
-- `npm run build`: verify the vinext build output
-- `npm test`: build the starter and verify its rendered loading skeleton
-- `npm run db:generate`: generate Drizzle migrations after schema changes
-
-## Learn More
-
-- [vinext Documentation](https://github.com/cloudflare/vinext)
-- [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)
+返回 [全部项目启动指南](../启动指南.md)。

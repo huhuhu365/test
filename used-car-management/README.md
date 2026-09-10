@@ -2,10 +2,12 @@
 
 Java + Spring Boot + MyBatis + Vue.js で構成した中古車管理システムです。
 
+中文详细说明：[要件详情与 API 使用说明](./要件详情与API使用说明.md)（启动步骤、功能范围、接口字段、请求示例、数据库和待完善项）。
+
 ## 技術構成
 
 - Frontend: Vue 3, Vite, lucide-vue
-- Backend: Java 25, Spring Boot, MyBatis
+- Backend: Java 17, Spring Boot, MyBatis
 - Database: H2 Database
 - API: REST API
 
@@ -85,17 +87,40 @@ Vue の登録・編集フォームでは `/api/master-data` から取得した `
 
 ## 住所検索（OpenStreetMap 無料 API）
 
-「近くのグルメ・遊び案内」画面では、OpenStreetMap の無料 API（Nominatim + Overpass API）を使って駅周辺のレストラン・観光スポットを検索します。
+「近くのグルメ・遊び案内」画面には検索 UI とサンプル表示があります。Nominatim + Overpass API との連携を想定していますが、現在のバックエンドには地点検索 API がありません。
 
 - **Geocoding**: [Nominatim](https://nominatim.openstreetmap.org/)（住所→座標）
 - **POI 検索**: [Overpass API](https://overpass-api.de/)（周辺施設検索）
 
-API キー不要、完全無料で利用できます。
+以下の外部サービスとの実データ連携は未検証です。現状はサンプル表示と実データを区別してください。
 
 | Method | Path                 | 内容                                 |
 | ------ | -------------------- | ------------------------------------ |
-| GET    | `/api/places/search` | OpenStreetMap 経由で周辺スポット検索 |
+| GET    | `/api/places/search` | フロントエンドからの呼び出しのみ。現在のバックエンドには未実装 |
 
 ## 補足
 
 Spring Boot API が起動していない場合、Vue 画面はデモデータを表示します。API を起動すると H2 データベース上のデータに切り替わります。
+
+## 中文启动速查（PowerShell）
+
+这是二手车项目，不是 `my-vue` 学生项目。后端没有 `/api/students`。
+
+```powershell
+# 终端 1：Java 后端
+cd C:\wang\used-car-management\backend
+$env:JAVA_HOME = 'C:\Program Files\Java\jdk-17.0.18'
+mvn spring-boot:run
+```
+
+```powershell
+# 终端 2：Vue 前端
+cd C:\wang\used-car-management
+pnpm dev
+```
+
+npm 用户执行 `npm run dev`。没有 start 脚本。车辆 API：`http://127.0.0.1:8080/api/vehicles`；前端通常为 `http://127.0.0.1:5173`。
+只检查车辆 API 时可以不启动前端。当前 H2 是内存数据库，后端重启会重新加载示例数据。
+详细字段、请求示例与限制见 [要件详情与API使用说明](./要件详情与API使用说明.md)。
+
+返回 [全部项目启动指南](../启动指南.md)。
