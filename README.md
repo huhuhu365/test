@@ -20,6 +20,7 @@
 | 待办事项应用 | [todo-app](./todo-app/) | `npm run dev` |
 | React 基础练习 | [react-basic](./react-basic/) | `npm start`；需要模拟数据时另开终端运行 `npm run serve` |
 | React 学习清单 | [react-learning](./react-learning/) | 两个终端分别运行 `npm run server` 和 `npm run dev` |
+| 内部权限申请管理系统 | [access-request-system](./access-request-system/) | 两个终端分别运行 `pnpm serve`（3005）和 `pnpm dev`（5173），或 `pnpm start` 一起启动 |
 | MuleSoft Hello World | [mulesoft-hello-world](./mulesoft-hello-world/) | 用 Anypoint Studio 导入运行，详见项目说明 |
 | Codex Pulse 用量监视器 | [wang1](./wang1/) | 双击目录内 `启动 Codex Pulse.bat` |
 

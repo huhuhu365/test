@@ -1,0 +1,172 @@
+{
+  "users": [
+    {
+      "id": "u-zhangsan",
+      "name": "张三",
+      "department": "个人金融部",
+      "title": "客户经理",
+      "role": "applicant"
+    },
+    {
+      "id": "u-lisi",
+      "name": "李四",
+      "department": "公司业务部",
+      "title": "客户经理",
+      "role": "applicant"
+    },
+    {
+      "id": "u-wangwu",
+      "name": "王五",
+      "department": "个人金融部",
+      "title": "部门主管",
+      "role": "approver"
+    },
+    {
+      "id": "u-zhaoliu",
+      "name": "赵六",
+      "department": "信息科技部",
+      "title": "系统管理员",
+      "role": "admin"
+    }
+  ],
+  "systems": [
+    {
+      "id": "sys-core",
+      "name": "核心业务系统",
+      "code": "CORE",
+      "description": "存贷款、账户、交易主机系统",
+      "owner": "信息科技部",
+      "riskLevel": "high",
+      "accessLevels": [
+        "查询",
+        "柜面操作",
+        "复核授权"
+      ],
+      "active": true
+    },
+    {
+      "id": "sys-crm",
+      "name": "客户关系管理系统",
+      "code": "CRM",
+      "description": "客户信息、营销活动、商机管理",
+      "owner": "零售业务部",
+      "riskLevel": "medium",
+      "accessLevels": [
+        "只读",
+        "编辑",
+        "管理员"
+      ],
+      "active": true
+    },
+    {
+      "id": "sys-credit",
+      "name": "信贷管理系统",
+      "code": "CREDIT",
+      "description": "授信申报、审批、贷后管理",
+      "owner": "风险管理部",
+      "riskLevel": "high",
+      "accessLevels": [
+        "申报",
+        "审批",
+        "贷后"
+      ],
+      "active": true
+    },
+    {
+      "id": "sys-bi",
+      "name": "经营分析平台",
+      "code": "BI",
+      "description": "报表、数据看板、经营指标",
+      "owner": "计划财务部",
+      "riskLevel": "low",
+      "accessLevels": [
+        "查看报表",
+        "自助分析"
+      ],
+      "active": true
+    },
+    {
+      "id": "sys-oa",
+      "name": "办公自动化系统",
+      "code": "OA",
+      "description": "公文、审批流、会议管理",
+      "owner": "办公室",
+      "riskLevel": "low",
+      "accessLevels": [
+        "普通用户",
+        "流程管理员"
+      ],
+      "active": true
+    }
+  ],
+  "requests": [
+    {
+      "id": "req-20260901-001",
+      "applicantId": "u-zhangsan",
+      "applicantName": "张三",
+      "department": "个人金融部",
+      "systemId": "sys-crm",
+      "systemName": "客户关系管理系统",
+      "accessLevel": "编辑",
+      "reason": "负责个金部小微客户营销，需要维护客户跟进记录。",
+      "durationDays": 180,
+      "status": "pending",
+      "createdAt": "2026-09-01T09:12:00.000Z",
+      "decidedAt": null,
+      "approverId": null,
+      "approverName": null,
+      "decisionComment": null
+    },
+    {
+      "id": "req-20260828-014",
+      "applicantId": "u-zhangsan",
+      "applicantName": "张三",
+      "department": "个人金融部",
+      "systemId": "sys-bi",
+      "systemName": "经营分析平台",
+      "accessLevel": "查看报表",
+      "reason": "月度个金业绩分析需要查看支行经营报表。",
+      "durationDays": 365,
+      "status": "approved",
+      "createdAt": "2026-08-28T02:40:00.000Z",
+      "decidedAt": "2026-08-28T06:15:00.000Z",
+      "approverId": "u-wangwu",
+      "approverName": "王五",
+      "decisionComment": "同意，权限有效期一年。"
+    },
+    {
+      "id": "req-20260825-007",
+      "applicantId": "u-lisi",
+      "applicantName": "李四",
+      "department": "公司业务部",
+      "systemId": "sys-core",
+      "systemName": "核心业务系统",
+      "accessLevel": "复核授权",
+      "reason": "临时顶岗需要复核授权权限。",
+      "durationDays": 30,
+      "status": "rejected",
+      "createdAt": "2026-08-25T07:05:00.000Z",
+      "decidedAt": "2026-08-25T09:30:00.000Z",
+      "approverId": "u-wangwu",
+      "approverName": "王五",
+      "decisionComment": "复核授权属于高风险权限，需走双人临柜授权流程，暂不通过。"
+    },
+    {
+      "id": "req-20260910-852",
+      "applicantId": "u-lisi",
+      "applicantName": "李四",
+      "department": "公司业务部",
+      "systemId": "sys-core",
+      "systemName": "核心业务系统",
+      "accessLevel": "查询",
+      "reason": "sdsd",
+      "durationDays": 180,
+      "status": "approved",
+      "createdAt": "2026-09-10T09:10:09.281Z",
+      "decidedAt": "2026-09-10T09:10:39.107Z",
+      "approverId": "u-wangwu",
+      "approverName": "王五",
+      "decisionComment": "同意"
+    }
+  ]
+}
