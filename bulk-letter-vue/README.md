@@ -50,7 +50,7 @@ bulk-letter-vue/
 5. `requireLogin` 验证是否登录，`requireAdmin` 继续验证是否为管理者。
 6. SMTP 应用密码只存在当前会话内存，退出或重启后端后销毁。
 
-默认管理者为 `wangyonghuang / password`，首次登录后建议在正式实现中增加修改密码功能。
+默认管理者账号和初始密码由项目配置提供，首次登录后建议在正式实现中增加修改密码功能。
 
 ## 数据与安全边界
 
@@ -69,16 +69,16 @@ bulk-letter-vue/
 
 ## 接口速查
 
-| 方法 | 路径 | 用途 |
-| --- | --- | --- |
-| POST | `/api/login` | 登录并建立会话 |
-| POST | `/api/logout` | 注销 |
-| GET | `/api/session` | 当前会话 |
-| GET / POST | `/api/users` | 管理员查询、创建用户 |
-| GET | `/api/smtp/status` | SMTP 会话配置状态 |
-| POST | `/api/smtp/test` | 配置并验证 SMTP 连接 |
-| GET / PUT | `/api/recipients` | 读取、保存收件人 |
-| POST | `/api/campaigns/send` | 实际发送邮件 |
+| 方法       | 路径                  | 用途                 |
+| ---------- | --------------------- | -------------------- |
+| POST       | `/api/login`          | 登录并建立会话       |
+| POST       | `/api/logout`         | 注销                 |
+| GET        | `/api/session`        | 当前会话             |
+| GET / POST | `/api/users`          | 管理员查询、创建用户 |
+| GET        | `/api/smtp/status`    | SMTP 会话配置状态    |
+| POST       | `/api/smtp/test`      | 配置并验证 SMTP 连接 |
+| GET / PUT  | `/api/recipients`     | 读取、保存收件人     |
+| POST       | `/api/campaigns/send` | 实际发送邮件         |
 
 除登录外，上表接口需要会话 Token，部分还要求管理员权限。直接在浏览器访问受保护 API 时出现 401，不代表服务未启动。
 仅启动前后端不会自动发送邮件；点击发送或调用发送接口会产生真实邮件。本次文档检查没有发送或测试邮件。
