@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ja">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>入社申請 | People Desk</title><link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script></head>
+<body>
+<header><div class="brand"><span class="logo">P</span><div>People Desk<small>人事手続きポータル</small></div></div><span id="environment" class="environment">接続中…</span></header>
+<main>
+<div class="heading"><div><p class="eyebrow">ONBOARDING</p><h1>入社申請</h1><p class="subtitle">新しいメンバーの入社情報を登録・確認します。</p></div><span class="pill">入社手続き</span></div>
+<section id="access" class="card" hidden><label for="token">アクセスコード</label><div class="access-row"><input id="token" type="password" autocomplete="off"><button id="unlock" type="button">接続する</button></div><p class="hint">管理者から共有されたコードを入力してください。</p></section>
+<nav aria-label="ページ切り替え"><button id="new-tab" class="tab active" type="button">新規申請</button><button id="list-tab" class="tab" type="button">申請一覧</button></nav>
+<div id="notice" role="status" aria-live="polite" hidden></div>
+<section id="new-view" class="card">
+<div class="section-title"><h2>申請情報の入力</h2><span class="hint"><b>*</b> は必須項目です</span></div>
+<form id="application-form" novalidate>
+<h3><span>01</span> 基本情報</h3><div class="grid">
+<div class="field"><label for="name">氏名 <b>*</b></label><input id="name" name="name" required maxlength="100" autocomplete="name" placeholder="山田 太郎"></div>
+<div class="field"><label for="kana">フリガナ <b>*</b></label><input id="kana" name="kana" required maxlength="100" placeholder="ヤマダ タロウ"></div>
+<div class="field"><label for="birthDate">生年月日 <b>*</b></label><input id="birthDate" name="birthDate" required type="date"></div>
+<div class="field"><label for="gender">性別 <span class="optional">任意</span></label><select id="gender" name="gender"><option value="">選択してください</option><option>男性</option><option>女性</option><option>その他</option><option>回答しない</option></select></div>
+<div class="field"><label for="email">メールアドレス <b>*</b></label><input id="email" name="email" required type="email" maxlength="254" autocomplete="email" placeholder="taro.yamada@example.com"></div>
+<div class="field"><label for="phone">電話番号 <b>*</b></label><input id="phone" name="phone" required type="tel" maxlength="25" autocomplete="tel" placeholder="090-1234-5678"><small class="hint">10〜15桁（+・ハイフン・空白可）</small></div>
+<div class="field full"><label for="address">住所 <b>*</b></label><input id="address" name="address" required maxlength="500" autocomplete="street-address" placeholder="東京都千代田区…"></div>
+</div>
+<h3><span>02</span> 入社情報</h3><div class="grid">
+<div class="field"><label for="startDate">入社予定日 <b>*</b></label><input id="startDate" name="startDate" required type="date"><small class="hint">今日以降の日付（日本時間）</small></div>
+<div class="field"><label for="department">所属部署 <b>*</b></label><input id="department" name="department" required maxlength="100" placeholder="開発部"></div>
+<div class="field"><label for="job">職種 <b>*</b></label><input id="job" name="job" required maxlength="100" placeholder="エンジニア"></div>
+<div class="field"><label for="employmentType">雇用形態 <b>*</b></label><select id="employmentType" name="employmentType" required><option value="">選択してください</option><option>正社員</option><option>契約社員</option><option>パート・アルバイト</option><option>派遣社員</option></select></div>
+<div class="field full"><label for="notes">備考 <span class="optional">任意</span></label><textarea id="notes" name="notes" rows="3" maxlength="2000" placeholder="補足事項があれば入力してください"></textarea></div>
+</div><div class="form-footer"><span class="hint">内容を確認してから申請してください。</span><button id="submit" type="submit">申請する →</button></div>
+</form></section>
+<section id="list-view" class="card" hidden><div class="section-title"><h2>申請一覧 <span id="count" class="count">0件</span></h2><button id="refresh" class="secondary" type="button">更新</button></div><p class="hint">氏名を選択すると申請内容を確認できます。</p><div class="table-wrap"><table><thead><tr><th>申請番号</th><th>氏名</th><th>入社予定日</th><th>所属部署</th><th>雇用形態</th><th>申請日時</th><th>ステータス</th></tr></thead><tbody id="rows"></tbody></table></div><p id="empty" class="empty">まだ申請はありません。新規申請から登録してください。</p></section>
+<section id="detail-view" class="card" hidden><div class="section-title"><h2>申請詳細</h2><button id="back" class="secondary" type="button">一覧に戻る</button></div><dl id="detail" class="detail-grid"></dl></section>
+<footer>People Desk · 入社申請システム</footer>
+</main></body></html>

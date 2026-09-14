@@ -1,0 +1,5 @@
+data/
+.aws-sam/
+__pycache__/
+*.zip
+deploy-parameters.json
