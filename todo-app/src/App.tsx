@@ -21,10 +21,14 @@ export default function App() {
   const remaining = tasks.filter((task) => !task.done).length
 
   return (
-    <div className="app">
-      <LanguageSwitch />
-
-      <h1>{t.appTitle}</h1>
+    <div className="card">
+      <div className="card-header">
+        <div className="title-group">
+          <span className="app-icon" aria-hidden="true">📝</span>
+          <h1>{t.appTitle}</h1>
+        </div>
+        <LanguageSwitch />
+      </div>
 
       <TaskInput onAdd={addTask} />
 

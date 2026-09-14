@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import type { Task } from '../types'
+import type { Priority, Task } from '../types'
 
 const STORAGE_KEY = 'todo-app-tasks'
 
@@ -7,7 +7,11 @@ function load(): Task[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
     const parsed = raw ? JSON.parse(raw) : []
-    return Array.isArray(parsed) ? (parsed as Task[]) : []
+    if (!Array.isArray(parsed)) return []
+    return (parsed as Task[]).map((task) => ({
+      ...task,
+      priority: task.priority ?? 'med',
+    }))
   } catch {
     return []
   }
@@ -24,10 +28,13 @@ export function useTasks() {
     }
   }, [tasks])
 
-  const addTask = useCallback((text: string) => {
+  const addTask = useCallback((text: string, priority: Priority = 'med') => {
     const trimmed = text.trim()
     if (!trimmed) return
-    setTasks((prev) => [...prev, { id: Date.now(), text: trimmed, done: false }])
+    setTasks((prev) => [
+      ...prev,
+      { id: Date.now(), text: trimmed, done: false, priority },
+    ])
   }, [])
 
   const toggleTask = useCallback((id: number) => {

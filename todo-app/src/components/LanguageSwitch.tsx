@@ -13,7 +13,7 @@ export default function LanguageSwitch() {
           aria-pressed={lang === code}
           onClick={() => setLang(code)}
         >
-          {code === 'ja' ? '日本語' : 'EN'}
+          {code === 'ja' ? '日本語' : 'English'}
         </button>
       ))}
     </div>

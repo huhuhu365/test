@@ -10,6 +10,12 @@ interface TaskItemProps {
 export default function TaskItem({ task, onToggle, onDelete }: TaskItemProps) {
   const { t } = useI18n()
 
+  const priorityLabel = {
+    high: t.priorityHigh,
+    med: t.priorityMed,
+    low: t.priorityLow,
+  }[task.priority]
+
   return (
     <li className={task.done ? 'done' : ''}>
       <input
@@ -17,6 +23,7 @@ export default function TaskItem({ task, onToggle, onDelete }: TaskItemProps) {
         checked={task.done}
         onChange={() => onToggle(task.id)}
       />
+      <span className={`priority-tag priority-${task.priority}`}>{priorityLabel}</span>
       <span className="task-text">{task.text}</span>
       <button
         type="button"

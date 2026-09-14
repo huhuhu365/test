@@ -15,6 +15,9 @@ export interface Dict {
   filterAll: string
   filterActive: string
   filterDone: string
+  priorityHigh: string
+  priorityMed: string
+  priorityLow: string
   empty: string
   count: (remaining: number, total: number) => string
   clearDone: string
@@ -30,6 +33,9 @@ const DICTS: Record<Lang, Dict> = {
     filterAll: 'すべて',
     filterActive: '未完了',
     filterDone: '完了',
+    priorityHigh: '高',
+    priorityMed: '中',
+    priorityLow: '低',
     empty: 'タスクはありません',
     count: (remaining, total) => `未完了 ${remaining} 件 / 全 ${total} 件`,
     clearDone: '完了済みを削除',
@@ -37,12 +43,15 @@ const DICTS: Record<Lang, Dict> = {
     langLabel: { ja: '日本語', en: 'English' },
   },
   en: {
-    appTitle: 'ToDo List',
-    placeholder: 'Add a new task…',
+    appTitle: 'Todo List',
+    placeholder: 'Enter a new task...',
     add: 'Add',
     filterAll: 'All',
     filterActive: 'Active',
     filterDone: 'Done',
+    priorityHigh: 'High',
+    priorityMed: 'Med',
+    priorityLow: 'Low',
     empty: 'No tasks',
     count: (remaining, total) => `${remaining} active / ${total} total`,
     clearDone: 'Clear completed',
